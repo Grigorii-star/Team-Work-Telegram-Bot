@@ -34,11 +34,19 @@ public class TelegramBotService implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
+
+
+
+
             Long chatId = update.message().chat().id();
             String text = update.message().text();
             String userName = update.message().from().firstName();
 
             if (text.equals("/start")){
+                //получили сообщение
+                //вытащили из него чат айди и залезли в бд
+                //смотрим этап пользователя, если null, то присваиваем этап 0, сохраняем и отыгрываем по нему
+                // пользвоатель выбрал собаку,. присваивается этап 1
                 // todo здесь нужно залезть в бд, поискать пользователя, если он уже был, то мы пропускаем приветствие
                 SendMessage message = new SendMessage(chatId, getGreetingText(userName));
                 SendResponse response = telegramBot.execute(message);
@@ -46,6 +54,10 @@ public class TelegramBotService implements UpdatesListener {
                 response = telegramBot.execute(message);
                 message = new SendMessage(chatId, getChoice());
                 response = telegramBot.execute(message);
+
+
+
+
             }
 
 
