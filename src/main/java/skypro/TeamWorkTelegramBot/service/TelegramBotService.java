@@ -44,11 +44,10 @@ public class TelegramBotService implements UpdatesListener {
                 SendResponse response = telegramBot.execute(message);
                 message = new SendMessage(chatId,getInfo());
                 response = telegramBot.execute(message);
+                message = new SendMessage(chatId, getChoice());
+                response = telegramBot.execute(message);
             }
 
-            if (text.equals("1")) {
-
-            }
 
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -62,7 +61,6 @@ public class TelegramBotService implements UpdatesListener {
 
     private String getInfo() {
         StringBuilder sb = new StringBuilder();
-
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/about_shelter.txt"))) {
             String line = reader.readLine();
             while (line != null) {
