@@ -63,7 +63,7 @@ public class TelegramBotService implements UpdatesListener {
     private String getInfo() {
         StringBuilder sb = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("about_shelter.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/about_shelter.txt"))) {
             String line = reader.readLine();
             while (line != null) {
                 sb.append(line);
