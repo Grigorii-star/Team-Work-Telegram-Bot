@@ -3,7 +3,7 @@
 -- changeset aburmistrov:1
 CREATE TABLE cat_shelter
 (
-    id            bigserial NOT NULL PRIMARY KEY,
+    id            serial PRIMARY KEY,
     name          varchar(255),
     about_shelter varchar(255),
     location      varchar(255),
@@ -14,7 +14,7 @@ CREATE TABLE cat_shelter
 
 CREATE TABLE dog_shelter
 (
-    id            bigserial NOT NULL PRIMARY KEY,
+    id            serial PRIMARY KEY,
     name          varchar(255),
     about_shelter varchar(255),
     location      varchar(255),
