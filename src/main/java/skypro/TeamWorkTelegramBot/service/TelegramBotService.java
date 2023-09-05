@@ -42,7 +42,7 @@ public class TelegramBotService implements UpdatesListener {
                 // todo здесь нужно залезть в бд, поискать пользователя, если он уже был, то мы пропускаем приветствие
                 SendMessage message = new SendMessage(chatId, getGreetingText(userName));
                 SendResponse response = telegramBot.execute(message);
-                message = new SendMessage(chatId,getInfo());
+                message = new SendMessage(chatId,getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"));
                 response = telegramBot.execute(message);
                 message = new SendMessage(chatId, getChoice());
                 response = telegramBot.execute(message);
@@ -59,9 +59,9 @@ public class TelegramBotService implements UpdatesListener {
 
     }
 
-    private String getInfo() {
+    private String getInfo(String filePath) {
         StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/about_shelter.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line = reader.readLine();
             while (line != null) {
                 sb.append(line);
