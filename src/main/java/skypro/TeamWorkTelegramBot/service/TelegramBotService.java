@@ -54,9 +54,10 @@ public class TelegramBotService implements UpdatesListener {
                 // пользвоатель выбрал собаку,. присваивается этап 1
                 // todo здесь нужно залезть в бд, поискать пользователя, если он уже был, то мы пропускаем приветствие
 
-                AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+                Optional<AnimalOwner> checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
 
-                if (animalOwner.getIdChat() == null) {
+                if (checkAnimalOwner.isEmpty()) {
+                    AnimalOwner animalOwner = new AnimalOwner();
                     animalOwner.setIdChat(chatId);
                     animalOwner.setStage(STAGE_0);
                     animalOwnerRepository.save(animalOwner);
@@ -69,7 +70,7 @@ public class TelegramBotService implements UpdatesListener {
 
                     animalChoice(chatId, getChoice());
                 }
-                else if (animalOwner.getStage().equals(STAGE_0)) {
+                else if (checkAnimalOwner.get().getStage().equals(STAGE_0)) {
                     animalChoice(chatId, getChoice());
                 }
             }

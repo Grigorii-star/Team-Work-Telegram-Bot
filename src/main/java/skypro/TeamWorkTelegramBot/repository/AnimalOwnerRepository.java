@@ -6,5 +6,5 @@ import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import java.util.Optional;
 
 public interface AnimalOwnerRepository extends JpaRepository<AnimalOwner, Integer> {
-    AnimalOwner findByIdChat(Long chatId);
+    Optional<AnimalOwner> findByIdChat(Long chatId);
 }
