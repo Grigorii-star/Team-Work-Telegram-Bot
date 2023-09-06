@@ -22,3 +22,13 @@ CREATE TABLE dog_shelter
     safety_advice varchar(255), --техника безопасности на территории приюта
     timetable     varchar(255)  --расписание работы приюта
 )
+
+-- changeset grigorii:create-animal_owner-table
+CREATE TABLE animal_owner (
+    id                  serial PRIMARY KEY,
+    id_chat             bigint,
+    contact_information text,
+    stage               integer,
+    dog_lover           boolean,
+    took_the_animal     boolean
+)
