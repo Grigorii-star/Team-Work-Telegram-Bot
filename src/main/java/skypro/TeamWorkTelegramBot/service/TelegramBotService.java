@@ -7,16 +7,25 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class TelegramBotService implements UpdatesListener {
+    private final Integer STAGE_0 = 0;
+    private final Integer STAGE_1 = 1;
+    private final Integer STAGE_2 = 2;
+    private final Integer STAGE_3 = 3;
+    @Autowired
+    private AnimalOwnerRepository animalOwnerRepository;
     private final TelegramBot telegramBot;
 
     @Autowired
@@ -34,10 +43,6 @@ public class TelegramBotService implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
-
-
-
-
             Long chatId = update.message().chat().id();
             String text = update.message().text();
             String userName = update.message().from().firstName();
@@ -48,21 +53,34 @@ public class TelegramBotService implements UpdatesListener {
                 //смотрим этап пользователя, если null, то присваиваем этап 0, сохраняем и отыгрываем по нему
                 // пользвоатель выбрал собаку,. присваивается этап 1
                 // todo здесь нужно залезть в бд, поискать пользователя, если он уже был, то мы пропускаем приветствие
-                SendMessage message = new SendMessage(chatId, getGreetingText(userName));
-                SendResponse response = telegramBot.execute(message);
-                message = new SendMessage(chatId,getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"));
-                response = telegramBot.execute(message);
-                message = new SendMessage(chatId, getChoice());
-                response = telegramBot.execute(message);
 
+                Optional<AnimalOwner> checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
 
+                if (checkAnimalOwner.isEmpty()) {
+                    AnimalOwner animalOwner = new AnimalOwner();
+                    animalOwner.setIdChat(chatId);
+                    animalOwner.setStage(STAGE_0);
+                    animalOwnerRepository.save(animalOwner);
 
+                    SendMessage greetingMessage = new SendMessage(chatId, getGreetingText(userName));
+                    telegramBot.execute(greetingMessage);
 
+                    SendMessage greetingMessage2 = new SendMessage(chatId,getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"));
+                    telegramBot.execute(greetingMessage2);
+
+                    animalChoice(chatId, getChoice());
+                }
+                else if (checkAnimalOwner.get().getStage().equals(STAGE_0)) {
+                    animalChoice(chatId, getChoice());
+                }
             }
-
-
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+    }
+
+    private void animalChoice(Long chatId, String choice) {
+        SendMessage choiceMessage = new SendMessage(chatId, choice);
+        telegramBot.execute(choiceMessage);
     }
 
     private String getGreetingText(String userName) {
