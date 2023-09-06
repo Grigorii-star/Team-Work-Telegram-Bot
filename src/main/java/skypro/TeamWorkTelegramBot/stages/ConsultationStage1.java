@@ -1,6 +1,6 @@
 package skypro.TeamWorkTelegramBot.stages;
 
-public class ConsultationStage {
+public class ConsultationStage1 {
 
 
     private String userGreeting() { //аналогичный метод в StageOfPreparationOfDocuments

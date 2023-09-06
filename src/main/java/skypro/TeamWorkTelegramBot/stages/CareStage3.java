@@ -1,6 +1,6 @@
 package skypro.TeamWorkTelegramBot.stages;
 
-public class CareStage {
+public class CareStage3 {
 
     private String animalPhoto() {
         return "";

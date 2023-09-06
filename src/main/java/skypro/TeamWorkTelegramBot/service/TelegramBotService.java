@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.stages.EntryStage0;
+import skypro.TeamWorkTelegramBot.stages.StageSelector;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -20,17 +22,23 @@ import java.util.Optional;
 
 @Service
 public class TelegramBotService implements UpdatesListener {
-    private final Integer STAGE_0 = 0;
-    private final Integer STAGE_1 = 1;
-    private final Integer STAGE_2 = 2;
-    private final Integer STAGE_3 = 3;
-    @Autowired
-    private AnimalOwnerRepository animalOwnerRepository;
+
+
+    private final AnimalOwnerRepository animalOwnerRepository;
     private final TelegramBot telegramBot;
+    private final EntryStage0 entryStage0;
+
+    private final StageSelector stageSelector;
 
     @Autowired
-    public TelegramBotService(TelegramBot telegramBot) {
+    public TelegramBotService(TelegramBot telegramBot,
+                              AnimalOwnerRepository animalOwnerRepository,
+                              EntryStage0 entryStage0,
+                              StageSelector stageSelector) {
         this.telegramBot = telegramBot;
+        this.animalOwnerRepository = animalOwnerRepository;
+        this.entryStage0 = entryStage0;
+        this.stageSelector = stageSelector;
     }
 
     @PostConstruct
@@ -54,34 +62,36 @@ public class TelegramBotService implements UpdatesListener {
                 // пользвоатель выбрал собаку,. присваивается этап 1
                 // todo здесь нужно залезть в бд, поискать пользователя, если он уже был, то мы пропускаем приветствие
 
-                Optional<AnimalOwner> checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+                int currentStage = stageSelector.ifFirstTime(chatId);
 
-                if (checkAnimalOwner.isEmpty()) {
-                    AnimalOwner animalOwner = new AnimalOwner();
-                    animalOwner.setIdChat(chatId);
-                    animalOwner.setStage(STAGE_0);
-                    animalOwnerRepository.save(animalOwner);
-
+                if (currentStage == -1) {
                     SendMessage greetingMessage = new SendMessage(chatId, getGreetingText(userName));
                     telegramBot.execute(greetingMessage);
-
                     SendMessage greetingMessage2 = new SendMessage(chatId,getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"));
                     telegramBot.execute(greetingMessage2);
-
-                    animalChoice(chatId, getChoice());
+                    telegramBot.execute(entryStage0.animalChoice(chatId));
                 }
-                else if (checkAnimalOwner.get().getStage().equals(STAGE_0)) {
-                    animalChoice(chatId, getChoice());
+
+                if (currentStage == 0) {
+                    telegramBot.execute(entryStage0.animalChoice(chatId));
+                }
+
+                if (currentStage == 1) {
+
+                }
+
+                if (currentStage == 2) {
+
+                }
+
+                if (currentStage == 3) {
+
                 }
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    private void animalChoice(Long chatId, String choice) {
-        SendMessage choiceMessage = new SendMessage(chatId, choice);
-        telegramBot.execute(choiceMessage);
-    }
 
     private String getGreetingText(String userName) {
         return "Привет " + userName + "! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
@@ -103,8 +113,4 @@ public class TelegramBotService implements UpdatesListener {
         return sb.toString();
     }
 
-    private String getChoice() {
-        return  "Напиши 1, если ты хочешь завести собаку. " +
-                "\n\nНапиши 2, если ты хочешь завести кошку. ";
-    }
 }

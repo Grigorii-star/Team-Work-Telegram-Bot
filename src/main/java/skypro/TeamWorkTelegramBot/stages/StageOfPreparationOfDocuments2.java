@@ -1,6 +1,6 @@
 package skypro.TeamWorkTelegramBot.stages;
 
-public class StageOfPreparationOfDocuments {
+public class StageOfPreparationOfDocuments2 {
 
     private String userGreeting() { //аналогичный метод в ConsultationStage
         return "Я рад, что ты готов к встрече с новым членом семьи!\n" +
