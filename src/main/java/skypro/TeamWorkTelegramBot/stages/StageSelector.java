@@ -1,15 +1,12 @@
 package skypro.TeamWorkTelegramBot.stages;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 
-import java.util.Optional;
-
 @Service
 public class StageSelector {
-
+    private final Integer STAGE_START = -1;
     private final Integer STAGE_0 = 0;
     private final Integer STAGE_1 = 1;
     private final Integer STAGE_2 = 2;
@@ -21,17 +18,37 @@ public class StageSelector {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
-
-    public int ifFirstTime(Long chatId) {
-        Optional<AnimalOwner> checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
-
-        if (checkAnimalOwner.isEmpty()) {
+    public void ifFirstTime(Long chatId) {
+        AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (checkAnimalOwner == null) {
             AnimalOwner animalOwner = new AnimalOwner();
             animalOwner.setIdChat(chatId);
-            animalOwner.setStage(STAGE_0);
+            animalOwner.setStage(STAGE_START);
             animalOwnerRepository.save(animalOwner);
-            return -1;
         }
-        return 0;
+    }
+
+    public void switchToStage0(Long chatId) {
+        AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+            checkAnimalOwner.setStage(STAGE_0);
+            animalOwnerRepository.save(checkAnimalOwner);
+    }
+
+    public void switchToStage1(Long chatId) {
+        AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+            checkAnimalOwner.setStage(STAGE_1);
+            animalOwnerRepository.save(checkAnimalOwner);
+    }
+
+    public void switchToStage2(Long chatId) {
+        AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+            checkAnimalOwner.setStage(STAGE_2);
+            animalOwnerRepository.save(checkAnimalOwner);
+    }
+
+    public void switchToStage3(Long chatId) {
+        AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+            checkAnimalOwner.setStage(STAGE_3);
+            animalOwnerRepository.save(checkAnimalOwner);
     }
 }
