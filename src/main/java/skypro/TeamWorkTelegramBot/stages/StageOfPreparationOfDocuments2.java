@@ -1,53 +1,101 @@
 package skypro.TeamWorkTelegramBot.stages;
 
+import org.springframework.stereotype.Component;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+@Component
 public class StageOfPreparationOfDocuments2 {
 
-    private String userGreeting() { //аналогичный метод в ConsultationStage
+    private final AnimalOwnerRepository animalOwnerRepository;
+
+    public StageOfPreparationOfDocuments2(AnimalOwnerRepository animalOwnerRepository) {
+        this.animalOwnerRepository = animalOwnerRepository;
+    }
+
+    public String userGreeting() { //аналогичный метод в ConsultationStage
         return "Я рад, что ты готов к встрече с новым членом семьи!\n" +
                 "Для продолжения, пожалуйста, ознакомься со следующей документацией.";
     }
 
-    private String issueRules() {
-        return "";
+    public String makeAChoiceOfStage2(Long chatId) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (animalOwner.getDogLover()) {
+            return getInfo("src/main/resources/bot-files/stage2/menu2dog.txt");
+        } else {
+            return getInfo("src/main/resources/bot-files/stage2/menu2cat.txt");
+        }
     }
 
-    private String issueAListOfDocumentsInOrderToTakeTheAnimal() {
-        return "";
+    public String issueRules(Long chatId) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (animalOwner.getDogLover()) {
+            return getInfo("src/main/resources/bot-files/stage2/dog-rules.txt");
+        } else {
+            return getInfo("src/main/resources/bot-files/stage2/cat-rules.txt");
+        }
     }
 
-    private String issueAListOfRecommendationsForTransportation() {
-        return "";
+    public String issueAListOfDocumentsInOrderToTakeTheAnimal() {
+        return getInfo("src/main/resources/bot-files/stage2/doc-list.txt");
     }
 
-    private String issueAListOfRecommendationsForHomeImprovementForAPuppyOrKitten() {
-        return "";
+    public String issueAListOfRecommendationsForTransportation() {
+        return getInfo("src/main/resources/bot-files/stage2/transfer.txt");
     }
 
-    private String issueAListOfRecommendationsForHomeImprovementForAnAdultAnimal() {
-        return "";
+    public String issueAListOfRecommendationsForHomeImprovementForAPuppyOrKitten(Long chatId) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (animalOwner.getDogLover()) {
+            return getInfo("src/main/resources/bot-files/stage2/doggy-house.txt");
+        } else {
+            return getInfo("src/main/resources/bot-files/stage2/kitten-house.txt");
+        }
     }
 
-    private String issueAListOfRecommendationsForHomeImprovementForAnAnimalWithDisabilities() {
-        return "";
+    public String issueAListOfRecommendationsForHomeImprovementForAnAdultAnimal() {
+        return getInfo("src/main/resources/bot-files/stage2/adult-pet-house.txt");
     }
 
-    private String giveCynologistAdviceOnInitialCommunicationWithADog() {
-        return "";
+    public String issueAListOfRecommendationsForHomeImprovementForAnAnimalWithDisabilities() {
+        return getInfo("src/main/resources/bot-files/stage2/invalid-adult-pet-house.txt");
     }
 
-    private String issueRecommendationsOnProvenCynologistsForFurtherReferralToThem() {
-        return "";
+    public String giveCynologistAdviceOnInitialCommunicationWithADog() {
+        return "Здесь должны быть советы кинолога по первичному общению с собакой";
     }
 
-    private String issueAListOfReasonsForRefusal() {
-        return "";
+    public String issueRecommendationsOnProvenCynologistsForFurtherReferralToThem() {
+        return "Здесь должны быть контактные данные проверенных кинологов";
     }
 
-    private String acceptAndRecordContactDetails() { //аналогичный метод в ConsultationStage
-        return "";
+    public String issueAListOfReasonsForRefusal() {
+        return getInfo("src/main/resources/bot-files/stage2/refuse-reasons.txt");
     }
 
-    private String callAVolunteer() { //этот метот присутствует на всех этапах
-        return "";
+    public String acceptAndRecordContactDetails() { //аналогичный метод в ConsultationStage
+        return "Сохранить контактные данные";
+    }
+
+    public String callAVolunteer() { //этот метот присутствует на всех этапах
+        return "Вызываю волонтера.";
+    }
+
+    private String getInfo(String filePath) {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line = reader.readLine();
+            while (line != null) {
+                sb.append(line);
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Файл не найден");
+        }
+        return sb.toString();
     }
 }

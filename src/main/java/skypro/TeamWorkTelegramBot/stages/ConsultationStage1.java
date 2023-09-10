@@ -1,6 +1,8 @@
 package skypro.TeamWorkTelegramBot.stages;
 
+import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -10,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
-@Service
+@Component
 public class ConsultationStage1 {
 
     private final AnimalOwnerRepository animalOwnerRepository;
@@ -20,54 +22,52 @@ public class ConsultationStage1 {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
-
-    private String userGreeting() { //аналогичный метод в StageOfPreparationOfDocuments
-        return "Молодец, что перешёл в меню консультаций!\n" +
-                "Для продолжения, пожалуйста, ознакомься с информацией о приюте.";
+    public String userGreeting() { //аналогичный метод в StageOfPreparationOfDocuments
+        return "Молодец, что перешёл в меню консультаций! " +
+                "\nДля продолжения, пожалуйста, ознакомься с информацией о приюте.";
     }
 
-    public String talkAboutShelter() { //аналогичный метод в EntryStage: getInformationAboutTheShelter()
-        return getInfo("src/main/resources/bot-files/stage0/about_shelter.txt");
+    public String makeAChoiceOfStage1() {
+        return getInfo("src/main/resources/bot-files/stage1/menu1.txt");
     }
 
-    private String giveOutTheSheltersWorkScheduleAndAddressAndDirections(Long chatId) {
-        Optional<AnimalOwner> animalOwner = animalOwnerRepository.findByIdChat(chatId);
-        if (animalOwner.isEmpty()) {
-            throw new RuntimeException("В базе нет информации, какой питомник выбрал пользователь");
+    public String getInformationAboutTheShelter(Long chatId) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (animalOwner.getDogLover()) {
+            return getInfo("src/main/resources/bot-files/stage1/dog-shelter-info.txt");
+        } else {
+            return getInfo("src/main/resources/bot-files/stage1/cat-shelter-info.txt");
         }
-        AnimalOwner checkedAnimalOwner = animalOwner.get();
-        if (checkedAnimalOwner.getDogLover()) {
+    }
+
+    public String giveOutTheSheltersWorkScheduleAndAddressAndDirections(Long chatId) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (animalOwner.getDogLover()) {
             return getInfo("src/main/resources/bot-files/stage1/dog-schedule-address.txt");
         } else {
-            getInfo("src/main/resources/bot-files/stage1/cat-schedule-address.txt");
+            return getInfo("src/main/resources/bot-files/stage1/cat-schedule-address.txt");
         }
-        return "информация не найдена";
     }
 
-    private String provideSecurityContactInformation(Long chatId) {
-        Optional<AnimalOwner> animalOwner = animalOwnerRepository.findByIdChat(chatId);
-        if (animalOwner.isEmpty()) {
-            throw new RuntimeException("В базе нет информации, какой питомник выбрал пользователь");
-        }
-        AnimalOwner checkedAnimalOwner = animalOwner.get();
-        if (checkedAnimalOwner.getDogLover()) {
+    public String provideSecurityContactInformation(Long chatId) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (animalOwner.getDogLover()) {
             return getInfo("src/main/resources/bot-files/stage1/dog-security-phone.txt");
         } else {
-            getInfo("src/main/resources/bot-files/stage1/cat-security-phone.txt");
+            return getInfo("src/main/resources/bot-files/stage1/cat-security-phone.txt");
         }
-        return "информация не найдена";
     }
 
-    private String issueGeneralSafetyAdvice() {
+    public String issueGeneralSafetyAdvice() {
         return getInfo("src/main/resources/bot-files/stage1/safety_rules.txt");
     }
 
-    private String acceptAndRecordContactDetails() { //аналогичный метод в StageOfPreparationOfDocuments
-        return "ц";
+    public String acceptAndRecordContactDetails(Long chatId) { //аналогичный метод в StageOfPreparationOfDocuments
+        return "Сохранить контактные данные";
     }
 
-    private String callAVolunteer() { //этот метот присутствует на всех этапах
-        return "";
+    public String callAVolunteer() { //этот метот присутствует на всех этапах
+        return "Вызываю волонтера.";
     }
 
     private String getInfo(String filePath) {
