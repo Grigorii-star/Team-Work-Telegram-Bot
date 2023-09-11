@@ -1,8 +1,8 @@
 package skypro.TeamWorkTelegramBot.stages;
 
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 
 import java.io.BufferedReader;
@@ -32,21 +32,21 @@ public class EntryStage0 {
     }
 
     public SendMessage greetingNewOwnerMessage(Long chatId, String userName) {
-        return new SendMessage(chatId, "Привет " + userName + "! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
+        return new SendMessage(String.valueOf(chatId), "Привет " + userName + "! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
                 "Я отвечу на все вопросы и помогу определиться с выбором.");
     }
 
     public SendMessage aboutShelterMessage(Long chatId) {
-        return new SendMessage(chatId, getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"));
+        return new SendMessage(String.valueOf(chatId), getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"));
     }
 
     public SendMessage animalChoice(Long chatId) {
-        return new SendMessage(chatId, "Напиши 1, если ты хочешь завести собаку. " +
+        return new SendMessage(String.valueOf(chatId), "Напиши 1, если ты хочешь завести собаку. " +
                 "\n\nНапиши 2, если ты хочешь завести кошку. ");
     }
 
     public SendMessage makeAChoiceOfStage0(Long chatId) {
-        return new SendMessage(chatId, getInfo("src/main/resources/bot-files/stage0/menu0.txt"));
+        return new SendMessage(String.valueOf(chatId), getInfo("src/main/resources/bot-files/stage0/menu0.txt"));
     }
 
     public String getInformationAboutTheShelterGreeting() { //аналогичный метод в ConsultationStage: talkAboutShelter()

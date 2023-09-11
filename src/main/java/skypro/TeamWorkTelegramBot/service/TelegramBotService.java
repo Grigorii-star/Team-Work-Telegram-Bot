@@ -1,11 +1,12 @@
 package skypro.TeamWorkTelegramBot.service;
 
-import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.stages.ConsultationStage1;
@@ -13,29 +14,24 @@ import skypro.TeamWorkTelegramBot.stages.EntryStage0;
 import skypro.TeamWorkTelegramBot.stages.StageOfPreparationOfDocuments2;
 import skypro.TeamWorkTelegramBot.stages.StageSelector;
 
-import javax.annotation.PostConstruct;
-import java.util.List;
-
 
 @Service
-public class TelegramBotService implements UpdatesListener {
-
-
+public class TelegramBotService extends TelegramLongPollingBot {
+    private final TelegramBotConfiguration telegramBotConfiguration;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private final TelegramBot telegramBot;
     private final EntryStage0 entryStage0;
     private final ConsultationStage1 consultationStage1;
     private final StageOfPreparationOfDocuments2 stageOfPreparationOfDocuments2;
     private final StageSelector stageSelector;
 
     @Autowired
-    public TelegramBotService(TelegramBot telegramBot,
+    public TelegramBotService(TelegramBotConfiguration telegramBotConfiguration,
                               AnimalOwnerRepository animalOwnerRepository,
                               EntryStage0 entryStage0,
                               ConsultationStage1 consultationStage1,
                               StageOfPreparationOfDocuments2 stageOfPreparationOfDocuments2,
                               StageSelector stageSelector) {
-        this.telegramBot = telegramBot;
+        this.telegramBotConfiguration = telegramBotConfiguration;
         this.animalOwnerRepository = animalOwnerRepository;
         this.entryStage0 = entryStage0;
         this.consultationStage1 = consultationStage1;
@@ -43,18 +39,23 @@ public class TelegramBotService implements UpdatesListener {
         this.stageSelector = stageSelector;
     }
 
-    @PostConstruct
-    public void init() {
-        telegramBot.setUpdatesListener(this);
+    @Override
+    public String getBotUsername() {
+        return telegramBotConfiguration.getName();
     }
 
     @Override
-    public int process(List<Update> updates) {
-        updates.forEach(update -> {
+    public String getBotToken() {
+        return telegramBotConfiguration.getToken();
+    }
 
-            Long chatId = update.message().chat().id();
-            String text = update.message().text();
-            String userName = update.message().from().firstName();
+    @SneakyThrows
+    @Override
+    public void onUpdateReceived(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            Long chatId = update.getMessage().getChatId();
+            String text = update.getMessage().getText();
+            String userName = update.getMessage().getChat().getUserName();
 
             stageSelector.ifFirstTime(chatId);
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
@@ -67,14 +68,14 @@ public class TelegramBotService implements UpdatesListener {
             if (text.equals("/start")) {
                 if (currentStage == -1) {
                     stageSelector.switchToStage0(chatId);
-                    telegramBot.execute(entryStage0.greetingNewOwnerMessage(chatId, userName));
-                    telegramBot.execute(entryStage0.aboutShelterMessage(chatId));
-                    telegramBot.execute(entryStage0.animalChoice(chatId));
+                    execute(entryStage0.greetingNewOwnerMessage(chatId, userName));
+                    execute(entryStage0.aboutShelterMessage(chatId));
+                    execute(entryStage0.animalChoice(chatId));
                 } else if ((currentStage == 0 || currentStage > 0) && (animalOwner.getIdChat() != null)) {
                     animalOwner.setDogLover(null);
                     animalOwnerRepository.save(animalOwner);
                     stageSelector.switchToStage0(chatId);
-                    telegramBot.execute(entryStage0.animalChoice(chatId));
+                    execute(entryStage0.animalChoice(chatId));
                 }
 
             } else if (currentStage == 0 && animalOwner.getDogLover() == null) {
@@ -83,14 +84,14 @@ public class TelegramBotService implements UpdatesListener {
                         animalOwner.setDogLover(true);
                         animalOwnerRepository.save(animalOwner);
                         stageSelector.switchToStage0(chatId);
-                        telegramBot.execute(entryStage0.makeAChoiceOfStage0(chatId));
+                        execute(entryStage0.makeAChoiceOfStage0(chatId));
                         break;
                     }
                     case "2": {
                         animalOwner.setDogLover(false);
                         animalOwnerRepository.save(animalOwner);
                         stageSelector.switchToStage0(chatId);
-                        telegramBot.execute(entryStage0.makeAChoiceOfStage0(chatId));
+                        execute(entryStage0.makeAChoiceOfStage0(chatId));
                         break;
                     }
                 }
@@ -120,14 +121,14 @@ public class TelegramBotService implements UpdatesListener {
                         animalOwner.setDogLover(null);
                         animalOwnerRepository.save(animalOwner);
                         stageSelector.switchToStage0(chatId);
-                        telegramBot.execute(entryStage0.animalChoice(chatId));
+                        execute(entryStage0.animalChoice(chatId));
                         break;
                 }
-                SendMessage messageStage0 = new SendMessage(chatId, message1);
-                telegramBot.execute(messageStage0);
+                SendMessage messageStage0 = new SendMessage(String.valueOf(chatId), message1);
+                execute(messageStage0);
                 if (!message2.isEmpty()) {
-                    SendMessage messageStage1 = new SendMessage(chatId, message2);
-                    telegramBot.execute(messageStage1);
+                    SendMessage messageStage1 = new SendMessage(String.valueOf(chatId), message2);
+                    execute(messageStage1);
                 }
 
             } else if (currentStage == 1) {
@@ -153,11 +154,11 @@ public class TelegramBotService implements UpdatesListener {
                         break;
                     case "7":
                         stageSelector.switchToStage0(chatId);
-                        telegramBot.execute(entryStage0.makeAChoiceOfStage0(chatId));
+                        execute(entryStage0.makeAChoiceOfStage0(chatId));
                         break;
                 }
-                SendMessage messageStage0 = new SendMessage(chatId, message);
-                telegramBot.execute(messageStage0);
+                SendMessage messageStage0 = new SendMessage(String.valueOf(chatId), message);
+                execute(messageStage0);
             }
 
             else if (currentStage == 2) {
@@ -207,7 +208,7 @@ public class TelegramBotService implements UpdatesListener {
                             message = stageOfPreparationOfDocuments2.acceptAndRecordContactDetails();
                         } else {
                             stageSelector.switchToStage0(chatId);
-                            telegramBot.execute(entryStage0.makeAChoiceOfStage0(chatId));
+                            execute(entryStage0.makeAChoiceOfStage0(chatId));
                         }
                         break;
                     case "11":
@@ -217,18 +218,16 @@ public class TelegramBotService implements UpdatesListener {
                         break;
                     case "12":
                         stageSelector.switchToStage0(chatId);
-                        telegramBot.execute(entryStage0.makeAChoiceOfStage0(chatId));
+                        execute(entryStage0.makeAChoiceOfStage0(chatId));
                         break;
                 }
-                SendMessage messageStage0 = new SendMessage(chatId, message);
-                telegramBot.execute(messageStage0);
+                SendMessage messageStage0 = new SendMessage(String.valueOf(chatId), message);
+                execute(messageStage0);
             }
 
             else if (currentStage == 3) {
 
             }
-
-        });
-        return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        }
     }
 }

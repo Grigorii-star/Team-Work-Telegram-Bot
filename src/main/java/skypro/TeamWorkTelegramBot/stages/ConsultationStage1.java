@@ -1,6 +1,5 @@
 package skypro.TeamWorkTelegramBot.stages;
 
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
