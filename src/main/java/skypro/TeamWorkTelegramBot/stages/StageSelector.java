@@ -1,10 +1,11 @@
 package skypro.TeamWorkTelegramBot.stages;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 
-@Service
+@Component
 public class StageSelector {
     private final Integer STAGE_START = -1;
     private final Integer STAGE_0 = 0;
