@@ -27,8 +27,8 @@ CREATE TABLE dog_shelter
 CREATE TABLE animal_owner (
     id                  serial PRIMARY KEY,
     id_chat             bigint,
+    registered          boolean,
     contact_information text,
-    stage               integer,
     dog_lover           boolean,
     took_the_animal     boolean
 )
