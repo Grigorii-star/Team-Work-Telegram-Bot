@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.stages;
+package skypro.TeamWorkTelegramBot.buttons.stages;
 
 import org.springframework.stereotype.Component;
 

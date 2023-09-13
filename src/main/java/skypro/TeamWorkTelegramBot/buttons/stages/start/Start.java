@@ -1,9 +1,12 @@
-package skypro.TeamWorkTelegramBot.stages;
+package skypro.TeamWorkTelegramBot.buttons.stages.start;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,7 +17,10 @@ import java.io.IOException;
  */
 @Component
 public class Start implements Command {
-    private final SendMessageService sendMessageService;
+    private  final SendMessageService sendMessageService;
+    private final AnimalOwnerRepository animalOwnerRepository;
+    private TelegramBotService telegramBotService;
+
     public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
             "Я отвечу на все вопросы и помогу определиться с выбором.";
 
@@ -23,8 +29,10 @@ public class Start implements Command {
     String[] buttonsCallData = {"собака",
                                 "кошка"};
 
-    public Start(SendMessageService sendMessageService) {
+    public Start(SendMessageService sendMessageService,
+                 AnimalOwnerRepository animalOwnerRepository) {
         this.sendMessageService = sendMessageService;
+        this.animalOwnerRepository = animalOwnerRepository;
     }
 
     /**
@@ -34,13 +42,36 @@ public class Start implements Command {
      * и необходимые кнопки для пользователя
      * @param update - id пользователя
      */
-    @Override
-    public void execute(Update update) {
-        Long chatId = update.getMessage().getChatId();
 
-        sendMessageService.SendMessageToUser(String.valueOf(chatId), GREETING_MESSAGE);
-        sendMessageService.SendMessageToUser(String.valueOf(chatId), getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"), buttonsText, buttonsCallData);
+    @Override
+    public void execute(Update update, TelegramBotService telegramBotService) {
+        Long textChatId = update.getMessage().getChatId();
+        String start = update.getMessage().getText();
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(textChatId);
+
+        if (start.equals("/start") && animalOwner.getRegistered() == null) {
+            animalOwner.setRegistered(true);
+            animalOwnerRepository.save(animalOwner);
+            sendMessageService.SendMessageToUser(String.valueOf(textChatId), GREETING_MESSAGE, telegramBotService);
+            sendMessageService.SendMessageToUser(
+                    String.valueOf(textChatId),
+                    getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"),
+                    buttonsText,
+                    buttonsCallData,
+                    telegramBotService
+            );
+        }
+        else if (start.equals("/start") && animalOwner.getRegistered()) {
+            sendMessageService.SendMessageToUser(
+                    String.valueOf(textChatId),
+                    "Можете выбрать приют.",
+                    buttonsText,
+                    buttonsCallData,
+                    telegramBotService
+            );
+        }
     }
+
 
     /**
      * Метод, который нужен для обработки текстовых файлов в String

@@ -1,45 +1,80 @@
 package skypro.TeamWorkTelegramBot.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
-import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import skypro.TeamWorkTelegramBot.buttons.CommandKeysStorage;
+import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.CatAndDogGetAnimalFromTheShelter;
 import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.GetAnimalFromTheShelter;
+import skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal.CatAndDogInformation;
+import skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal.Information;
+import skypro.TeamWorkTelegramBot.buttons.stages.mainMenu.MainMenu;
+import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveReportAboutPet;
+import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts;
+import skypro.TeamWorkTelegramBot.buttons.stages.start.Start;
+import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.Volunteer;
 
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Сервисный класс телеграмбота
  */
 @Service
+@Getter
 public class TelegramBotService extends TelegramLongPollingBot {
     private final TelegramBotConfiguration telegramBotConfiguration;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private final CommandKeysStorage commandKeysStorage;
+    private final Start start;
+    private final MainMenu mainMenu;
+    private final Information information;
+    private final CatAndDogInformation catAndDogInformation;
+    private final SaveUserContacts saveUserContacts;
+    private final Volunteer volunteer;
+    private final SaveReportAboutPet saveReportAboutPet;
+    private final GetAnimalFromTheShelter getAnimalFromTheShelter;
+    private final CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter;
 
+    private final Map<String, Command> commandMap;
 
     public TelegramBotService(TelegramBotConfiguration telegramBotConfiguration,
                               AnimalOwnerRepository animalOwnerRepository,
-                              CommandKeysStorage commandKeysStorage) {
+                              Start start, MainMenu mainMenu, Information information,
+                              CatAndDogInformation catAndDogInformation, SaveUserContacts saveUserContacts,
+                              Volunteer volunteer, SaveReportAboutPet saveReportAboutPet,
+                              GetAnimalFromTheShelter getAnimalFromTheShelter,
+                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter) {
         this.telegramBotConfiguration = telegramBotConfiguration;
         this.animalOwnerRepository = animalOwnerRepository;
-        this.commandKeysStorage = commandKeysStorage;
+        this.start = start;
+        this.mainMenu = mainMenu;
+        this.information = information;
+        this.catAndDogInformation = catAndDogInformation;
+        this.saveUserContacts = saveUserContacts;
+        this.volunteer = volunteer;
+        this.saveReportAboutPet = saveReportAboutPet;
+        this.getAnimalFromTheShelter = getAnimalFromTheShelter;
+        this.catAndDogGetAnimalFromTheShelter = catAndDogGetAnimalFromTheShelter;
+
+        this.commandMap = new HashMap<>();
+        this.init();
+    }
+
+    private void init() {
+        commandMap.put("start", start);
+        commandMap.put("mainMenu", mainMenu);
+        commandMap.put("information", information);
+        commandMap.put("catAndDogInformation", catAndDogInformation);
+        commandMap.put("saveUserContacts", saveUserContacts);
+        commandMap.put("volunteer", volunteer);
+        commandMap.put("saveReportAboutPet", saveReportAboutPet);
+        commandMap.put("getAnimalFromTheShelter", getAnimalFromTheShelter);
+        commandMap.put("catAndDogGetAnimalFromTheShelter", catAndDogGetAnimalFromTheShelter);
     }
 
     @Override
@@ -55,12 +90,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
     /**
      * Основной метод, который перенаправляет в разные классы update,
      * в зависимости от его значений
+     *
      * @param update - содержит message, callbackQuery
      */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            String message = update.getMessage().getText().trim();
             Long chatId = update.getMessage().getChatId();
 
             AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
@@ -70,196 +105,61 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 animalOwnerRepository.save(animalOwner);
             }
 
-            if (!update.getMessage().getText().isEmpty()) {
+            if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
                 String commandText = "start";
-                commandKeysStorage.command(commandText).execute(update);
+                commandMap.get(commandText).execute(update, this);
             }
         } else if (update.hasCallbackQuery()) {
-            String commandText = update.getCallbackQuery().getData();
-            System.out.println(commandText);
-            commandKeysStorage.command(commandText).execute(update);
+            String commandTextFromButtons = getCommandTextFromButtons(update);
+
+            commandMap.get(commandTextFromButtons).execute(update, this);
         }
     }
 
-//    @SneakyThrows
-//    @Override
-//    public void onUpdateReceived(Update update) {
-//        if (update.hasMessage() && update.getMessage().hasText()) {
-//            Long chatId = update.getMessage().getChatId();
-//            String text = update.getMessage().getText();
-//            String userName = update.getMessage().getChat().getUserName();
-//
-//            stageSelector.ifFirstTime(chatId);
-//            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-//            Integer currentStage = animalOwner.getStage();
-//            System.out.println(chatId);
-//            System.out.println(text);
-//            System.out.println(currentStage);
-//            System.out.println(animalOwner);
-//
-//            if (text.equals("/start")) {
-//                if (currentStage == -1) {
-//                    stageSelector.switchToStage0(chatId);
-//                    execute(entryStage0.greetingNewOwnerMessage(chatId, userName));
-//                    execute(entryStage0.aboutShelterMessage(chatId));
-//                    execute(entryStage0.animalChoice(chatId));
-//                } else if ((currentStage == 0 || currentStage > 0) && (animalOwner.getIdChat() != null)) {
-//                    animalOwner.setDogLover(null);
-//                    animalOwnerRepository.save(animalOwner);
-//                    stageSelector.switchToStage0(chatId);
-//                    execute(entryStage0.animalChoice(chatId));
-//                }
-//
-//            } else if (currentStage == 0 && animalOwner.getDogLover() == null) {
-//                switch (text) {
-//                    case "1": {
-//                        animalOwner.setDogLover(true);
-//                        animalOwnerRepository.save(animalOwner);
-//                        stageSelector.switchToStage0(chatId);
-//                        execute(entryStage0.makeAChoiceOfStage0(chatId));
-//                        break;
-//                    }
-//                    case "2": {
-//                        animalOwner.setDogLover(false);
-//                        animalOwnerRepository.save(animalOwner);
-//                        stageSelector.switchToStage0(chatId);
-//                        execute(entryStage0.makeAChoiceOfStage0(chatId));
-//                        break;
-//                    }
-//                }
-//
-//            } else if (currentStage == 0) {
-//                String message1 = "";
-//                String message2 = "";
-//                switch (text) {
-//                    case "1":
-//                        message1 = entryStage0.getInformationAboutTheShelterGreeting();
-//                        message2 = entryStage0.getInformationAboutTheShelterChooseOfStage();
-//                        stageSelector.switchToStage1(chatId);
-//                        break;
-//                    case "2":
-//                        message1 = entryStage0.informationAboutTakingAnAnimalShelterGreeting();
-//                        message2 = entryStage0.informationAboutTakingAnAnimalShelterChooseOfStage(chatId);
-//                        stageSelector.switchToStage2(chatId);
-//                        break;
-//                    case "3":
-//                        message1 = entryStage0.submitAPetReport();
-//                        stageSelector.switchToStage3(chatId);
-//                        break;
-//                    case "4":
-//                        message1 = entryStage0.callAVolunteer();
-//                        break;
-//                    case "5":
-//                        animalOwner.setDogLover(null);
-//                        animalOwnerRepository.save(animalOwner);
-//                        stageSelector.switchToStage0(chatId);
-//                        execute(entryStage0.animalChoice(chatId));
-//                        break;
-//                }
-//                SendMessage messageStage0 = new SendMessage(String.valueOf(chatId), message1);
-//                execute(messageStage0);
-//                if (!message2.isEmpty()) {
-//                    SendMessage messageStage1 = new SendMessage(String.valueOf(chatId), message2);
-//                    execute(messageStage1);
-//                }
-//
-//            } else if (currentStage == 1) {
-//                String message = "";
-//                switch (text) {
-//                    case "1":
-//                        message = consultationStage1.getInformationAboutTheShelter(chatId);
-//                        break;
-//                    case "2":
-//                        message = consultationStage1.giveOutTheSheltersWorkScheduleAndAddressAndDirections(chatId);
-//                        break;
-//                    case "3":
-//                        message = consultationStage1.provideSecurityContactInformation(chatId);
-//                        break;
-//                    case "4":
-//                        message = consultationStage1.issueGeneralSafetyAdvice();
-//                        break;
-//                    case "5":
-//                        message = consultationStage1.acceptAndRecordContactDetails(chatId);
-//                        break;
-//                    case "6":
-//                        message = consultationStage1.callAVolunteer();
-//                        break;
-//                    case "7":
-//                        stageSelector.switchToStage0(chatId);
-//                        execute(entryStage0.makeAChoiceOfStage0(chatId));
-//                        break;
-//                }
-//                SendMessage messageStage0 = new SendMessage(String.valueOf(chatId), message);
-//                execute(messageStage0);
-//            }
-//
-//            else if (currentStage == 2) {
-//                String message = "";
-//                switch (text) {
-//                    case "1":
-//                        message = stageOfPreparationOfDocuments2.issueRules(chatId);
-//                        break;
-//                    case "2":
-//                        message = stageOfPreparationOfDocuments2.issueAListOfDocumentsInOrderToTakeTheAnimal();
-//                        break;
-//                    case "3":
-//                        message = stageOfPreparationOfDocuments2.issueAListOfRecommendationsForTransportation();
-//                        break;
-//                    case "4":
-//                        message = stageOfPreparationOfDocuments2.issueAListOfRecommendationsForHomeImprovementForAPuppyOrKitten(chatId);
-//                        break;
-//                    case "5":
-//                        message = stageOfPreparationOfDocuments2.issueAListOfRecommendationsForHomeImprovementForAnAdultAnimal();
-//                        break;
-//                    case "6":
-//                        message = stageOfPreparationOfDocuments2.issueAListOfRecommendationsForHomeImprovementForAnAnimalWithDisabilities();
-//                        break;
-//                    case "7":
-//                        if (animalOwner.getDogLover()) {
-//                            message = stageOfPreparationOfDocuments2.giveCynologistAdviceOnInitialCommunicationWithADog();
-//                        } else {
-//                            message = stageOfPreparationOfDocuments2.issueAListOfReasonsForRefusal();
-//                        }
-//                        break;
-//                    case "8":
-//                        if (animalOwner.getDogLover()) {
-//                            message = stageOfPreparationOfDocuments2.issueRecommendationsOnProvenCynologistsForFurtherReferralToThem();
-//                        } else {
-//                            message = stageOfPreparationOfDocuments2.acceptAndRecordContactDetails();
-//                        }
-//                        break;
-//                    case "9":
-//                        if (animalOwner.getDogLover()) {
-//                            message = stageOfPreparationOfDocuments2.issueAListOfReasonsForRefusal();
-//                        } else {
-//                            message = stageOfPreparationOfDocuments2.callAVolunteer();
-//                        }
-//                        break;
-//                    case "10":
-//                        if (animalOwner.getDogLover()) {
-//                            message = stageOfPreparationOfDocuments2.acceptAndRecordContactDetails();
-//                        } else {
-//                            stageSelector.switchToStage0(chatId);
-//                            execute(entryStage0.makeAChoiceOfStage0(chatId));
-//                        }
-//                        break;
-//                    case "11":
-//                        if (animalOwner.getDogLover()) {
-//                            message = stageOfPreparationOfDocuments2.callAVolunteer();
-//                        }
-//                        break;
-//                    case "12":
-//                        stageSelector.switchToStage0(chatId);
-//                        execute(entryStage0.makeAChoiceOfStage0(chatId));
-//                        break;
-//                }
-//                SendMessage messageStage0 = new SendMessage(String.valueOf(chatId), message);
-//                execute(messageStage0);
-//            }
-//
-//            else if (currentStage == 3) {
-//
-//            }
-//        }
-//}
+    private static String getCommandTextFromButtons(Update update) {
+        String commandTextFromButtons = update.getCallbackQuery().getData();
+
+        switch (commandTextFromButtons) {
+            case "собака":
+            case "кошка":
+            case "меню":
+                commandTextFromButtons = "mainMenu";
+                break;
+            case "инфо":
+                commandTextFromButtons = "information";
+                break;
+            case "о_приюте":
+            case "расписание":
+            case "охрана":
+            case "техника_безопасности":
+                commandTextFromButtons = "catAndDogInformation";
+                break;
+            case "контакт":
+                commandTextFromButtons = "saveUserContacts";
+                break;
+            case "волонтер":
+                commandTextFromButtons = "volunteer";
+                break;
+            case "отчет":
+                commandTextFromButtons = "saveReportAboutPet";
+                break;
+            case "взять_животное":
+                commandTextFromButtons = "getAnimalFromTheShelter";
+                break;
+            case "правила_знакомства_собака":
+            case "правила_знакомства_кошка":
+            case "список_документов":
+            case "транспортировка":
+            case "дом_для_щенка":
+            case "дом_для_котенка":
+            case "дом_для_животного":
+            case "дом_для_инвалида":
+            case "советы_кинолога":
+            case "контакты_кинолога":
+            case "причина_отказа":
+                commandTextFromButtons = "catAndDogGetAnimalFromTheShelter";
+                break;
+        }
+        return commandTextFromButtons;
+    }
 }

@@ -1,7 +1,6 @@
 package skypro.TeamWorkTelegramBot.service;
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -15,14 +14,8 @@ import java.util.List;
  * Класс, который создаёт сообщения и кнопки
  * для ответа пользователю
  */
-@Component
+@Service
 public class SendMessageServiceImpl implements SendMessageService {
-    private final TelegramBotService telegramBotService;
-
-    @Lazy
-    public SendMessageServiceImpl(TelegramBotService telegramBotService) {
-        this.telegramBotService = telegramBotService;
-    }
 
     /**
      * Перегруженный метод для отправки ответа пользователю, который принимает:
@@ -33,14 +26,14 @@ public class SendMessageServiceImpl implements SendMessageService {
      * @throws RuntimeException
      */
     @Override
-    public void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData) {
+    public void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
         SendMessage sendMessage = new SendMessage(chatId, textToSend);
 
         SendMessage buttonsMessage = createButtons(sendMessage, buttonsText, buttonsCallData);
         try {
             telegramBotService.execute(buttonsMessage);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -51,7 +44,7 @@ public class SendMessageServiceImpl implements SendMessageService {
      * @throws RuntimeException
      */
     @Override
-    public void SendMessageToUser(String chatId, String textToSend) {
+    public void SendMessageToUser(String chatId, String textToSend, TelegramBotService telegramBotService) {
         SendMessage sendMessage = new SendMessage(chatId, textToSend);
 
         try {

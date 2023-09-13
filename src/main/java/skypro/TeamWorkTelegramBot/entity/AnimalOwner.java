@@ -15,8 +15,8 @@ public class AnimalOwner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Long idChat;
+    private Boolean registered;
     private String contactInformation;
-    private Integer stage;
     private Boolean dogLover;
     private Boolean tookTheAnimal;
 
@@ -39,8 +39,8 @@ public class AnimalOwner {
         return "AnimalOwner{" +
                 "id=" + id +
                 ", idChat=" + idChat +
+                ", registered=" + registered +
                 ", contactInformation='" + contactInformation + '\'' +
-                ", stage=" + stage +
                 ", dogLover=" + dogLover +
                 ", tookTheAnimal=" + tookTheAnimal +
                 '}';

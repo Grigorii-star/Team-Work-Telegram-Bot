@@ -5,6 +5,6 @@ package skypro.TeamWorkTelegramBot.service;
  * для ответа пользователю
  */
 public interface SendMessageService {
-    void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData);
-    void SendMessageToUser(String chatId, String textToSend);
+    void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService);
+    void SendMessageToUser(String chatId, String textToSend, TelegramBotService telegramBotService);
 }
