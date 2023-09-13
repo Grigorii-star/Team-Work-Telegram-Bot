@@ -13,7 +13,7 @@ import java.io.IOException;
  * Класс, который нужен для формирования ответа пользователю
  */
 @Component
-public class Start implements Command {
+public class Dog implements Command {
     private final SendMessageService sendMessageService;
     public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
             "Я отвечу на все вопросы и помогу определиться с выбором.";
@@ -23,7 +23,7 @@ public class Start implements Command {
     String[] buttonsCallData = {"собака",
                                 "кошка"};
 
-    public Start(SendMessageService sendMessageService) {
+    public Dog(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
     }
 

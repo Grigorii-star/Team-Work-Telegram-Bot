@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Класс, который нужен для формирования ответа пользователю
+ */
 @Component
 public class EntryStage0 implements Command {
     private final SendMessageService sendMessageService;
@@ -25,14 +28,14 @@ public class EntryStage0 implements Command {
                             "Позвать волонтера",
                             "Выбрать другой приют"};
     String[] buttonsCallData = {"инфо",
-                                "взять",
-                                "прислать",
+                                "взять_животное",
+                                "отчет",
                                 "волонтер",
                                 "назад"};
 
     @Override
     public void execute(Update update) {
-        Long chatId = update.getCallbackQuery().getMessage().getChatId();
+        Long chatId = update.getCallbackQuery().getFrom().getId();//.getMessage().getChatId();
         String callData = update.getCallbackQuery().getData();
         if (callData.equals("собака") || callData.equals("кошка")) {
         sendMessageService.SendMessageToUser(String.valueOf(chatId), GREETING_MESSAGE, buttonsText, buttonsCallData);
