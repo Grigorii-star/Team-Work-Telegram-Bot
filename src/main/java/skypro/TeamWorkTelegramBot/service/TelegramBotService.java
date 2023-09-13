@@ -1,19 +1,32 @@
 package skypro.TeamWorkTelegramBot.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import skypro.TeamWorkTelegramBot.buttons.CommandKeysStorage;
 import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.stages.ConsultationStage1;
-import skypro.TeamWorkTelegramBot.stages.EntryStage0;
-import skypro.TeamWorkTelegramBot.stages.StageOfPreparationOfDocuments2;
-import skypro.TeamWorkTelegramBot.stages.StageSelector;
 
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Сервисный класс телеграмбота
+ */
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
     private final TelegramBotConfiguration telegramBotConfiguration;
@@ -39,8 +52,13 @@ public class TelegramBotService extends TelegramLongPollingBot {
         return telegramBotConfiguration.getToken();
     }
 
+    /**
+     * Основной метод, который перенаправляет в разные классы update,
+     * в зависимости от его значений
+     * @param update - содержит message, callbackQuery
+     */
     @Override
-    public void onUpdateReceived (Update update) {
+    public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText().trim();
             Long chatId = update.getMessage().getChatId();
@@ -56,11 +74,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 String commandText = "start";
                 commandKeysStorage.command(commandText).execute(update);
             }
-       else if (update.hasCallbackQuery()) {
-                String commandText = update.getCallbackQuery().getData();
-                commandKeysStorage.command(commandText).execute(update);
-            }
+        } else if (update.hasCallbackQuery()) {
+            String commandText = update.getCallbackQuery().getData();
+            System.out.println(commandText);
+            commandKeysStorage.command(commandText).execute(update);
         }
+    }
 
 //    @SneakyThrows
 //    @Override
@@ -242,5 +261,5 @@ public class TelegramBotService extends TelegramLongPollingBot {
 //
 //            }
 //        }
-    }
+//}
 }

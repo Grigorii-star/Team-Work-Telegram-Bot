@@ -1,21 +1,20 @@
 package skypro.TeamWorkTelegramBot.service;
 
-import liquibase.pro.packaged.O;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Класс, который создаёт сообщения и кнопки
+ * для ответа пользователю
+ */
 @Component
 public class SendMessageServiceImpl implements SendMessageService {
     private final TelegramBotService telegramBotService;
@@ -25,6 +24,14 @@ public class SendMessageServiceImpl implements SendMessageService {
         this.telegramBotService = telegramBotService;
     }
 
+    /**
+     * Перегруженный метод для отправки ответа пользователю, который принимает:
+     * @param chatId          - id пользователя
+     * @param textToSend      - текст сообщения для пользователя
+     * @param buttonsText     - текст для кнопки
+     * @param buttonsCallData - id кнопки
+     * @throws RuntimeException
+     */
     @Override
     public void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData) {
         SendMessage sendMessage = new SendMessage(chatId, textToSend);
@@ -37,6 +44,12 @@ public class SendMessageServiceImpl implements SendMessageService {
         }
     }
 
+    /**
+     * Перегруженный метод для отправки ответа пользователю, который принимает:
+     * @param chatId          - id пользователя
+     * @param textToSend      - текст сообщения для пользователя
+     * @throws RuntimeException
+     */
     @Override
     public void SendMessageToUser(String chatId, String textToSend) {
         SendMessage sendMessage = new SendMessage(chatId, textToSend);
@@ -48,6 +61,12 @@ public class SendMessageServiceImpl implements SendMessageService {
         }
     }
 
+    /**
+     * Метод, который создаёт кнопки. Принимает:
+     * @param message         - сообщение для пользователя
+     * @param buttonsText     - текст для кнопки
+     * @param buttonsCallData - id кнопки
+     */
     private SendMessage createButtons(SendMessage message, String[] buttonsText, String[] buttonsCallData) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
