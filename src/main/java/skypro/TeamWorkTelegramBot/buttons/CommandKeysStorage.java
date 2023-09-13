@@ -1,5 +1,6 @@
 package skypro.TeamWorkTelegramBot.buttons;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.stages.EntryStage0;
