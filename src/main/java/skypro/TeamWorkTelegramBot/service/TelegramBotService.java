@@ -131,44 +131,44 @@ public class TelegramBotService extends TelegramLongPollingBot {
         String commandTextFromButtons = update.getCallbackQuery().getData();
 
         switch (commandTextFromButtons) {
-            case DOG:
-            case CAT:
-            case MENU:
-                commandTextFromButtons = MAIN_MENU_COMMAND;
+            case "собака":
+            case "кошка":
+            case "меню":
+                commandTextFromButtons = "mainMenu";
                 break;
-            case INFO:
-                commandTextFromButtons = INFORMATION_COMMAND;
+            case "инфо":
+                commandTextFromButtons = "information";
                 break;
-            case ABOUT_SHELTER:
-            case SCHEDULE:
-            case SECURITY:
-            case SAFETY_PRECAUTIONS:
-                commandTextFromButtons = CAT_AND_DOG_INFO_COMMAND;
+            case "о_приюте":
+            case "расписание":
+            case "охрана":
+            case "техника_безопасности":
+                commandTextFromButtons = "catAndDogInformation";
                 break;
-            case POST_CONTACT:
-                commandTextFromButtons = SAVE_USER_CONTACTS_COMMAND;
+            case "контакт":
+                commandTextFromButtons = "saveUserContacts";
                 break;
-            case VOLUNTEER:
-                commandTextFromButtons = VOLUNTEER_COMMAND;
+            case "волонтер":
+                commandTextFromButtons = "volunteer";
                 break;
-            case REPORT:
-                commandTextFromButtons = SAVE_REPORT_COMMAND;
+            case "отчет":
+                commandTextFromButtons = "saveReportAboutPet";
                 break;
-            case GET_AN_ANIMAL:
-                commandTextFromButtons = GET_ANIMAL_COMMAND;
+            case "взять_животное":
+                commandTextFromButtons = "getAnimalFromTheShelter";
                 break;
-            case MEETING_DOG_RULES:
-            case MEETING_CAT_RULES:
-            case DOC_LIST:
-            case TRANSPORTATION:
-            case PUPPY_HOUSE:
-            case PUSSY_HOUSE:
-            case PET_HOUSE:
-            case INVALID_HOUSE:
-            case DOG_HANDLER_ADVICE:
-            case DOG_HANDLER_CONTACTS:
-            case REFUSAL_REASONS:
-                commandTextFromButtons = CAT_AND_DOG_GET_ANIMAL_COMMAND;
+            case "правила_знакомства_собака":
+            case "правила_знакомства_кошка":
+            case "список_документов":
+            case "транспортировка":
+            case "дом_для_щенка":
+            case "дом_для_котенка":
+            case "дом_для_животного":
+            case "дом_для_инвалида":
+            case "советы_кинолога":
+            case "контакты_кинолога":
+            case "причина_отказа":
+                commandTextFromButtons = "catAndDogGetAnimalFromTheShelter";
                 break;
         }
         return commandTextFromButtons;
