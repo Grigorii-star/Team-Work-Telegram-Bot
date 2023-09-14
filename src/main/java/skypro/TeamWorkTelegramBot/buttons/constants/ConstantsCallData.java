@@ -39,16 +39,17 @@ public class ConstantsCallData {
      */
 
     public static final String MEETING_DOG_RULES = "правила_знакомства_собака";
+    public static final String MEETING_CAT_RULES = "правила_знакомства_кошка";
     public static final String DOC_LIST = "список_документов";
     public static final String TRANSPORTATION = "транспортировка";
     public static final String PUPPY_HOUSE = "дом_для_щенка";
+    public static final String PUSSY_HOUSE = "дом_для_котенка";
     public static final String PET_HOUSE = "дом_для_животного";
     public static final String INVALID_HOUSE = "дом_для_инвалида";
     public static final String DOG_HANDLER_ADVICE = "советы_кинолога";
     public static final String DOG_HANDLER_CONTACTS = "контакты_кинолога";
     public static final String REFUSAL_REASONS = "причина_отказа";
-    public static final String MEETING_CAT_RULES = "правила_знакомства_кошка";
-    public static final String PUSSY_HOUSE = "дом_для_котенка";
+
 
 
     /**
