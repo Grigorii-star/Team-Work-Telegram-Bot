@@ -21,6 +21,7 @@ import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.Volunteer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Сервисный класс телеграмбота
@@ -98,6 +99,10 @@ public class TelegramBotService extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Long chatId = update.getMessage().getChatId();
 
+            String messageText = update.getMessage().getText();
+            String patternNumber = "([\\+]?[7|8][\\s-(]?[9][0-9]{2}[\\s-)]?)?([\\d]{3})[\\s-]?([\\d]{2})[\\s-]?([\\d]{2})";
+            boolean matchesResult = Pattern.matches(patternNumber, messageText);
+
             AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
             if (checkAnimalOwner == null) {
                 AnimalOwner animalOwner = new AnimalOwner();
@@ -108,6 +113,10 @@ public class TelegramBotService extends TelegramLongPollingBot {
             if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
                 String commandText = "start";
                 commandMap.get(commandText).execute(update, this);
+
+            } else if (matchesResult){
+
+                saveUserContacts.execute(update, this);
             }
         } else if (update.hasCallbackQuery()) {
             String commandTextFromButtons = getCommandTextFromButtons(update);
