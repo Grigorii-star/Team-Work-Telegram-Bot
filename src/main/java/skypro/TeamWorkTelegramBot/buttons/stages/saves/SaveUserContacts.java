@@ -19,6 +19,8 @@ public class SaveUserContacts implements Command {
             "+79261234567";
     public final static String GREETING_MESSAGE_OK = "Отлично! Я сохранил твои контактные данные.\n" +
             "Для перехода в главное меню нажми на кнопку ниже.";
+    public final static String GREETING_MESSAGE_NO = "У меня уже есть твои контактные данные.\n" +
+            "Для перехода в главное меню нажми на кнопку ниже.";
 
 
     String[] buttonsText = {
@@ -50,16 +52,28 @@ public class SaveUserContacts implements Command {
 
             AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
 
-            checkAnimalOwner.setContactInformation(String.valueOf(contactInformationText)); //number или contactInformationText
-            animalOwnerRepository.save(checkAnimalOwner);
+            if ((checkAnimalOwner.getRegistered()) && (checkAnimalOwner.getContactInformation() == null)) {
 
-            sendMessageService.SendMessageToUser(
-                    String.valueOf(chatId),
-                    GREETING_MESSAGE_OK,
-                    buttonsText,
-                    buttonsCallData,
-                    telegramBotService
-            );
+                checkAnimalOwner.setContactInformation(String.valueOf(contactInformationText));
+                animalOwnerRepository.save(checkAnimalOwner);
+
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(chatId),
+                        GREETING_MESSAGE_OK,
+                        buttonsText,
+                        buttonsCallData,
+                        telegramBotService
+                );
+            } else {
+
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(chatId),
+                        GREETING_MESSAGE_NO,
+                        buttonsText,
+                        buttonsCallData,
+                        telegramBotService
+                );
+            }
         }
     }
 }
