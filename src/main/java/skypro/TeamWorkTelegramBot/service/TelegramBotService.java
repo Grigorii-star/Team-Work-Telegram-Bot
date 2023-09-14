@@ -69,15 +69,15 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     private void init() {
-        commandMap.put(START_COMMAND, start);
-        commandMap.put(MAIN_MENU_COMMAND, mainMenu);
-        commandMap.put(INFORMATION_COMMAND, information);
-        commandMap.put(CAT_AND_DOG_INFO_COMMAND, catAndDogInformation);
-        commandMap.put(SAVE_USER_CONTACTS_COMMAND, saveUserContacts);
-        commandMap.put(VOLUNTEER_COMMAND, callVolunteer);
-        commandMap.put(SAVE_REPORT_COMMAND, saveReportAboutPet);
-        commandMap.put(GET_ANIMAL_COMMAND, getAnimalFromTheShelter);
-        commandMap.put(CAT_AND_DOG_GET_ANIMAL_COMMAND, catAndDogGetAnimalFromTheShelter);
+        commandMap.put("start", start);
+        commandMap.put("mainMenu", mainMenu);
+        commandMap.put("information", information);
+        commandMap.put("catAndDogInformation", catAndDogInformation);
+        commandMap.put("saveUserContacts", saveUserContacts);
+        commandMap.put("volunteer", callVolunteer);
+        commandMap.put("saveReportAboutPet", saveReportAboutPet);
+        commandMap.put("getAnimalFromTheShelter", getAnimalFromTheShelter);
+        commandMap.put("catAndDogGetAnimalFromTheShelter", catAndDogGetAnimalFromTheShelter);
     }
 
     @Override
