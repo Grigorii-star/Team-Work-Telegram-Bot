@@ -12,11 +12,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.getInfo;
+
 @Component
 public class CatAndDogGetAnimalFromTheShelter implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
 
     public CatAndDogGetAnimalFromTheShelter(SendMessageService sendMessageService,
                                             AnimalOwnerRepository animalOwnerRepository) {
@@ -24,6 +26,13 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
+    /**
+     * Данный метод получает данные в параметре Update, в соответствии с содержимым переменной callData, использует
+     * сервис sendMessageService для отправки сообщений через telegramBotService в ответ на запросы.Метод
+     * обрабатывает разные варианты callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
+     * @param update  объект телеграмма для получения значений из телеграмм бота
+     * @param telegramBotService
+     */
 
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
@@ -32,8 +41,8 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
         switch (callData) {
-            case "правила_знакомства_собака":
-            case "правила_знакомства_кошка":
+            case MEETING_DOG_RULES:
+            case MEETING_CAT_RULES:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
                             String.valueOf(chatId),
@@ -48,22 +57,22 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
                     );
                 }
                 break;
-            case "список_документов":
+            case DOC_LIST:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         getInfo("src/main/resources/bot-files/stage2/doc-list.txt"),
                         telegramBotService
                 );
                 break;
-            case "транспортировка":
+            case TRANSPORTATION:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         getInfo("src/main/resources/bot-files/stage2/transfer.txt"),
                         telegramBotService
                 );
                 break;
-            case "дом_для_щенка":
-            case "дом_для_котенка":
+            case PUPPY_HOUSE:
+            case PUSSY_HOUSE:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
                             String.valueOf(chatId),
@@ -78,35 +87,35 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
                     );
                 }
                 break;
-            case "дом_для_животного":
+            case PET_HOUSE:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         getInfo("src/main/resources/bot-files/stage2/adult-pet-house.txt"),
                         telegramBotService
                 );
                 break;
-            case "дом_для_инвалида":
+            case INVALID_HOUSE:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         getInfo("src/main/resources/bot-files/stage2/invalid-adult-pet-house.txt"),
                         telegramBotService
                 );
                 break;
-            case "советы_кинолога":
+            case DOG_HANDLER_ADVICE:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         "Здесь должны быть советы кинолога по первичному общению с собакой",
                         telegramBotService
                 );
                 break;
-            case "контакты_кинолога":
+            case DOG_HANDLER_CONTACTS:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         "Здесь должны быть контактные данные проверенных кинологов",
                         telegramBotService
                 );
                 break;
-            case "причина_отказа":
+            case REFUSAL_REASONS:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         getInfo("src/main/resources/bot-files/stage2/refuse-reasons.txt"),
@@ -116,23 +125,5 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
         }
     }
 
-    /**
-     * Метод, который нужен для обработки текстовых файлов в String
-     * @param filePath - принимает текстовый файл
-     * @return String message
-     * @throws IOException
-     */
-    private String getInfo(String filePath) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            while (line != null) {
-                sb.append(line);
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Файл не найден");
-        }
-        return sb.toString();
-    }
+
 }

@@ -36,12 +36,18 @@ public class CareStage3 {
         return "";
     }
 
+    /**
+     * Метод создает объект StringBuilder, который будет использоваться для построения строки, содержащей содержимое файла.
+     * @param filePath
+     * @return возвращает содержимое файла, преобразованное в строку с помощью метода toString() у объекта StringBuilder
+     */
     private String getInfo(String filePath) {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line = reader.readLine();
             while (line != null) {
                 sb.append(line);
+                sb.append("\n");
                 line = reader.readLine();
             }
         } catch (IOException e) {

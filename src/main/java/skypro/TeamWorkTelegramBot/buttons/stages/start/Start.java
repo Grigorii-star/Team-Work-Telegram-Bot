@@ -12,6 +12,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
+
 /**
  * Класс, который нужен для формирования ответа пользователю
  */
@@ -19,15 +23,11 @@ import java.io.IOException;
 public class Start implements Command {
     private  final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
 
-    public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
-            "Я отвечу на все вопросы и помогу определиться с выбором.";
-
-    String[] buttonsText = {"Приют для собак",
-                            "Приют для кошек"};
-    String[] buttonsCallData = {"собака",
-                                "кошка"};
+    String[] buttonsText = {DOG_SHELTER_BUTTON,
+                            CAT_SHELTER_BUTTON};
+    String[] buttonsCallData = {DOG,
+                                CAT};
 
     public Start(SendMessageService sendMessageService,
                  AnimalOwnerRepository animalOwnerRepository) {
@@ -40,7 +40,7 @@ public class Start implements Command {
      * Содержит id пользователя и сообщение для пользователя,
      * отправляет сообщение, полученное из текстового файла,
      * и необходимые кнопки для пользователя
-     * @param update - id пользователя
+     * @param update - объект телеграмма для получения значений из телеграмм бота
      */
 
     @Override
@@ -72,24 +72,4 @@ public class Start implements Command {
         }
     }
 
-
-    /**
-     * Метод, который нужен для обработки текстовых файлов в String
-     * @param filePath - принимает текстовый файл
-     * @return String message
-     * @throws IOException
-     */
-    private String getInfo(String filePath) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            while (line != null) {
-                sb.append(line);
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Файл не найден");
-        }
-        return sb.toString();
-    }
 }

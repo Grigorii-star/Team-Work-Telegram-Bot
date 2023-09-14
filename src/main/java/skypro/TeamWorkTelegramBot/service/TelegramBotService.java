@@ -91,7 +91,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
      * Основной метод, который перенаправляет в разные классы update,
      * в зависимости от его значений
      *
-     * @param update - содержит message, callbackQuery
+     * @param update - объект телеграмма для получения значений из телеграмм бота
      */
     @Override
     public void onUpdateReceived(Update update) {
@@ -116,6 +116,14 @@ public class TelegramBotService extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * Этот метод получает текст команды из кнопок, которые были нажаты пользователем в Telegram боте.
+     * Он извлекает текст команды из объекта Update, который содержит информацию о произошедшем событии,
+     * и сохраняет его в переменной commandTextFromButtons.
+     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @return возвращает значение переменной commandTextFromButtons, которое является текстом команды из кнопок,
+     * полученного из объекта Update.
+     */
     private static String getCommandTextFromButtons(Update update) {
         String commandTextFromButtons = update.getCallbackQuery().getData();
 

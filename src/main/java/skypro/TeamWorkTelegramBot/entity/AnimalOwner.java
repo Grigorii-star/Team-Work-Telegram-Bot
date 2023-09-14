@@ -6,6 +6,9 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ *Класс animalOwner, модель animalOwner
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
