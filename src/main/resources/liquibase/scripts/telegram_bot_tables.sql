@@ -30,5 +30,6 @@ CREATE TABLE animal_owner (
     registered          boolean,
     contact_information text,
     dog_lover           boolean,
-    took_the_animal     boolean
+    took_the_animal     boolean,
+    can_save_contact    boolean
 )

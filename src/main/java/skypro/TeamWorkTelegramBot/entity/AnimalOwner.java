@@ -22,6 +22,7 @@ public class AnimalOwner {
     private String contactInformation;
     private Boolean dogLover;
     private Boolean tookTheAnimal;
+    private Boolean canSaveContact;
 //    @ManyToOne
 //    @JoinColumn(name = "shelter_id")
 //    private Shelter shelter;

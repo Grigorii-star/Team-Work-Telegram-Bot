@@ -51,6 +51,7 @@ public class Start implements Command {
 
         if (start.equals("/start") && animalOwner.getRegistered() == null) {
             animalOwner.setRegistered(true);
+            animalOwner.setCanSaveContact(false);
             animalOwnerRepository.save(animalOwner);
             sendMessageService.SendMessageToUser(String.valueOf(textChatId), GREETING_MESSAGE, telegramBotService);
             sendMessageService.SendMessageToUser(
@@ -62,6 +63,8 @@ public class Start implements Command {
             );
         }
         else if (start.equals("/start") && animalOwner.getRegistered()) {
+            animalOwner.setCanSaveContact(false);
+            animalOwnerRepository.save(animalOwner);
             sendMessageService.SendMessageToUser(
                     String.valueOf(textChatId),
                     "Можете выбрать приют.",
