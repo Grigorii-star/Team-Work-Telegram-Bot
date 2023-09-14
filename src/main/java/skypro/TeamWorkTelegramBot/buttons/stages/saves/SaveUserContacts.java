@@ -7,6 +7,9 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+/**
+ * Класс, для сохранению контактов пользователя в базу данных
+ */
 @Component
 public class SaveUserContacts implements Command {
     private final SendMessageService sendMessageService;

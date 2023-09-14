@@ -4,6 +4,11 @@ import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 
 import java.util.Collection;
+
+/**
+ * Класс реализации интерфейса VolunteerService
+ */
+
 @Service
 public class VolunteerServiceImpl implements VolunteerService{
     @Override

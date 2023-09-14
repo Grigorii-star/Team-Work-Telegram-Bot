@@ -15,6 +15,9 @@ import java.io.IOException;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.getInfo;
 
+/**
+ * класс, отвечающий за логику кнопок из класса GetAnimalFromTheShelter
+ */
 @Component
 public class CatAndDogGetAnimalFromTheShelter implements Command {
     private final SendMessageService sendMessageService;

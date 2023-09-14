@@ -16,7 +16,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
- * Класс информации о кошках и собаках
+ * Класс, отвечающий за логику кнопок из класса information
  */
 @Component
 public class CatAndDogInformation implements Command {

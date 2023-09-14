@@ -13,7 +13,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETING_MESSAGE;
 
 /**
- * Класс, который нужен для формирования ответа пользователю
+ * Класс, который нужен для формирования главного меню приюта
  */
 @Component
 public class MainMenu implements Command {

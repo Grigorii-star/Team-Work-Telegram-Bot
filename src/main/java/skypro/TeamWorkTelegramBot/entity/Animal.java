@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * Класс модели Animal
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

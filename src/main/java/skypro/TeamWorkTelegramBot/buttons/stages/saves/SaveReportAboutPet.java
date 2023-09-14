@@ -8,7 +8,7 @@ import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
 /**
- * Класс для сохранения отчета о живаотном.
+ * Класс для сохранения отчета о животном.
  */
 @Component
 public class SaveReportAboutPet implements Command {

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Сервисный класс телеграмбота
+ * Сервисный класс телеграм бота
  */
 @Service
 @Getter
@@ -39,7 +39,9 @@ public class TelegramBotService extends TelegramLongPollingBot {
     private final SaveReportAboutPet saveReportAboutPet;
     private final GetAnimalFromTheShelter getAnimalFromTheShelter;
     private final CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter;
-
+    /**
+     * Мапа, которая хранит бины классов, реализующих интерфейс command
+     */
     private final Map<String, Command> commandMap;
 
     public TelegramBotService(TelegramBotConfiguration telegramBotConfiguration,
@@ -65,6 +67,9 @@ public class TelegramBotService extends TelegramLongPollingBot {
         this.init();
     }
 
+    /**
+     * Метод, для добавления классов в мапу commandMap
+     */
     private void init() {
         commandMap.put("start", start);
         commandMap.put("mainMenu", mainMenu);
@@ -88,9 +93,9 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     /**
-     * Основной метод, который перенаправляет в разные классы update,
-     * в зависимости от его значений
-     *
+     * Основной метод, который получает из объекта update телеграмм бота значения и делегирует эти
+     * сообщения классам реализуйщий интерфейс Command с помощью ключ, значение хэшМапы. Создает
+     * нового пользователя в базе данных по chatId
      * @param update - объект телеграмма для получения значений из телеграмм бота
      */
     @Override

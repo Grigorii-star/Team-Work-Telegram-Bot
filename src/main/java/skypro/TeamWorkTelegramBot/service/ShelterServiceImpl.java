@@ -4,6 +4,10 @@ import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 
 import java.util.Collection;
+
+/**
+ * класс реализации интерфейса ShelterService
+ */
 @Service
 public class ShelterServiceImpl implements ShelterService{
 

@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Класс модели Volunteer
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

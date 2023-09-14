@@ -9,6 +9,9 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Класс модели Shelter
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

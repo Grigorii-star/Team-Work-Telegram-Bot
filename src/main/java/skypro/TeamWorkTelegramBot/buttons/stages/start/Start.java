@@ -17,7 +17,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
- * Класс, который нужен для формирования ответа пользователю
+ * Класс, приветсвтвующий пользователя и дают выбрать приют кошек или собак
  */
 @Component
 public class Start implements Command {

@@ -11,19 +11,18 @@ import java.util.List;
 
 
 /**
- * Класс, который создаёт сообщения и кнопки
- * для ответа пользователю
+ * Реализация интрефейса SendMessageService
  */
 @Service
 public class SendMessageServiceImpl implements SendMessageService {
 
     /**
      * Перегруженный метод для отправки ответа пользователю, который принимает:
-     * @param chatId          - id пользователя
+     * @param chatId          - id телеграмма пользователя
      * @param textToSend      - текст сообщения для пользователя
      * @param buttonsText     - текст для кнопки
      * @param buttonsCallData - id кнопки
-     * @throws RuntimeException
+     * @throws RuntimeException Если произошла ошибка при отправке сообщения через Telegram API.
      */
     @Override
     public void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
@@ -41,7 +40,7 @@ public class SendMessageServiceImpl implements SendMessageService {
      * Перегруженный метод для отправки ответа пользователю, который принимает:
      * @param chatId          - id пользователя
      * @param textToSend      - текст сообщения для пользователя
-     * @throws RuntimeException
+     * @throws RuntimeException Если произошла ошибка при отправке сообщения через Telegram API.
      */
     @Override
     public void SendMessageToUser(String chatId, String textToSend, TelegramBotService telegramBotService) {

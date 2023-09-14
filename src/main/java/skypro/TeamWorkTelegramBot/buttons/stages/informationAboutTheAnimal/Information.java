@@ -13,7 +13,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETIN
 
 
 /**
- * Класс, который нужен для формирования ответа пользователю
+ * Класс, который нужен для формирования кнопок для раздела информации по приюту
  */
 @Component
 public class Information implements Command {
@@ -48,7 +48,6 @@ public class Information implements Command {
      * Содержит id пользователя и сообщение для пользователя,
      * отправляет сообщение, полученное из текстового файла,
      * и необходимые кнопки для пользователя
-     *
      * @param update - объект телеграмма для получения значений из телеграмм бота
      */
     @Override

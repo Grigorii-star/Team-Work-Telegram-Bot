@@ -4,6 +4,10 @@ import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.Animal;
 
 import java.util.Collection;
+
+/**
+ * Класс реализации интерфейса AnimalService
+ */
 @Service
 public class AnimalServiceImpl implements AnimalService{
     @Override

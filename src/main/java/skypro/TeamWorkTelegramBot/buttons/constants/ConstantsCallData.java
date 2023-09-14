@@ -1,42 +1,29 @@
 package skypro.TeamWorkTelegramBot.buttons.constants;
 
+/**
+ * Константы для отклика на кнопки из разных этапов
+ */
 public class ConstantsCallData {
 
-    /**
-     * Константы для отклика на кнопки из разных этапов
-     * @param callData
-     *
-     */
+    //
 
     public static final String POST_CONTACT = "контакт";
     public static final String VOLUNTEER = "волонтер";
     public static final String MENU = "меню";
 
-    /**
-     * Константы для отклика на кнопки из этапа Главное меню
-     * @param callData
-     *
-     */
+    //Константы для отклика на кнопки из этапа Главное меню
+
 
     public static final String INFO = "инфо";
     public static final String GET_AN_ANIMAL = "взять_животное";
     public static final String REPORT = "отчет";
 
-    /**
-     * Константы для отклика на кнопки из этапа Старт'
-     * @param callData
-     *
-     */
+    //Константы для отклика на кнопки из этапа Старт'
 
     public static final String CAT = "кошка";
     public static final String DOG = "собака";
 
-
-    /**
-     * Константы для отклика кнопок на этапе Взять животное из приюта
-     *
-     * @param callData
-     */
+    //Константы для отклика кнопок на этапе Взять животное из приюта
 
     public static final String MEETING_DOG_RULES = "правила_знакомства_собака";
     public static final String DOC_LIST = "список_документов";
@@ -50,12 +37,8 @@ public class ConstantsCallData {
     public static final String MEETING_CAT_RULES = "правила_знакомства_кошка";
     public static final String PUSSY_HOUSE = "дом_для_котенка";
 
+    //Константы для отклика кнопок на этапе Информация
 
-    /**
-     * Константы для отклика кнопок на этапе Информация
-     *
-     * @param callData
-     */
 
     public static final String ABOUT_SHELTER = "о_приюте";
     public static final String SCHEDULE = "расписание";

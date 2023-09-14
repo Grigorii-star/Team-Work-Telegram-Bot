@@ -7,6 +7,9 @@ import skypro.TeamWorkTelegramBot.service.AnimalService;
 
 import java.util.Collection;
 
+/**
+ * контроллер
+ */
 @RestController
 @RequestMapping("animal")
 public class AnimalController {

@@ -12,6 +12,9 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
+/**
+ * Класс, для создания кнопок меню информацию по приюту в телеграмм
+ */
 @Component
 public class GetAnimalFromTheShelter implements Command {
     private final SendMessageService sendMessageService;

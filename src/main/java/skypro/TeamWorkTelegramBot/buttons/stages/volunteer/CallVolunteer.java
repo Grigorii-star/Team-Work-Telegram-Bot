@@ -8,7 +8,7 @@ import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
 /**
- * Класс Волонтера
+ * Класс, для общения с волонтером
  */
 @Component
 public class CallVolunteer implements Command {
