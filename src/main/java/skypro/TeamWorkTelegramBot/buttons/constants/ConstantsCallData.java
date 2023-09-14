@@ -19,7 +19,7 @@ public class ConstantsCallData {
      */
 
     public static final String INFO = "инфо";
-    public static final String GET_AN_ANIMAL = "взять животное";
+    public static final String GET_AN_ANIMAL = "взять_животное";
     public static final String REPORT = "отчет";
 
     /**
