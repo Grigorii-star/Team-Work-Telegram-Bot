@@ -7,6 +7,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+
 
 /**
  * Класс, который нужен для формирования ответа пользователю
@@ -15,7 +17,6 @@ import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 public class Information implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
     public final static String GREETING_MESSAGE = "Молодец, что перешёл в меню консультаций! " +
             "\nДля продолжения, пожалуйста, ознакомься с информацией о приюте.";
 
@@ -28,13 +29,13 @@ public class Information implements Command {
             "Позвать волонтера",
             "Перейти в главное меню"};
     String[] buttonsCallData = {
-            "о_приюте",
-            "расписание",
-            "охрана",
-            "техника_безопасности",
-            "контакт",
-            "волонтер",
-            "меню"};
+            ABOUT_SHELTER,
+            SCHEDULE,
+            SECURITY,
+            SAFETY_PRECAUTIONS,
+            POST_CONTACT,
+            VOLUNTEER,
+            MENU};
 
     public Information(SendMessageService sendMessageService,
                        AnimalOwnerRepository animalOwnerRepository) {

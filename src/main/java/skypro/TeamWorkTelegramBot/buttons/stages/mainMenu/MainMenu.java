@@ -8,9 +8,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 
 /**
  * Класс, который нужен для формирования ответа пользователю
@@ -19,18 +18,17 @@ import java.io.IOException;
 public class MainMenu implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
     public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
             "Я отвечу на все вопросы и помогу определиться с выбором.";
 
-    String[] buttonsText = {"Узнать информацию о приюте",
-                            "Взять животное из приюта",
-                            "Прислать отчет о питомце",
-                            "Позвать волонтера"};
-    String[] buttonsCallData = {"инфо",
-            "взять_животное",
-            "отчет",
-            "волонтер"};
+    String[] buttonsText = {GET_INFO_SHELTER_BUTTON,
+                            GET_PET_BUTTON,
+                            REPORT_BUTTON,
+                            VOLUNTEER_BUTTON};
+    String[] buttonsCallData = {INFO,
+                                GET_AN_ANIMAL,
+                                REPORT,
+                                VOLUNTEER};
 
     public MainMenu(SendMessageService sendMessageService,
                     AnimalOwnerRepository animalOwnerRepository) {
@@ -43,7 +41,7 @@ public class MainMenu implements Command {
         Long chatId = update.getCallbackQuery().getFrom().getId();
         String callData = update.getCallbackQuery().getData();
 
-        if (callData.equals("собака")) {
+        if (callData.equals(DOG)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
             animalOwner.setDogLover(true);
             animalOwnerRepository.save(animalOwner);
@@ -55,7 +53,7 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals("кошка")) {
+        else if (callData.equals(CAT)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
             animalOwner.setDogLover(false);
             animalOwnerRepository.save(animalOwner);
@@ -67,7 +65,7 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals("меню")) {
+        else if (callData.equals(MENU)) {
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
@@ -78,19 +76,5 @@ public class MainMenu implements Command {
         }
     }
 
-    private String getInfo(String filePath) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            while (line != null) {
-                sb.append(line);
-                sb.append("\n");
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Файл не найден");
-        }
-        return sb.toString();
-    }
 }
 

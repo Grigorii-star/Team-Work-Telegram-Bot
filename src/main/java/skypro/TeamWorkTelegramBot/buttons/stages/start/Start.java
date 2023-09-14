@@ -12,6 +12,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
+
 /**
  * Класс, который нужен для формирования ответа пользователю
  */
@@ -19,15 +22,11 @@ import java.io.IOException;
 public class Start implements Command {
     private  final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
-
-    public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
-            "Я отвечу на все вопросы и помогу определиться с выбором.";
 
     String[] buttonsText = {"Приют для собак",
                             "Приют для кошек"};
-    String[] buttonsCallData = {"собака",
-                                "кошка"};
+    String[] buttonsCallData = {DOG,
+                                CAT};
 
     public Start(SendMessageService sendMessageService,
                  AnimalOwnerRepository animalOwnerRepository) {

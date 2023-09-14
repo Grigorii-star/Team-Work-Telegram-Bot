@@ -11,7 +11,6 @@ import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 public class SaveUserContacts implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
 
     public SaveUserContacts(SendMessageService sendMessageService,
                             AnimalOwnerRepository animalOwnerRepository) {
