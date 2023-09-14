@@ -85,6 +85,7 @@ public class Start implements Command {
             String line = reader.readLine();
             while (line != null) {
                 sb.append(line);
+                sb.append("\n");
                 line = reader.readLine();
             }
         } catch (IOException e) {
