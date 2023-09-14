@@ -1,5 +1,6 @@
 package skypro.TeamWorkTelegramBot.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -14,6 +15,7 @@ import java.util.List;
  * Реализация интрефейса SendMessageService
  */
 @Service
+@Slf4j
 public class SendMessageServiceImpl implements SendMessageService {
 
     /**
@@ -22,7 +24,6 @@ public class SendMessageServiceImpl implements SendMessageService {
      * @param textToSend      - текст сообщения для пользователя
      * @param buttonsText     - текст для кнопки
      * @param buttonsCallData - id кнопки
-     * @throws RuntimeException Если произошла ошибка при отправке сообщения через Telegram API.
      */
     @Override
     public void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
@@ -32,7 +33,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         try {
             telegramBotService.execute(buttonsMessage);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            log.error("TelegramApiException in SendMessageToUser method");
         }
     }
 
@@ -40,7 +41,6 @@ public class SendMessageServiceImpl implements SendMessageService {
      * Перегруженный метод для отправки ответа пользователю, который принимает:
      * @param chatId          - id пользователя
      * @param textToSend      - текст сообщения для пользователя
-     * @throws RuntimeException Если произошла ошибка при отправке сообщения через Telegram API.
      */
     @Override
     public void SendMessageToUser(String chatId, String textToSend, TelegramBotService telegramBotService) {
@@ -49,7 +49,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         try {
             telegramBotService.execute(sendMessage);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            log.error("TelegramApiException in SendMessageToUser method");
         }
     }
 

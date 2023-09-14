@@ -13,23 +13,23 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Entity
 public class Animal {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String filePath;
     private long fileSize;
     private String mediaType;
-    //@Lob
-    private byte[] data;
+//    @Lob
+//    private byte[] data;
 //    @ManyToOne
 //    @JoinColumn(name = "shelter_id")
-    private Shelter shelter;
+//    private Shelter shelter;
 //    @ManyToOne
-//    @JoinColumn(name = "owner_id")
-    private AnimalOwner animalOwner;
+//    @JoinColumn(name = "animal_owner_id")
+//    private AnimalOwner animalOwner;
 
     @Override
     public boolean equals(Object o) {

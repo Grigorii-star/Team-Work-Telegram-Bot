@@ -15,21 +15,21 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Entity
 public class Shelter {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
 //    @OneToMany(mappedBy = "shelter")
 //    @JsonIgnore
-    private Collection<Shelter> shelters;
+//    private Collection<Animal> animals;
 //    @OneToMany(mappedBy = "shelter")
 //    @JsonIgnore
-    private Collection<AnimalOwner> animalOwners;
+//    private Collection<AnimalOwner> animalOwners;
 //    @OneToMany(mappedBy = "shelter")
 //    @JsonIgnore
-    private Collection<Volunteer> volunteers;
+//    private Collection<Volunteer> volunteers;
 
     @Override
     public boolean equals(Object o) {

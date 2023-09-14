@@ -48,7 +48,7 @@ public class VolunteerController {
             @ApiResponse(code = 500, message = "Ошибка при поиске волонтера")
     })
     @GetMapping("{id}")
-    public ResponseEntity<Volunteer> find(@PathVariable Long id) {
+    public ResponseEntity<Volunteer> find(@PathVariable Integer id) {
         return ResponseEntity.ok(volunteerService.findVolunteer(id));
     }
     /**
@@ -78,7 +78,7 @@ public class VolunteerController {
             @ApiResponse(code = 500, message = "Ошибка при удалении волонтера")
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> remove(@PathVariable Long id) {
+    public ResponseEntity<Void> remove(@PathVariable Integer id) {
         volunteerService.removeVolunteer(id);
         return ResponseEntity.ok().build();
     }

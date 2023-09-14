@@ -20,7 +20,7 @@ public interface VolunteerService {
      * @param id Идентификатор волонтера для поиска.
      * @return Волонтер, найденный по указанному идентификатору
      */
-    Volunteer findVolunteer(Long id);
+    Volunteer findVolunteer(Integer id);
 
     /**
      * метод редактирования волонтера в базе данных.
@@ -34,7 +34,7 @@ public interface VolunteerService {
      * @param id Идентификатор волонтера для поиска.
      * @return удаленный волонтер.
      */
-    void removeVolunteer(Long id);
+    void removeVolunteer(Integer id);
     /**
      * метод получить всех волонтеров из базы данных.
      */
