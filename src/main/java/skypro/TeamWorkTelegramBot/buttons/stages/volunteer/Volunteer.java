@@ -7,6 +7,9 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+/**
+ * Класс Волонтера
+ */
 @Component
 public class Volunteer implements Command {
     private final SendMessageService sendMessageService;
@@ -19,6 +22,13 @@ public class Volunteer implements Command {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
+    /**
+     * Метод, который нужен для формирования ответа пользователю.
+     * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
+     * Вызывает метод sendMessageService.SendMessageToUser() и передает в него chatId
+     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param telegramBotService
+     */
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
         Long chatId = update.getCallbackQuery().getFrom().getId();

@@ -74,6 +74,12 @@ public class GetAnimalFromTheShelter implements Command {
             "волонтер",
             "меню"};
 
+    /**
+     * данный метод отправляет приветственное сообщение с кнопками в зависимости от того, является
+     * ли пользователь любителем собак или кошек, полученных в параметре Update.
+     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param telegramBotService
+     */
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
         Long chatId = update.getCallbackQuery().getFrom().getId();

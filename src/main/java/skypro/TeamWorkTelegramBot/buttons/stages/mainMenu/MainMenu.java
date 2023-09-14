@@ -38,6 +38,13 @@ public class MainMenu implements Command {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
+    /**
+     * данный метод обрабатывает разные варианты callData, устанавливает настройки "любителя собак" или
+     * "любителя кошек" в зависимости от выбранной опции, сохраняет изменения в репозитории и отправляет
+     * приветственное сообщение с кнопками пользователю.
+     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param telegramBotService
+     */
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
         Long chatId = update.getCallbackQuery().getFrom().getId();

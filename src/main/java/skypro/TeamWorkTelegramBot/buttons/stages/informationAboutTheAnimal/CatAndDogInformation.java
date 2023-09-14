@@ -12,6 +12,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Класс информации о кошках и собаках
+ */
 @Component
 public class CatAndDogInformation implements Command {
     private final SendMessageService sendMessageService;
@@ -23,7 +26,14 @@ public class CatAndDogInformation implements Command {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
     }
-
+    /**
+     * Данный метод получает данные из объекта update.
+     * Используя полученный chatId, получается объект animalOwner из репозитория
+     * animalOwnerRepository с использованием метода findByIdChat(chatId).Обрабатывает разные варианты
+     * callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
+     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param telegramBotService
+     */
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
         Long chatId = update.getCallbackQuery().getFrom().getId();
