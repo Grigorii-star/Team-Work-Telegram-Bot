@@ -12,11 +12,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+
 @Component
 public class CatAndDogInformation implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
 
     public CatAndDogInformation(SendMessageService sendMessageService,
                                 AnimalOwnerRepository animalOwnerRepository) {
@@ -31,7 +32,7 @@ public class CatAndDogInformation implements Command {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
         switch (callData) {
-            case "о_приюте":
+            case ABOUT_SHELTER:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
                             String.valueOf(chatId),
@@ -46,7 +47,7 @@ public class CatAndDogInformation implements Command {
                     );
                 }
                 break;
-            case "расписание":
+            case SCHEDULE:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
                             String.valueOf(chatId),
@@ -61,7 +62,7 @@ public class CatAndDogInformation implements Command {
                     );
                 }
                 break;
-            case "охрана":
+            case SECURITY:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
                             String.valueOf(chatId),
@@ -76,7 +77,7 @@ public class CatAndDogInformation implements Command {
                     );
                 }
                 break;
-            case "техника_безопасности":
+            case SAFETY_PRECAUTIONS:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         getInfo("src/main/resources/bot-files/stage1/safety_rules.txt"),

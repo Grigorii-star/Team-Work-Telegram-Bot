@@ -10,6 +10,7 @@ import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETING_MESSAGE;
 
 /**
  * Класс, который нужен для формирования ответа пользователю
@@ -18,8 +19,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 public class MainMenu implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
-            "Я отвечу на все вопросы и помогу определиться с выбором.";
+
 
     String[] buttonsText = {GET_INFO_SHELTER_BUTTON,
                             GET_PET_BUTTON,

@@ -11,7 +11,6 @@ import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 public class SaveReportAboutPet implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
 
     public SaveReportAboutPet(SendMessageService sendMessageService,
                               AnimalOwnerRepository animalOwnerRepository) {

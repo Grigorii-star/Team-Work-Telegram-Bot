@@ -8,6 +8,16 @@ public class ConstantsButtons {
      *
      */
 
+    /**
+     * Константы для вывода текста на кнопках из этапа Старт
+     * @param button
+     *
+     */
+
+    public static final String CAT_SHELTER_BUTTON = "Приют для кошек";
+    public static final String DOG_SHELTER_BUTTON = "Приют для собак";
+
+
     public static final String POST_CONTACT_BUTTON = "Оставить контактные данные, чтобы волонтер мог связаться";
     public static final String VOLUNTEER_BUTTON = "Позвать волонтера";
     public static final String MENU_BUTTON = "Перейти в главное меню";
@@ -21,6 +31,17 @@ public class ConstantsButtons {
     public static final String GET_INFO_SHELTER_BUTTON = "Узнать информацию о приюте";
     public static final String GET_PET_BUTTON = "Взять животное из приюта";
     public static final String REPORT_BUTTON = "Прислать отчет о питомце";
+
+    /**
+     * Константы для вывода текста на кнопках из этапа Информация
+     * @param button
+     *
+     */
+
+    public static final String GET_MORE_INFO_SHELTER_BUTTON = "Узнать подробнее о приюте";
+    public static final String SCHEDULE_BUTTON = "Узнать расписание работы, адрес и схему проезда";
+    public static final String SECURITY_BUTTON = "Получить телефон охраны для оформления пропуска на машину";
+    public static final String SAFETY_PRECAUTIONS_BUTTON = "Получить общие рекомендации по технике безопасности на территории приюта";
 
     /**
      * Константы для вывода текста на кнопках из этапа Взять животное из приюта

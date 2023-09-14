@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
@@ -23,8 +24,8 @@ public class Start implements Command {
     private  final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
-    String[] buttonsText = {"Приют для собак",
-                            "Приют для кошек"};
+    String[] buttonsText = {DOG_SHELTER_BUTTON,
+                            CAT_SHELTER_BUTTON};
     String[] buttonsCallData = {DOG,
                                 CAT};
 
@@ -70,7 +71,6 @@ public class Start implements Command {
             );
         }
     }
-
 
     /**
      * Метод, который нужен для обработки текстовых файлов в String

@@ -7,7 +7,9 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETING_MESSAGE;
 
 
 /**
@@ -17,17 +19,15 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 public class Information implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    public final static String GREETING_MESSAGE = "Молодец, что перешёл в меню консультаций! " +
-            "\nДля продолжения, пожалуйста, ознакомься с информацией о приюте.";
 
     String[] buttonsText = {
-            "Узнать подробнее о приюте",
-            "Узнать расписание работы, адрес и схему проезда",
-            "Получить телефон охраны для оформления пропуска на машину",
-            "Получить общие рекомендации по технике безопасности на территории приюта",
-            "Оставить контактные данные, чтобы волонтер мог связаться",
-            "Позвать волонтера",
-            "Перейти в главное меню"};
+            GET_MORE_INFO_SHELTER_BUTTON,
+            SCHEDULE_BUTTON,
+            SECURITY_BUTTON,
+            SAFETY_PRECAUTIONS_BUTTON,
+            POST_CONTACT_BUTTON,
+            VOLUNTEER_BUTTON,
+            MENU_BUTTON};
     String[] buttonsCallData = {
             ABOUT_SHELTER,
             SCHEDULE,
