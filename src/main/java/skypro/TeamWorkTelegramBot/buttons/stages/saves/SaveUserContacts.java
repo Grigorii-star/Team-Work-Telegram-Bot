@@ -15,7 +15,7 @@ public class SaveUserContacts implements Command {
     private TelegramBotService telegramBotService;
 
     public final static String GREETING_MESSAGE = "Введи свои контактные данные в формате:\n" +
-            "+79261234567";
+            "+7 999 999 99 99";
     public final static String GREETING_MESSAGE_OK = "Отлично! Я сохранил твои контактные данные.\n" +
             "Для перехода в главное меню нажми на кнопку ниже.";
     public final static String GREETING_MESSAGE_NO = "У меня уже есть твои контактные данные.\n" +
