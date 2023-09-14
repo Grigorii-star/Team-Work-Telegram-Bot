@@ -19,6 +19,7 @@ public class AnimalOwner {
     private String contactInformation;
     private Boolean dogLover;
     private Boolean tookTheAnimal;
+    private Boolean canSaveContact;
 
 
     @Override

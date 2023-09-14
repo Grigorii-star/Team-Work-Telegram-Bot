@@ -115,8 +115,9 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 commandMap.get(commandText).execute(update, this);
             }
 
-            if (matchesResult){
-                saveUserContacts.execute(update, this);
+            if (!update.getMessage().getText().isEmpty() && matchesResult) {
+                String commandText = "saveUserContacts";
+                commandMap.get(commandText).execute(update, this);
             }
 
         } else if (update.hasCallbackQuery()) {

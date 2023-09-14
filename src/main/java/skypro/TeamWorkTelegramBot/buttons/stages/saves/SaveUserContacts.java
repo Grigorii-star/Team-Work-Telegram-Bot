@@ -1,5 +1,6 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.saves;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
@@ -9,6 +10,7 @@ import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
 @Component
+@Slf4j
 public class SaveUserContacts implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
@@ -35,44 +37,42 @@ public class SaveUserContacts implements Command {
 
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
-        if (update.hasCallbackQuery()) {
+        AnimalOwner animalOwner = new AnimalOwner();
 
+        try {
+            animalOwner = animalOwnerRepository.findByIdChat(update.getMessage().getChatId());
+        } catch (NullPointerException e) {
+            log.error("Error NullPointerException по update.getMessage().getChatId()");
+        }
+
+        if (update.hasCallbackQuery()) {
             Long chatIdQuery = update.getCallbackQuery().getFrom().getId();
+
+            AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatIdQuery);
+            checkAnimalOwner.setCanSaveContact(true);
+            animalOwnerRepository.save(checkAnimalOwner);
+
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatIdQuery),
                     GREETING_MESSAGE,
                     telegramBotService
             );
-        }
 
-        else {
+        } else if (update.getMessage().hasText() && animalOwner.getCanSaveContact()) {
             Long chatId = update.getMessage().getChatId();
             String contactInformationText = update.getMessage().getText();
 
-            AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
+            animalOwner.setContactInformation(String.valueOf(contactInformationText));
+            animalOwner.setCanSaveContact(false);
+            animalOwnerRepository.save(animalOwner);
 
-            if ((checkAnimalOwner.getRegistered()) && (checkAnimalOwner.getContactInformation() == null)) {
-
-                checkAnimalOwner.setContactInformation(String.valueOf(contactInformationText));
-                animalOwnerRepository.save(checkAnimalOwner);
-
-                sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
-                        GREETING_MESSAGE_OK,
-                        buttonsText,
-                        buttonsCallData,
-                        telegramBotService
-                );
-            } else {
-
-                sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
-                        GREETING_MESSAGE_NO,
-                        buttonsText,
-                        buttonsCallData,
-                        telegramBotService
-                );
-            }
+            sendMessageService.SendMessageToUser(
+                    String.valueOf(chatId),
+                    GREETING_MESSAGE_OK,
+                    buttonsText,
+                    buttonsCallData,
+                    telegramBotService
+            );
         }
     }
 }
