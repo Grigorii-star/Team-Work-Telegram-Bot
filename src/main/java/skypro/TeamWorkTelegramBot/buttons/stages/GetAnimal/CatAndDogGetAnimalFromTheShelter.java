@@ -26,6 +26,13 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
+    /**
+     * Данный метод получает данные в параметре Update, в соответствии с содержимым переменной callData, использует
+     * сервис sendMessageService для отправки сообщений через telegramBotService в ответ на запросы.Метод
+     * обрабатывает разные варианты callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
+     * @param update  объект телеграмма для получения значений из телеграмм бота
+     * @param telegramBotService
+     */
 
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {

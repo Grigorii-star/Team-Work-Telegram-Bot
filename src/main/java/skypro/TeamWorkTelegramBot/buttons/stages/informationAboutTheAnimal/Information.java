@@ -49,7 +49,7 @@ public class Information implements Command {
      * отправляет сообщение, полученное из текстового файла,
      * и необходимые кнопки для пользователя
      *
-     * @param update - id пользователя
+     * @param update - объект телеграмма для получения значений из телеграмм бота
      */
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {
