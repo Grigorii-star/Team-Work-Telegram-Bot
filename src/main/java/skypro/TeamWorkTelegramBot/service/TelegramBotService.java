@@ -69,15 +69,15 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     private void init() {
-        commandMap.put("start", start);
-        commandMap.put("mainMenu", mainMenu);
-        commandMap.put("information", information);
-        commandMap.put("catAndDogInformation", catAndDogInformation);
-        commandMap.put("saveUserContacts", saveUserContacts);
-        commandMap.put("volunteer", callVolunteer);
-        commandMap.put("saveReportAboutPet", saveReportAboutPet);
-        commandMap.put("getAnimalFromTheShelter", getAnimalFromTheShelter);
-        commandMap.put("catAndDogGetAnimalFromTheShelter", catAndDogGetAnimalFromTheShelter);
+        commandMap.put(START_COMMAND, start);
+        commandMap.put(MAIN_MENU_COMMAND, mainMenu);
+        commandMap.put(INFORMATION_COMMAND, information);
+        commandMap.put(CAT_AND_DOG_INFO_COMMAND, catAndDogInformation);
+        commandMap.put(SAVE_USER_CONTACTS_COMMAND, saveUserContacts);
+        commandMap.put(VOLUNTEER_COMMAND, callVolunteer);
+        commandMap.put(SAVE_REPORT_COMMAND, saveReportAboutPet);
+        commandMap.put(GET_ANIMAL_COMMAND, getAnimalFromTheShelter);
+        commandMap.put(CAT_AND_DOG_GET_ANIMAL_COMMAND, catAndDogGetAnimalFromTheShelter);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
             }
 
             if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
-                String commandText = "start";
+                String commandText = START_COMMAND;
                 commandMap.get(commandText).execute(update, this);
             }
         } else if (update.hasCallbackQuery()) {
@@ -131,44 +131,44 @@ public class TelegramBotService extends TelegramLongPollingBot {
         String commandTextFromButtons = update.getCallbackQuery().getData();
 
         switch (commandTextFromButtons) {
-            case "собака":
-            case "кошка":
-            case "меню":
-                commandTextFromButtons = "mainMenu";
+            case DOG:
+            case CAT:
+            case MENU:
+                commandTextFromButtons = MAIN_MENU_COMMAND;
                 break;
-            case "инфо":
-                commandTextFromButtons = "information";
+            case INFO:
+                commandTextFromButtons = INFORMATION_COMMAND;
                 break;
-            case "о_приюте":
-            case "расписание":
-            case "охрана":
-            case "техника_безопасности":
-                commandTextFromButtons = "catAndDogInformation";
+            case ABOUT_SHELTER:
+            case SCHEDULE:
+            case SECURITY:
+            case SAFETY_PRECAUTIONS:
+                commandTextFromButtons = CAT_AND_DOG_INFO_COMMAND;
                 break;
-            case "контакт":
-                commandTextFromButtons = "saveUserContacts";
+            case POST_CONTACT:
+                commandTextFromButtons = SAVE_USER_CONTACTS_COMMAND;
                 break;
-            case "волонтер":
-                commandTextFromButtons = "volunteer";
+            case VOLUNTEER:
+                commandTextFromButtons = VOLUNTEER_COMMAND;
                 break;
-            case "отчет":
-                commandTextFromButtons = "saveReportAboutPet";
+            case REPORT:
+                commandTextFromButtons = SAVE_REPORT_COMMAND;
                 break;
-            case "взять_животное":
-                commandTextFromButtons = "getAnimalFromTheShelter";
+            case GET_AN_ANIMAL:
+                commandTextFromButtons = GET_ANIMAL_COMMAND;
                 break;
-            case "правила_знакомства_собака":
-            case "правила_знакомства_кошка":
-            case "список_документов":
-            case "транспортировка":
-            case "дом_для_щенка":
-            case "дом_для_котенка":
-            case "дом_для_животного":
-            case "дом_для_инвалида":
-            case "советы_кинолога":
-            case "контакты_кинолога":
-            case "причина_отказа":
-                commandTextFromButtons = "catAndDogGetAnimalFromTheShelter";
+            case MEETING_DOG_RULES:
+            case MEETING_CAT_RULES:
+            case DOC_LIST:
+            case TRANSPORTATION:
+            case PUPPY_HOUSE:
+            case PUSSY_HOUSE:
+            case PET_HOUSE:
+            case INVALID_HOUSE:
+            case DOG_HANDLER_ADVICE:
+            case DOG_HANDLER_CONTACTS:
+            case REFUSAL_REASONS:
+                commandTextFromButtons = CAT_AND_DOG_GET_ANIMAL_COMMAND;
                 break;
         }
         return commandTextFromButtons;
