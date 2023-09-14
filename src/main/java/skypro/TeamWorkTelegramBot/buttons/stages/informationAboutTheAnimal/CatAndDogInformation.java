@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 @Component
 public class CatAndDogInformation implements Command {
@@ -87,24 +88,4 @@ public class CatAndDogInformation implements Command {
         }
     }
 
-    /**
-     * Метод, который нужен для обработки текстовых файлов в String
-     * @param filePath - принимает текстовый файл
-     * @return String message
-     * @throws IOException
-     */
-    private String getInfo(String filePath) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            while (line != null) {
-                sb.append(line);
-                sb.append("\n");
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Файл не найден");
-        }
-        return sb.toString();
-    }
 }
