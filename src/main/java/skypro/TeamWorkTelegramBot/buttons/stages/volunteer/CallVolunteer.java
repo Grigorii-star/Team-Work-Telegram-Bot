@@ -11,12 +11,12 @@ import skypro.TeamWorkTelegramBot.service.TelegramBotService;
  * Класс Волонтера
  */
 @Component
-public class Volunteer implements Command {
+public class CallVolunteer implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
-    public Volunteer(SendMessageService sendMessageService,
-                     AnimalOwnerRepository animalOwnerRepository) {
+    public CallVolunteer(SendMessageService sendMessageService,
+                         AnimalOwnerRepository animalOwnerRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
     }

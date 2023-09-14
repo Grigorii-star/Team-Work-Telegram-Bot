@@ -22,6 +22,9 @@ public class AnimalOwner {
     private String contactInformation;
     private Boolean dogLover;
     private Boolean tookTheAnimal;
+//    @ManyToOne
+//    @JoinColumn(name = "shelter_id")
+//    private Shelter shelter;
 
 
     @Override

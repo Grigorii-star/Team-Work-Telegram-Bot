@@ -16,7 +16,7 @@ import skypro.TeamWorkTelegramBot.buttons.stages.mainMenu.MainMenu;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveReportAboutPet;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts;
 import skypro.TeamWorkTelegramBot.buttons.stages.start.Start;
-import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.Volunteer;
+import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.CallVolunteer;
 
 
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
     private final Information information;
     private final CatAndDogInformation catAndDogInformation;
     private final SaveUserContacts saveUserContacts;
-    private final Volunteer volunteer;
+    private final CallVolunteer callVolunteer;
     private final SaveReportAboutPet saveReportAboutPet;
     private final GetAnimalFromTheShelter getAnimalFromTheShelter;
     private final CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter;
@@ -46,7 +46,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
                               AnimalOwnerRepository animalOwnerRepository,
                               Start start, MainMenu mainMenu, Information information,
                               CatAndDogInformation catAndDogInformation, SaveUserContacts saveUserContacts,
-                              Volunteer volunteer, SaveReportAboutPet saveReportAboutPet,
+                              CallVolunteer callVolunteer, SaveReportAboutPet saveReportAboutPet,
                               GetAnimalFromTheShelter getAnimalFromTheShelter,
                               CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter) {
         this.telegramBotConfiguration = telegramBotConfiguration;
@@ -56,7 +56,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         this.information = information;
         this.catAndDogInformation = catAndDogInformation;
         this.saveUserContacts = saveUserContacts;
-        this.volunteer = volunteer;
+        this.callVolunteer = callVolunteer;
         this.saveReportAboutPet = saveReportAboutPet;
         this.getAnimalFromTheShelter = getAnimalFromTheShelter;
         this.catAndDogGetAnimalFromTheShelter = catAndDogGetAnimalFromTheShelter;
@@ -71,7 +71,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         commandMap.put("information", information);
         commandMap.put("catAndDogInformation", catAndDogInformation);
         commandMap.put("saveUserContacts", saveUserContacts);
-        commandMap.put("volunteer", volunteer);
+        commandMap.put("volunteer", callVolunteer);
         commandMap.put("saveReportAboutPet", saveReportAboutPet);
         commandMap.put("getAnimalFromTheShelter", getAnimalFromTheShelter);
         commandMap.put("catAndDogGetAnimalFromTheShelter", catAndDogGetAnimalFromTheShelter);
