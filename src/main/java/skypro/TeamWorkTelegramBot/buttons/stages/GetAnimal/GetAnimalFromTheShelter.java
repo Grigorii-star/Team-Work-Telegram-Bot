@@ -8,14 +8,14 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
+
 @Component
 public class GetAnimalFromTheShelter implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
-
-    public final static String GREETING_MESSAGE = "Я рад, что ты готов к встрече с новым членом семьи!\n" +
-            "Для продолжения, пожалуйста, ознакомься со следующей документацией.";
 
     public GetAnimalFromTheShelter(SendMessageService sendMessageService,
                                    AnimalOwnerRepository animalOwnerRepository) {
@@ -24,55 +24,55 @@ public class GetAnimalFromTheShelter implements Command {
     }
 
     String[] buttonsTextDog = {
-            "Правила знакомства с собакой до того, как взять его из приюта",
-            "Список документов, необходимых для того, чтобы взять собаку из приюта",
-            "Список рекомендаций по транспортировке собаки",
-            "Список рекомендаций по обустройству дома для щенка",
-            "Список рекомендаций по обустройству дома для взрослого животного",
-            "Список рекомендаций по обустройству дома для животного с ограниченными возможностями (зрение, передвижение)",
-            "Советы кинолога по первичному общению с собакой",
-            "Контактные данные проверенных кинологов",
-            "Список причин, почему могут отказать выдать собаку из приюта",
-            "Оставить контактные данные, чтобы волонтер мог связаться",
-            "Позвать волонтера",
-            "Перейти в главное меню"};
+            MEETING_DOG_RULES_BUTTON,
+            DOC_LIST_DOG_BUTTON,
+            TRANSPORTATION_DOG_BUTTON,
+            PUPPY_HOUSE_BUTTON,
+            PET_HOUSE_BUTTON,
+            INVALID_HOUSE_BUTTON,
+            DOG_HANDLER_ADVICE_BUTTON,
+            DOG_HANDLER_CONTACTS_BUTTON,
+            REFUSAL_REASONS_DOG_BUTTON,
+            POST_CONTACT_BUTTON,
+            VOLUNTEER_BUTTON,
+            MENU_BUTTON};
 
     String[] buttonsCallDataDog = {
-            "правила_знакомства_собака",
-            "список_документов",
-            "транспортировка",
-            "дом_для_щенка",
-            "дом_для_животного",
-            "дом_для_инвалида",
-            "советы_кинолога",
-            "контакты_кинолога",
-            "причина_отказа",
-            "контакт",
-            "волонтер",
-            "меню"};
+            MEETING_DOG_RULES,
+            DOC_LIST,
+            TRANSPORTATION,
+            PUPPY_HOUSE,
+            PET_HOUSE,
+            INVALID_HOUSE,
+            DOG_HANDLER_ADVICE,
+            DOG_HANDLER_CONTACTS,
+            REFUSAL_REASONS,
+            POST_CONTACT,
+            VOLUNTEER,
+            MENU};
 
     String[] buttonsTextCat = {
-            "Правила знакомства с кошкой до того, как взять его из приюта",
-            "Список документов, необходимых для того, чтобы взять кошку из приюта",
-            "Список рекомендаций по транспортировке кошки",
-            "Список рекомендаций по обустройству дома для котенка",
-            "Список рекомендаций по обустройству дома для взрослого животного",
-            "Список рекомендаций по обустройству дома для животного с ограниченными возможностями (зрение, передвижение)",
-            "Список причин, почему могут отказать выдать кошку из приюта",
-            "Оставить контактные данные, чтобы волонтер мог связаться",
-            "Позвать волонтера",
-            "Перейти в главное меню"};
+            MEETING_CAT_RULES_BUTTON,
+            DOC_LIST_CAT_BUTTON,
+            TRANSPORTATION_CAT_BUTTON,
+            PUSSY_HOUSE_BUTTON,
+            PET_HOUSE_BUTTON,
+            INVALID_HOUSE_BUTTON,
+            REFUSAL_REASONS_CAT_BUTTON,
+            POST_CONTACT_BUTTON,
+            VOLUNTEER_BUTTON,
+            MENU_BUTTON};
     String[] buttonsCallDataCat = {
-            "правила_знакомства_кошка",
-            "список_документов",
-            "транспортировка",
-            "дом_для_котенка",
-            "дом_для_животного",
-            "дом_для_инвалида",
-            "причина_отказа",
-            "контакт",
-            "волонтер",
-            "меню"};
+            MEETING_CAT_RULES,
+            DOC_LIST,
+            TRANSPORTATION,
+            PUSSY_HOUSE,
+            PET_HOUSE,
+            INVALID_HOUSE,
+            REFUSAL_REASONS,
+            POST_CONTACT,
+            VOLUNTEER,
+            MENU};
 
     @Override
     public void execute(Update update, TelegramBotService telegramBotService) {

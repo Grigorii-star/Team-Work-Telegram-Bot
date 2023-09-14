@@ -12,6 +12,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
+
 /**
  * Класс, который нужен для формирования ответа пользователю
  */
@@ -19,15 +23,11 @@ import java.io.IOException;
 public class Start implements Command {
     private  final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private TelegramBotService telegramBotService;
 
-    public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
-            "Я отвечу на все вопросы и помогу определиться с выбором.";
-
-    String[] buttonsText = {"Приют для собак",
-                            "Приют для кошек"};
-    String[] buttonsCallData = {"собака",
-                                "кошка"};
+    String[] buttonsText = {DOG_SHELTER_BUTTON,
+                            CAT_SHELTER_BUTTON};
+    String[] buttonsCallData = {DOG,
+                                CAT};
 
     public Start(SendMessageService sendMessageService,
                  AnimalOwnerRepository animalOwnerRepository) {
@@ -72,7 +72,6 @@ public class Start implements Command {
         }
     }
 
-
     /**
      * Метод, который нужен для обработки текстовых файлов в String
      * @param filePath - принимает текстовый файл
@@ -85,6 +84,7 @@ public class Start implements Command {
             String line = reader.readLine();
             while (line != null) {
                 sb.append(line);
+                sb.append("\n");
                 line = reader.readLine();
             }
         } catch (IOException e) {

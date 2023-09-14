@@ -42,6 +42,7 @@ public class CareStage3 {
             String line = reader.readLine();
             while (line != null) {
                 sb.append(line);
+                sb.append("\n");
                 line = reader.readLine();
             }
         } catch (IOException e) {
