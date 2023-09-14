@@ -7,6 +7,9 @@ import skypro.TeamWorkTelegramBot.service.ShelterService;
 
 import java.util.Collection;
 
+/**
+ * Контроллер для приюта
+ */
 @RestController
 @RequestMapping("animal-shelter")
 public class ShelterController {

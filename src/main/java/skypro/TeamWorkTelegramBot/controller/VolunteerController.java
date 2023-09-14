@@ -7,6 +7,9 @@ import skypro.TeamWorkTelegramBot.service.VolunteerService;
 
 import java.util.Collection;
 
+/**
+ * Контроллер для волонтера
+ */
 @RestController
 @RequestMapping("volunteer")
 public class VolunteerController {
