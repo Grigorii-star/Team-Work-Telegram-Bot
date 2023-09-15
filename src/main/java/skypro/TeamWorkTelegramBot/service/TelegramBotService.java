@@ -119,8 +119,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
             }
 
             if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
-                String commandText = START_COMMAND;
-                commandMap.get(commandText).execute(update, this);
+                commandMap.get(START_COMMAND).execute(update, this);
             }
 
             if (!update.getMessage().getText().isEmpty() && matchesResult) {
