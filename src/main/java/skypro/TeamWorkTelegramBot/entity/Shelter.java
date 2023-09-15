@@ -31,6 +31,11 @@ public class Shelter {
     @JsonIgnore
     private Collection<Volunteer> volunteers;
 
+    public Shelter(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
