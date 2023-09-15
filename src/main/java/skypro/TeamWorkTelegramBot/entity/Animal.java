@@ -22,14 +22,15 @@ public class Animal {
     private String filePath;
     private long fileSize;
     private String mediaType;
-//    @Lob
-//    private byte[] data;
-//    @ManyToOne
-//    @JoinColumn(name = "shelter_id")
-//    private Shelter shelter;
-//    @ManyToOne
-//    @JoinColumn(name = "animal_owner_id")
-//    private AnimalOwner animalOwner;
+    @Lob
+    @Column(columnDefinition = "oid")
+    private byte[] data;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+    @ManyToOne
+    @JoinColumn(name = "animal_owner_id")
+    private AnimalOwner animalOwner;
 
     @Override
     public boolean equals(Object o) {
