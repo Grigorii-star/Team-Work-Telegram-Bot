@@ -8,7 +8,8 @@ CREATE TABLE animal_owner (
     contact_information text,
     dog_lover           boolean,
     took_the_animal     boolean,
-    can_save_contact    boolean
+    can_save_contact    boolean,
+    be_volunteer        boolean
 );
 
 -- changeset grigorii:create-shelter-table
@@ -21,7 +22,8 @@ CREATE TABLE shelter (
 CREATE TABLE volunteer (
     id                  serial PRIMARY KEY,
     id_chat             bigint,
-    name                text
+    name                text,
+    is_busy             boolean
 );
 
 -- changeset grigorii:create-animal-table

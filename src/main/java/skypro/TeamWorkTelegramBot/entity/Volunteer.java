@@ -20,6 +20,7 @@ public class Volunteer {
     private Integer id;
     private Long idChat;
     private String name;
+    private Boolean isBusy;
 //    @ManyToOne
 //    @JoinColumn(name = "shelter_id")
 //    private Shelter shelter;
