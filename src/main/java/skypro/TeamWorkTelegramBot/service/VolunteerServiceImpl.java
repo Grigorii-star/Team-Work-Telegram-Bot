@@ -26,9 +26,9 @@ public class VolunteerServiceImpl implements VolunteerService{
     public Volunteer addVolunteer(Volunteer volunteer) {
         log.info("Invoked a method for adding a volunteer");
 
-        Optional<Volunteer> studentExistsCheck = volunteersRepository.findByIdChat(volunteer.getIdChat());
-        if (studentExistsCheck.isPresent()) {
-            log.error("The volunteer {} already exists", studentExistsCheck);
+        Volunteer volunteerExistsCheck = volunteersRepository.findByIdChat(volunteer.getIdChat());
+        if (volunteerExistsCheck.getIdChat().equals(volunteer.getIdChat())) {
+            log.error("The volunteer {} already exists", volunteerExistsCheck);
         }
 
         Volunteer addedVolunteer = volunteersRepository.save(volunteer);

@@ -37,7 +37,7 @@ public class GetAnimalFromTheShelter implements Command {
             DOG_HANDLER_CONTACTS_BUTTON,
             REFUSAL_REASONS_DOG_BUTTON,
             POST_CONTACT_BUTTON,
-            VOLUNTEER_BUTTON,
+            CALL_VOLUNTEER_BUTTON,
             MENU_BUTTON};
 
     String[] buttonsCallDataDog = {
@@ -51,7 +51,7 @@ public class GetAnimalFromTheShelter implements Command {
             DOG_HANDLER_CONTACTS,
             REFUSAL_REASONS,
             POST_CONTACT,
-            VOLUNTEER,
+            CALL_VOLUNTEER,
             MENU};
 
     String[] buttonsTextCat = {
@@ -63,7 +63,7 @@ public class GetAnimalFromTheShelter implements Command {
             INVALID_HOUSE_BUTTON,
             REFUSAL_REASONS_CAT_BUTTON,
             POST_CONTACT_BUTTON,
-            VOLUNTEER_BUTTON,
+            CALL_VOLUNTEER_BUTTON,
             MENU_BUTTON};
     String[] buttonsCallDataCat = {
             MEETING_CAT_RULES,
@@ -74,7 +74,7 @@ public class GetAnimalFromTheShelter implements Command {
             INVALID_HOUSE,
             REFUSAL_REASONS,
             POST_CONTACT,
-            VOLUNTEER,
+            CALL_VOLUNTEER,
             MENU};
 
     /**
