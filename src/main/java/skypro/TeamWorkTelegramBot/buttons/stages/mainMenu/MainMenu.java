@@ -24,11 +24,11 @@ public class MainMenu implements Command {
     String[] buttonsText = {GET_INFO_SHELTER_BUTTON,
                             GET_PET_BUTTON,
                             REPORT_BUTTON,
-                            VOLUNTEER_BUTTON};
+                            CALL_VOLUNTEER_BUTTON};
     String[] buttonsCallData = {INFO,
                                 GET_AN_ANIMAL,
                                 REPORT,
-                                VOLUNTEER};
+                                CALL_VOLUNTEER};
 
     public MainMenu(SendMessageService sendMessageService,
                     AnimalOwnerRepository animalOwnerRepository) {
@@ -72,7 +72,7 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals(MENU)) {
+        else if (callData.equals(MENU) || callData.equals("чат")) {
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,

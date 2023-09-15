@@ -9,6 +9,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts.GREETING_MESSAGE;
 
 
@@ -25,6 +27,9 @@ public class CallVolunteer implements Command {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
     }
+
+    String[] buttonsText = {"Прервать чат"};
+    String[] buttonsCallData = {"чат"};
 
     /**
      * Метод, который нужен для формирования ответа пользователю.
@@ -43,30 +48,13 @@ public class CallVolunteer implements Command {
         if (!animalOwner.getBeVolunteer()) {
 
             animalOwner.setHelpVolunteer(true);
-            animalOwner.setCanSaveContact(true);
-
             animalOwnerRepository.save(animalOwner);
-            sendMessageService.SendMessageToUser(
-                    String.valueOf(chatId),
-                    "Спасибо за твою готовность помогать!\n" +
-                            GREETING_MESSAGE,
-                    telegramBotService
-            );
-        }
-         else if (!animalOwner.getBeVolunteer() && animalOwner.getDogLover()) {
 
             sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
                     String.valueOf(chatId),
                     "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.",
-                    telegramBotService
-            );
-        }
-        else if (animalOwner.getTookTheAnimal()) { //заменить на help_volunteer
-
-
-            sendMessageService.SendMessageToUser( //логика по авзову волонтёра
-                    String.valueOf(chatId),
-                    "ответ волонтёра",
+                    buttonsText,
+                    buttonsCallData,
                     telegramBotService
             );
         }

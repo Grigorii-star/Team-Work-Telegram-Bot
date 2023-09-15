@@ -8,7 +8,8 @@ public class ConstantsCallData {
     //
 
     public static final String POST_CONTACT = "контакт";
-    public static final String VOLUNTEER = "волонтер";
+    public static final String BEST_VOLUNTEER = "стать_волонтером";
+    public static final String CALL_VOLUNTEER = "вызвать_волонтера";
     public static final String MENU = "меню";
 
     //Константы для отклика на кнопки из этапа Главное меню

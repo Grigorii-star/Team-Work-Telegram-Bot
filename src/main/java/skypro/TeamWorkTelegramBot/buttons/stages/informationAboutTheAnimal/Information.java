@@ -26,7 +26,7 @@ public class Information implements Command {
             SECURITY_BUTTON,
             SAFETY_PRECAUTIONS_BUTTON,
             POST_CONTACT_BUTTON,
-            VOLUNTEER_BUTTON,
+            CALL_VOLUNTEER_BUTTON,
             MENU_BUTTON};
     String[] buttonsCallData = {
             ABOUT_SHELTER,
@@ -34,7 +34,7 @@ public class Information implements Command {
             SECURITY,
             SAFETY_PRECAUTIONS,
             POST_CONTACT,
-            VOLUNTEER,
+            CALL_VOLUNTEER,
             MENU};
 
     public Information(SendMessageService sendMessageService,

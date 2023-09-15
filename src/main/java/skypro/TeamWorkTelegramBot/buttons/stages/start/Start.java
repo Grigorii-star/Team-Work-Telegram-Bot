@@ -9,10 +9,6 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
@@ -31,7 +27,7 @@ public class Start implements Command {
                             BECOME_A_VOLUNTEER_BUTTON};
     String[] buttonsCallData = {DOG,
                                 CAT,
-                                VOLUNTEER};
+                                BEST_VOLUNTEER};
 
     public Start(SendMessageService sendMessageService,
                  AnimalOwnerRepository animalOwnerRepository) {
@@ -70,11 +66,11 @@ public class Start implements Command {
         AnimalOwner animalOwnerQuery = animalOwnerRepository.findByIdChat(queryChatId);
 
         if (start.equals("/start") && animalOwnerText.getRegistered() == null) {
-            animalOwnerText.setRegistered(true);
-            animalOwnerText.setCanSaveContact(false);
-            animalOwnerText.setBeVolunteer(false); //добавил
-            animalOwnerText.setTookTheAnimal(false);
-            animalOwnerText.setHelpVolunteer(false); //добавил
+            animalOwnerText.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
+            animalOwnerText.setCanSaveContact(false); // чтобы можно было сохранить контактные данные только пройдя по кнопке
+            animalOwnerText.setBeVolunteer(false); //для того, чтобы стать волонтером и пройти по кнопке
+            animalOwnerText.setTookTheAnimal(false); //для того, чтобы взять животное и пройти по кнопке
+            animalOwnerText.setHelpVolunteer(false); //для того, чтобы получить помощь и пройти по кнопке
             animalOwnerRepository.save(animalOwnerText);
             sendMessageService.SendMessageToUser(String.valueOf(textChatId), GREETING_MESSAGE, telegramBotService);
             sendMessageService.SendMessageToUser(

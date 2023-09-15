@@ -36,15 +36,15 @@ public class HelpVolunteer implements Command {
 
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatIdOwner);
 
-        Long volunteerId = getChatIdVolunteer();
+        //Long volunteerId = getChatIdVolunteer();
         //Volunteer volunteer = volunteersRepository.findByIdChat(volunteerId);
 
-        List<List<Volunteer>> listAll = Collections.singletonList(new ArrayList<Volunteer>(volunteersRepository.findAll()));
+        //List<List<Volunteer>> listAll = Collections.singletonList(new ArrayList<Volunteer>(volunteersRepository.findAll()));
 
-        Random random = new Random();
-        int index = random.nextInt(listAll.size());
+//        Random random = new Random();
+//        int index = random.nextInt(listAll.size());
 
-        if ((animalOwner.getHelpVolunteer() != null && animalOwner.getHelpVolunteer()) && !animalOwner.getBeVolunteer()) {
+        if ((animalOwner.getHelpVolunteer() && !animalOwner.getBeVolunteer())) {
 
             System.out.println("отпрвляется сообщение волонтёру");
             sendMessageService.SendMessageToUser( // отпрвляется сообщение волонтёру
@@ -54,11 +54,11 @@ public class HelpVolunteer implements Command {
             );
         }
 
-        if ((animalOwner.getHelpVolunteer() != null && !animalOwner.getHelpVolunteer()) && animalOwner.getBeVolunteer()) {
+        if (!animalOwner.getHelpVolunteer() && animalOwner.getBeVolunteer()) {
 
             System.out.println("отпрвляется сообщение пользователю");
             sendMessageService.SendMessageToUser( //отпрвляется сообщение пользователю
-                    String.valueOf(6016922981L), //заменить на userId, который был сохранён в БД
+                    String.valueOf(chatIdOwner), //заменить на userId, который был сохранён в БД
                     text,
                     telegramBotService
             );
@@ -66,7 +66,8 @@ public class HelpVolunteer implements Command {
     }
 
     private Long getChatIdVolunteer() {
-        List<Volunteer> collectList = new ArrayList<>(volunteerServicer.getAllVolunteers()); // вытащить id
+        List<Volunteer> collectList = new ArrayList<>(volunteersRepository.findAll()); // вытащить id
+        //collectList.stream()
         List<Long> chatIds = List.of(37909760L, 6238970921L);
         Random random = new Random();
 
@@ -74,4 +75,5 @@ public class HelpVolunteer implements Command {
         //int index2 = random.nextInt(collectList.size());
         return chatIds.get(index);
     }
+
 }
