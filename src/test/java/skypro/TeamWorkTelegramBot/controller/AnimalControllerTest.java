@@ -33,23 +33,24 @@ class AnimalControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    AnimalService animalService;
+    private AnimalService animalService;
 
     @MockBean
-    AnimalsRepository animalsRepository;
+    private AnimalsRepository animalsRepository;
 
     @MockBean
-    ShelterController shelterController;
+    private ShelterController shelterController;
 
     @MockBean
-    VolunteerController volunteerController;
+    private VolunteerController volunteerController;
 
     @InjectMocks
     private AnimalController animalController;
 
 
+    @SneakyThrows
     @Test
-    public void find() throws Exception {
+    public void find() {
 
         Animal animal = new Animal(1, "TestName", "test/path", 10L, "testType");
 
