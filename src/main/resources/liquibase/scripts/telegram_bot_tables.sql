@@ -9,7 +9,8 @@ CREATE TABLE animal_owner (
     dog_lover           boolean,
     took_the_animal     boolean,
     can_save_contact    boolean,
-    be_volunteer        boolean
+    be_volunteer        boolean,
+    help_volunteer      boolean
 );
 
 -- changeset grigorii:create-shelter-table

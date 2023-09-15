@@ -24,6 +24,7 @@ public class AnimalOwner {
     private Boolean tookTheAnimal;
     private Boolean canSaveContact;
     private Boolean beVolunteer;
+    private Boolean helpVolunteer;
 //    @ManyToOne
 //    @JoinColumn(name = "shelter_id")
 //    private Shelter shelter;

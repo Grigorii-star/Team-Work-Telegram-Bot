@@ -6,5 +6,5 @@ import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import java.util.Optional;
 
 public interface VolunteersRepository extends JpaRepository<Volunteer, Integer> {
-    Optional<Volunteer> findByIdChat(Long idChat);
+    Volunteer findByIdChat(Long idChat);
 }

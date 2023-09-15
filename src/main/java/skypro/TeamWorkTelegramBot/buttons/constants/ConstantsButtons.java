@@ -10,6 +10,7 @@ public class ConstantsButtons {
 
     public static final String CAT_SHELTER_BUTTON = "Приют для кошек";
     public static final String DOG_SHELTER_BUTTON = "Приют для собак";
+    public static final String BECOME_A_VOLUNTEER_BUTTON = "Стать волонтёром";
 
 
     public static final String POST_CONTACT_BUTTON = "Оставить контактные данные, чтобы волонтер мог связаться";

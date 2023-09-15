@@ -9,6 +9,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.START_COMMAND;
+
 /**
  * Класс, для сохранению контактов пользователя в базу данных
  */
@@ -22,8 +24,8 @@ public class SaveUserContacts implements Command {
             "+7 999 999 99 99";
     public final static String GREETING_MESSAGE_OK = "Отлично! Я сохранил твои контактные данные.\n" +
             "Для перехода в главное меню нажми на кнопку ниже.";
-    public final static String GREETING_MESSAGE_NO = "У меня уже есть твои контактные данные.\n" +
-            "Для перехода в главное меню нажми на кнопку ниже.";
+    public final static String GREETING_MESSAGE_OK2 = "Отлично! Я сохранил твои контактные данные.\n" +
+            "Для перехода в меню выбора приюта нажми на кнопку ниже /start";
 
 
     String[] buttonsText = {
@@ -65,8 +67,8 @@ public class SaveUserContacts implements Command {
                     GREETING_MESSAGE,
                     telegramBotService
             );
-
-        } else if (update.getMessage().hasText() && animalOwner.getCanSaveContact()) {
+                                                                                    //добавил ниже && !animalOwner.getBeVolunteer()
+        } else if (update.getMessage().hasText() && animalOwner.getCanSaveContact() && !animalOwner.getBeVolunteer()) {
             Long chatId = update.getMessage().getChatId();
             String contactInformationText = update.getMessage().getText();
 
@@ -79,6 +81,20 @@ public class SaveUserContacts implements Command {
                     GREETING_MESSAGE_OK,
                     buttonsText,
                     buttonsCallData,
+                    telegramBotService
+            );
+        }
+        else if (update.getMessage().hasText() && animalOwner.getCanSaveContact() && animalOwner.getBeVolunteer()) {
+            Long chatId = update.getMessage().getChatId();
+            String contactInformationText = update.getMessage().getText();
+
+            animalOwner.setContactInformation(String.valueOf(contactInformationText));
+            animalOwner.setCanSaveContact(false);
+            animalOwnerRepository.save(animalOwner);
+
+            sendMessageService.SendMessageToUser(
+                    String.valueOf(chatId),
+                    GREETING_MESSAGE_OK2,
                     telegramBotService
             );
         }
