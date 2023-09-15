@@ -21,9 +21,11 @@ public class Volunteer {
     private Long idChat;
     private String name;
     private Boolean isBusy;
-//    @ManyToOne
-//    @JoinColumn(name = "shelter_id")
-//    private Shelter shelter;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+    @OneToOne
+    private AnimalOwner animalOwner;
 
     @Override
     public boolean equals(Object o) {

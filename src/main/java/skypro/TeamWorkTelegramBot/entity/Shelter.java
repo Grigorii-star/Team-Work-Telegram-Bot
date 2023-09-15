@@ -21,15 +21,15 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-//    @OneToMany(mappedBy = "shelter")
-//    @JsonIgnore
-//    private Collection<Animal> animals;
-//    @OneToMany(mappedBy = "shelter")
-//    @JsonIgnore
-//    private Collection<AnimalOwner> animalOwners;
-//    @OneToMany(mappedBy = "shelter")
-//    @JsonIgnore
-//    private Collection<Volunteer> volunteers;
+    @OneToMany(mappedBy = "shelter")
+    @JsonIgnore
+    private Collection<Animal> animals;
+    @OneToMany(mappedBy = "shelter")
+    @JsonIgnore
+    private Collection<AnimalOwner> animalOwners;
+    @OneToMany(mappedBy = "shelter")
+    @JsonIgnore
+    private Collection<Volunteer> volunteers;
 
     @Override
     public boolean equals(Object o) {
