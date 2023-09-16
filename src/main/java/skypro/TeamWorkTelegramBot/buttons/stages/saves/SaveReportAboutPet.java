@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.repository.AnimalsRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
@@ -14,11 +15,14 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 public class SaveReportAboutPet implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
+    private final AnimalsRepository animalsRepository;
 
     public SaveReportAboutPet(SendMessageService sendMessageService,
-                              AnimalOwnerRepository animalOwnerRepository) {
+                              AnimalOwnerRepository animalOwnerRepository,
+                              AnimalsRepository animalsRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
+        this.animalsRepository = animalsRepository;
     }
     /**
      * Метод, который нужен для формирования ответа пользователю.
