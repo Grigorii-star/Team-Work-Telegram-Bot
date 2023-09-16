@@ -123,16 +123,16 @@ public class TelegramBotService extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Long chatId = update.getMessage().getChatId();
 
-            String messageText = update.getMessage().getText();
-            String patternNumber = "([\\+]?[7|8][\\s-(]?[9][0-9]{2}[\\s-)]?)?([\\d]{3})[\\s-]?([\\d]{2})[\\s-]?([\\d]{2})";
-            boolean matchesResult = Pattern.matches(patternNumber, messageText);
-
             AnimalOwner checkAnimalOwner = animalOwnerRepository.findByIdChat(chatId);
             if (checkAnimalOwner == null) {
                 AnimalOwner animalOwner = new AnimalOwner();
                 animalOwner.setIdChat(chatId);
                 animalOwnerRepository.save(animalOwner);
             }
+
+            String messageText = update.getMessage().getText();
+            String patternNumber = "([\\+]?[7|8][\\s-(]?[9][0-9]{2}[\\s-)]?)?([\\d]{3})[\\s-]?([\\d]{2})[\\s-]?([\\d]{2})";
+            boolean matchesResult = Pattern.matches(patternNumber, messageText);
 
             if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
                 commandMap.get(START_COMMAND).execute(update, this);
@@ -146,12 +146,15 @@ public class TelegramBotService extends TelegramLongPollingBot {
             if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals("/start")) { //заменить на help_volunteer // ... && checkAnimalOwner.getTookTheAnimal()
                 commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
             }
+            if (checkAnimalOwner != null && checkAnimalOwner.getCanSendReport()
+                    && update.getMessage().hasText() && !update.getMessage().getText().equals("/start")) {
+                commandMap.get("savePhoto").execute(update, this);
+            }
         } else if (update.hasCallbackQuery()) {
             String commandTextFromButtons = getCommandTextFromButtons(update);
             commandMap.get(commandTextFromButtons).execute(update, this);
         } else if (update.getMessage().hasPhoto()) {
             if (update.getMessage().hasPhoto() && update.getMessage().getPhoto() != null) {
-                log.info("Photo to map");
                 commandMap.get("savePhoto").execute(update, this);
             }
         }

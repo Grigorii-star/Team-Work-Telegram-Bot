@@ -71,6 +71,7 @@ public class Start implements Command {
             animalOwnerText.setBeVolunteer(false); //для того, чтобы стать волонтером и пройти по кнопке
             animalOwnerText.setTookTheAnimal(false); //для того, чтобы взять животное и пройти по кнопке
             animalOwnerText.setHelpVolunteer(false); //для того, чтобы получить помощь и пройти по кнопке
+            animalOwnerText.setCanSendReport(false); // для того, чтобы отправить отчет только нажав кнопку
             animalOwnerRepository.save(animalOwnerText);
             sendMessageService.SendMessageToUser(String.valueOf(textChatId), GREETING_MESSAGE, telegramBotService);
             sendMessageService.SendMessageToUser(
@@ -82,6 +83,7 @@ public class Start implements Command {
             );
         } else if ((start.equals("/start") && animalOwnerText.getRegistered())) {
             animalOwnerText.setCanSaveContact(false);
+            animalOwnerText.setCanSendReport(false);
             //animalOwner.setBeVolunteer(false); //добавил, а может тут и не надо
             animalOwnerRepository.save(animalOwnerText);
             sendMessageService.SendMessageToUser(

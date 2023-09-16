@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 import skypro.TeamWorkTelegramBot.service.fileService.FileService;
@@ -43,6 +44,9 @@ public class SaveReportAboutPet implements Command {
         log.info("Invoked a method for save animal report");
 
         Long userChatIdQuery = update.getCallbackQuery().getFrom().getId();
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(userChatIdQuery);
+        animalOwner.setCanSendReport(true);
+        animalOwnerRepository.save(animalOwner);
 
         sendMessageService.SendMessageToUser(
                 String.valueOf(userChatIdQuery),

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.exception.UploadFileException;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
@@ -14,6 +15,9 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 import java.io.IOException;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+
 @Slf4j
 @Component
 public class SavePhoto implements Command {
@@ -21,6 +25,9 @@ public class SavePhoto implements Command {
     private final AnimalOwnerRepository animalOwnerRepository;
     private final ReportsRepository reportsRepository;
     private final FileService fileService;
+
+    String[] buttonsText = {MENU_BUTTON};
+    String[] buttonsCallData = {MENU};
 
     public SavePhoto(SendMessageService sendMessageService,
                      AnimalOwnerRepository animalOwnerRepository,
@@ -48,11 +55,15 @@ public class SavePhoto implements Command {
 
             try {
                 fileService.animalReport(message);
-
+                AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(message.getChatId());
+                animalOwner.setCanSendReport(false);
+                animalOwnerRepository.save(animalOwner);
 
                 sendMessageService.SendMessageToUser(
                         String.valueOf(message.getChatId()),
-                        "Фото и отчет успешно загружены.",
+                        "Фото и отчет успешно загружены. Перейдите в главное меню.",
+                        buttonsText,
+                        buttonsCallData,
                         telegramBotService
                 );
 
