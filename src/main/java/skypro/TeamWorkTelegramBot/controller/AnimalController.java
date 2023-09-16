@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skypro.TeamWorkTelegramBot.entity.Animal;
-import skypro.TeamWorkTelegramBot.service.AnimalService;
+import skypro.TeamWorkTelegramBot.service.restApiServices.AnimalService;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.restApiServices;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,6 @@ import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 /**
  * Класс реализации интерфейса VolunteerService

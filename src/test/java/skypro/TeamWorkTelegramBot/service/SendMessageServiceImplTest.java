@@ -9,6 +9,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

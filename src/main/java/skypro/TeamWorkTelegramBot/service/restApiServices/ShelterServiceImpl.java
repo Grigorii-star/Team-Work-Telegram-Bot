@@ -1,9 +1,8 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.restApiServices;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
-import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
 
 import java.util.Collection;

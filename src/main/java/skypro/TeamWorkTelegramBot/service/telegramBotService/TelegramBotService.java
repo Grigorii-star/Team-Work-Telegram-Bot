@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.telegramBotService;
 
 import lombok.Getter;
 import org.springframework.stereotype.Service;

@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 /**
  * Класс для сохранения отчета о животном.
