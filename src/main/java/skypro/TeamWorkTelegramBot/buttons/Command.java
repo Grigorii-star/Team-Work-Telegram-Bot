@@ -1,7 +1,7 @@
 package skypro.TeamWorkTelegramBot.buttons;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.service.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 /**
  * интерфейс для обработок значений от телеграмм бота

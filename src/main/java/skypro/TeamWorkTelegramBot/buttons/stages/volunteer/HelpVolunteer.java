@@ -7,12 +7,11 @@ import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
-import skypro.TeamWorkTelegramBot.service.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.TelegramBotService;
-import skypro.TeamWorkTelegramBot.service.VolunteerService;
+import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.restApiServices.VolunteerService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class HelpVolunteer implements Command {

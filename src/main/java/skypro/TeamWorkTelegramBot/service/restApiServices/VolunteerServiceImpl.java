@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.restApiServices;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,6 @@ import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 /**
  * Класс реализации интерфейса VolunteerService
@@ -27,7 +26,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         log.info("Invoked a method for adding a volunteer");
 
         Volunteer volunteerExistsCheck = volunteersRepository.findByIdChat(volunteer.getIdChat());
-        if (volunteerExistsCheck.getIdChat().equals(volunteer.getIdChat())) {
+        if (volunteerExistsCheck != null && volunteerExistsCheck.getIdChat().equals(volunteer.getIdChat())) {
             log.error("The volunteer {} already exists", volunteerExistsCheck);
         }
 
@@ -54,7 +53,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         volunteerIdValidation(volunteer.getId());
 
         Volunteer updatedVolunteer = volunteersRepository.save(volunteer);
-        log.debug("Student {} was updated", updatedVolunteer);
+        log.debug("Volunteer {} was updated", updatedVolunteer);
         return updatedVolunteer;
     }
 
@@ -64,13 +63,13 @@ public class VolunteerServiceImpl implements VolunteerService{
 
         volunteerIdValidation(id);
 
-        log.debug("Student with id {} was removed", id);
+        log.debug("Volunteer with id {} was removed", id);
         volunteersRepository.deleteById(id);
     }
 
     @Override
     public Collection<Volunteer> getAllVolunteers() {
-        log.info("Invoked a method for getting all volunteer");
+        log.info("Invoked a method for getting all volunteers");
 
         log.debug("All volunteers were received");
         return Collections.unmodifiableCollection(volunteersRepository.findAll());

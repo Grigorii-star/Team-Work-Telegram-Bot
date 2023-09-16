@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
-import skypro.TeamWorkTelegramBot.service.ShelterService;
+import skypro.TeamWorkTelegramBot.service.restApiServices.ShelterService;
 
 import java.util.Collection;
 
@@ -48,7 +48,7 @@ public class ShelterController {
             @ApiResponse(code = 500, message = "Ошибка при поиске приюта")
     })
     @GetMapping("{id}")
-    public ResponseEntity<Shelter> find(@PathVariable Long id) {
+    public ResponseEntity<Shelter> find(@PathVariable Integer id) {
         return ResponseEntity.ok(shelterService.findShelter(id));
     }
     /**
@@ -78,7 +78,7 @@ public class ShelterController {
             @ApiResponse(code = 500, message = "Ошибка при удалении приюта")
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> remove(@PathVariable Long id) {
+    public ResponseEntity<Void> remove(@PathVariable Integer id) {
         shelterService.removeShelter(id);
         return ResponseEntity.ok().build();
     }

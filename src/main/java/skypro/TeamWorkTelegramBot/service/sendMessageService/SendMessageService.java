@@ -1,4 +1,6 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.sendMessageService;
+
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 /**
  * Интерфейс, который создаёт сообщения и кнопки

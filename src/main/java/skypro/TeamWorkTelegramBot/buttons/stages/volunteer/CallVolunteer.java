@@ -4,14 +4,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
-import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.TelegramBotService;
-
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
-import static skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts.GREETING_MESSAGE;
+import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 
 /**

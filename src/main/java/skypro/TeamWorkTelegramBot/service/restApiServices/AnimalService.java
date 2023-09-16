@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.restApiServices;
 
 import skypro.TeamWorkTelegramBot.entity.Animal;
 
@@ -19,7 +19,7 @@ public interface AnimalService {
      * @param id Идентификатор животного для поиска.
      * @return животное, найденное по указанному идентификатору
      */
-    Animal findAnimal(Long id);
+    Animal findAnimal(Integer id);
     /**
      * метод редактирования животного в базе данных.
      * @param animal животноое для редактирования.
@@ -31,7 +31,7 @@ public interface AnimalService {
      * @param id Идентификатор животного для поиска.
      * @return удаленное животное.
      */
-    void removeAnimal(Long id);
+    void removeAnimal(Integer id);
     /**
      * метод получить всех животных из базы данных.
      */

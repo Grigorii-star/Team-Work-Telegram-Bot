@@ -6,10 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.TelegramBotService;
-
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.START_COMMAND;
+import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 /**
  * Класс, для сохранению контактов пользователя в базу данных

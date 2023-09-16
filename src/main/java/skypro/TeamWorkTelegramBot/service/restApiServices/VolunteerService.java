@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.restApiServices;
 
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 

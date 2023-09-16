@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import skypro.TeamWorkTelegramBot.entity.Animal;
 import skypro.TeamWorkTelegramBot.repository.AnimalsRepository;
-import skypro.TeamWorkTelegramBot.service.AnimalService;
+import skypro.TeamWorkTelegramBot.service.restApiServices.AnimalService;
 
 import java.util.ArrayList;
 import java.util.List;
