@@ -1,31 +1,31 @@
 package skypro.TeamWorkTelegramBot.service.restApiServices;
 
-import skypro.TeamWorkTelegramBot.entity.Animal;
+import skypro.TeamWorkTelegramBot.entity.Report;
 
 import java.util.Collection;
 
 /**
  *Интерфейс для животных
  */
-public interface AnimalService {
+public interface ReportService {
     /**
      * Добавляет животного в базу данных.
-     * @param animal животное для добавления.
+     * @param report животное для добавления.
      * @return Добавленное животное.
      */
-    Animal addAnimal(Animal animal);
+    Report addAnimal(Report report);
     /**
      * метод который находит животного по указанному идентификатору.
      * @param id Идентификатор животного для поиска.
      * @return животное, найденное по указанному идентификатору
      */
-    Animal findAnimal(Integer id);
+    Report findAnimal(Integer id);
     /**
      * метод редактирования животного в базе данных.
-     * @param animal животноое для редактирования.
+     * @param report животноое для редактирования.
      * @return отредактированное животное.
      */
-    Animal editAnimal(Animal animal);
+    Report editAnimal(Report report);
     /**
      * метод удаляет животного из базы данных.
      * @param id Идентификатор животного для поиска.
@@ -35,5 +35,5 @@ public interface AnimalService {
     /**
      * метод получить всех животных из базы данных.
      */
-    Collection<Animal> getAllAnimals();
+    Collection<Report> getAllAnimals();
 }

@@ -1,4 +1,4 @@
-# Telegram bot for animal shelters
+# Telegram bot for report shelters
 ## Working on a project
   1. Grigorii
   2. Konstantin

@@ -1,11 +1,13 @@
 package skypro.TeamWorkTelegramBot.service.telegramBotService;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.CatAndDogGetAnimalFromTheShelter;
+import skypro.TeamWorkTelegramBot.buttons.stages.saves.SavePhoto;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.BecomeVolunteer;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.HelpVolunteer;
 import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
@@ -31,8 +33,9 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.*;
 /**
  * Сервисный класс телеграм бота
  */
-@Service
+@Slf4j
 @Getter
+@Service
 public class TelegramBotService extends TelegramLongPollingBot {
     private final TelegramBotConfiguration telegramBotConfiguration;
     private final AnimalOwnerRepository animalOwnerRepository;
@@ -47,6 +50,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
     private final CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter;
     private final HelpVolunteer helpVolunteer;
     private final BecomeVolunteer becomeVolunteer;
+    private final SavePhoto savePhoto;
     /**
      * Мапа, которая хранит бины классов, реализующих интерфейс command
      */
@@ -58,7 +62,9 @@ public class TelegramBotService extends TelegramLongPollingBot {
                               CatAndDogInformation catAndDogInformation, SaveUserContacts saveUserContacts,
                               CallVolunteer callVolunteer, SaveReportAboutPet saveReportAboutPet,
                               GetAnimalFromTheShelter getAnimalFromTheShelter,
-                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter, HelpVolunteer helpVolunteer, BecomeVolunteer becomeVolunteer) {
+                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter,
+                              HelpVolunteer helpVolunteer, BecomeVolunteer becomeVolunteer,
+                              SavePhoto savePhoto) {
         this.telegramBotConfiguration = telegramBotConfiguration;
         this.animalOwnerRepository = animalOwnerRepository;
         this.start = start;
@@ -72,6 +78,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         this.catAndDogGetAnimalFromTheShelter = catAndDogGetAnimalFromTheShelter;
         this.helpVolunteer = helpVolunteer;
         this.becomeVolunteer = becomeVolunteer;
+        this.savePhoto = savePhoto;
 
         this.commandMap = new HashMap<>();
         this.init();
@@ -92,6 +99,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         commandMap.put(BECOME_VOLUNTEER_COMMAND, becomeVolunteer);
         commandMap.put(CALL_VOLUNTEER_COMMAND, callVolunteer);
         commandMap.put(HELP_VOLUNTEER_COMMAND, helpVolunteer);
+        commandMap.put("savePhoto", savePhoto);
     }
 
     @Override
@@ -138,10 +146,14 @@ public class TelegramBotService extends TelegramLongPollingBot {
             if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals("/start")) { //заменить на help_volunteer // ... && checkAnimalOwner.getTookTheAnimal()
                 commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
             }
-
         } else if (update.hasCallbackQuery()) {
             String commandTextFromButtons = getCommandTextFromButtons(update);
             commandMap.get(commandTextFromButtons).execute(update, this);
+        } else if (update.getMessage().hasPhoto()) {
+            if (update.getMessage().hasPhoto() && update.getMessage().getPhoto() != null) {
+                log.info("Photo to map");
+                commandMap.get("savePhoto").execute(update, this);
+            }
         }
     }
 

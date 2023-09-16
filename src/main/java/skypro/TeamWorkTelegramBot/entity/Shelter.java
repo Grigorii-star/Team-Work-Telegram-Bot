@@ -23,7 +23,7 @@ public class Shelter {
     private String name;
     @OneToMany(mappedBy = "shelter")
     @JsonIgnore
-    private Collection<Animal> animals;
+    private Collection<Report> reports;
     @OneToMany(mappedBy = "shelter")
     @JsonIgnore
     private Collection<AnimalOwner> animalOwners;

@@ -4,13 +4,14 @@
 CREATE TABLE animal_owner (
     id                  serial PRIMARY KEY,
     id_chat             bigint,
-    registered          boolean,
     contact_information text,
+    registered          boolean,
     dog_lover           boolean,
     took_the_animal     boolean,
     can_save_contact    boolean,
     be_volunteer        boolean,
     help_volunteer      boolean,
+    can_send_report     boolean,
     shelter_id          int4
 );
 
@@ -30,14 +31,20 @@ CREATE TABLE volunteer (
     animal_owner_id     int4
 );
 
--- changeset grigorii:create-animal-table
-CREATE TABLE animal (
+-- changeset grigorii:create-report-table
+CREATE TABLE report (
     id                  serial PRIMARY KEY,
-    name                text,
-    file_path           text,
-    file_size           bigint,
-    media_type          text,
-    data                oid,
+    date                date,
+    report              text,
+    telegram_field_id   text,
+    file_size           integer,
+    binary_content_id   int4,
     shelter_id          int4,
     animal_owner_id     int4
+);
+
+-- changeset grigorii:create-binary-content-table
+CREATE TABLE binary_content (
+    id                  serial PRIMARY KEY,
+    data                oid
 );

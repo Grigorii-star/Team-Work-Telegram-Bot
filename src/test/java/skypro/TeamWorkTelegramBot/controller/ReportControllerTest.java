@@ -15,9 +15,9 @@ import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import skypro.TeamWorkTelegramBot.entity.Animal;
-import skypro.TeamWorkTelegramBot.repository.AnimalsRepository;
-import skypro.TeamWorkTelegramBot.service.restApiServices.AnimalService;
+import skypro.TeamWorkTelegramBot.entity.Report;
+import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
+import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +26,17 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-class AnimalControllerTest {
+class ReportControllerTest {
 
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AnimalService animalService;
+    private ReportService reportService;
 
     @MockBean
-    private AnimalsRepository animalsRepository;
+    private ReportsRepository reportsRepository;
 
     @MockBean
     private ShelterController shelterController;
@@ -45,16 +45,16 @@ class AnimalControllerTest {
     private VolunteerController volunteerController;
 
     @InjectMocks
-    private AnimalController animalController;
+    private ReportController reportController;
 
 
     @SneakyThrows
     @Test
     public void find() {
 
-        Animal animal = new Animal(1, "TestName", "test/path", 10L, "testType");
+        Report report = new Report(1, "TestName", "test/path", 10L, "testType");
 
-        when(animalService.findAnimal(1L)).thenReturn(animal);
+        when(reportService.findAnimal(1L)).thenReturn(report);
 
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -76,12 +76,12 @@ class AnimalControllerTest {
     @SneakyThrows
     @Test
     void getAll() {
-        Animal animal1 = new Animal(1, "TestName1", "test/path1", 10L, "testType");
-        Animal animal2 = new Animal(2, "TestName2", "test/path2", 10L, "testType");
+        Report report1 = new Report(1, "TestName1", "test/path1", 10L, "testType");
+        Report report2 = new Report(2, "TestName2", "test/path2", 10L, "testType");
 
-        List<Animal> animalList = new ArrayList<>();
-        animalList.add(animal1);
-        animalList.add(animal2);
+        List<Report> reportList = new ArrayList<>();
+        reportList.add(report1);
+        reportList.add(report2);
 
 
         JSONObject animalObject = new JSONObject();
@@ -91,7 +91,7 @@ class AnimalControllerTest {
         animalObject.put("type","testType");
 
 
-        when(animalService.getAllAnimals()).thenReturn(animalList);
+        when(reportService.getAllAnimals()).thenReturn(reportList);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/animal")
@@ -103,7 +103,7 @@ class AnimalControllerTest {
     @SneakyThrows
     @Test
     void add() {
-        Animal animal = new Animal(2, "TestName", "test/path", 10L, "testType");
+        Report report = new Report(2, "TestName", "test/path", 10L, "testType");
 
         JSONObject animalObject = new JSONObject();
         animalObject.put("id", "2");
@@ -112,8 +112,8 @@ class AnimalControllerTest {
         animalObject.put("type","testType");
 
 
-        when(animalService.findAnimal(2L)).thenReturn(animal);
-        when(animalService.addAnimal(animal)).thenReturn(animal);
+        when(reportService.findAnimal(2L)).thenReturn(report);
+        when(reportService.addAnimal(report)).thenReturn(report);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/animal")
@@ -126,7 +126,7 @@ class AnimalControllerTest {
     @SneakyThrows
     @Test
     void edit() {
-        Animal animal = new Animal(2, "TestName", "test/path", 10L, "testType");
+        Report report = new Report(2, "TestName", "test/path", 10L, "testType");
 
         JSONObject animalObject = new JSONObject();
         animalObject.put("id", "2");
@@ -135,8 +135,8 @@ class AnimalControllerTest {
         animalObject.put("type","testType");
 
 
-        when(animalService.findAnimal(2L)).thenReturn(animal);
-        when(animalService.addAnimal(animal)).thenReturn(animal);
+        when(reportService.findAnimal(2L)).thenReturn(report);
+        when(reportService.addAnimal(report)).thenReturn(report);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/animal")
@@ -149,7 +149,7 @@ class AnimalControllerTest {
     @SneakyThrows
     @Test
     void remove() {
-        Animal animal = new Animal(2, "TestName", "test/path", 10L, "testType");
+        Report report = new Report(2, "TestName", "test/path", 10L, "testType");
 
         JSONObject animalObject = new JSONObject();
         animalObject.put("id", "2");
@@ -158,8 +158,8 @@ class AnimalControllerTest {
         animalObject.put("type","testType");
 
 
-        when(animalService.findAnimal(2L)).thenReturn(animal);
-        when(animalService.addAnimal(animal)).thenReturn(animal);
+        when(reportService.findAnimal(2L)).thenReturn(report);
+        when(reportService.addAnimal(report)).thenReturn(report);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/animal/2")

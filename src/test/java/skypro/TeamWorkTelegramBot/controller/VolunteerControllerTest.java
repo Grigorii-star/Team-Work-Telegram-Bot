@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
-import skypro.TeamWorkTelegramBot.service.restApiServices.AnimalService;
+import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
 import skypro.TeamWorkTelegramBot.service.restApiServices.ShelterService;
 import skypro.TeamWorkTelegramBot.service.restApiServices.VolunteerService;
 
@@ -35,7 +35,7 @@ class VolunteerControllerTest {
     SheltersRepository sheltersRepository;
 
     @MockBean
-    AnimalService animalService;
+    ReportService reportService;
 
     @MockBean
     VolunteerService volunteerService;

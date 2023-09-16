@@ -18,13 +18,14 @@ public class AnimalOwner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Long idChat;
-    private Boolean registered;
     private String contactInformation;
+    private Boolean registered;
     private Boolean dogLover;
     private Boolean tookTheAnimal;
     private Boolean canSaveContact;
     private Boolean beVolunteer;
     private Boolean helpVolunteer;
+    private Boolean canSendReport;
     @ManyToOne
     @JoinColumn(name = "shelter_id")
     private Shelter shelter;

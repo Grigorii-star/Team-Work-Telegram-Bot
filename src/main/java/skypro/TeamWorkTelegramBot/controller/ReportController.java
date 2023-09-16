@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import skypro.TeamWorkTelegramBot.entity.Animal;
-import skypro.TeamWorkTelegramBot.service.restApiServices.AnimalService;
+import skypro.TeamWorkTelegramBot.entity.Report;
+import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
 
 import java.util.Collection;
 
@@ -15,15 +15,15 @@ import java.util.Collection;
  */
 @RestController
 @RequestMapping("animal")
-public class AnimalController {
-    private final AnimalService animalService;
+public class ReportController {
+    private final ReportService reportService;
 
-    public AnimalController(AnimalService animalService) {
-        this.animalService = animalService;
+    public ReportController(ReportService reportService) {
+        this.reportService = reportService;
     }
     /**
      * метод, который добавляет нового животного.
-     * @param animal объект Animal, который будет добавлен
+     * @param report объект Animal, который будет добавлен
      * @return ResponseEntity с добавленным объектом Animal
      */
     @ApiOperation(value = "Добавить нового животного")
@@ -33,8 +33,8 @@ public class AnimalController {
             @ApiResponse(code = 500, message = "Ошибка при добавлении животного")
     })
     @PostMapping
-    public ResponseEntity<Animal> add(@RequestBody Animal animal) {
-        return ResponseEntity.ok(animalService.addAnimal(animal));
+    public ResponseEntity<Report> add(@RequestBody Report report) {
+        return ResponseEntity.ok(reportService.addAnimal(report));
     }
     /**
      * метод, который находит животное по его идентификатору.
@@ -48,13 +48,13 @@ public class AnimalController {
             @ApiResponse(code = 500, message = "Ошибка при поиске животного")
     })
     @GetMapping("{id}")
-    public ResponseEntity<Animal> find(@PathVariable Integer id) {
-        return ResponseEntity.ok(animalService.findAnimal(id));
+    public ResponseEntity<Report> find(@PathVariable Integer id) {
+        return ResponseEntity.ok(reportService.findAnimal(id));
 
     }
     /**
      * метод, который редактирует информацию о волонтере.
-     * @param animal объект Animal, содержащий измененную информацию о животном
+     * @param report объект Animal, содержащий измененную информацию о животном
      * @return ResponseEntity с объектом Animal после редактирования
      */
     @ApiOperation(value = "Редактировать животное")
@@ -64,8 +64,8 @@ public class AnimalController {
             @ApiResponse(code = 500, message = "Ошибка при редактировании информации о животном")
     })
     @PutMapping
-    public ResponseEntity<Animal> edit(@RequestBody Animal animal) {
-        return ResponseEntity.ok(animalService.editAnimal(animal));
+    public ResponseEntity<Report> edit(@RequestBody Report report) {
+        return ResponseEntity.ok(reportService.editAnimal(report));
     }
     /**
      * метод, который удаляет животоне по его идентификатору.
@@ -80,7 +80,7 @@ public class AnimalController {
     })
     @DeleteMapping("{id}")
     public ResponseEntity<Void> remove(@PathVariable Integer id) {
-        animalService.removeAnimal(id);
+        reportService.removeAnimal(id);
         return ResponseEntity.ok().build();
     }
     /**
@@ -93,7 +93,7 @@ public class AnimalController {
             @ApiResponse(code = 500, message = "Ошибка при получении списка животных")
     })
     @GetMapping
-    public ResponseEntity<Collection<Animal>> getAll() {
-        return ResponseEntity.ok(animalService.getAllAnimals());
+    public ResponseEntity<Collection<Report>> getAll() {
+        return ResponseEntity.ok(reportService.getAllAnimals());
     }
 }
