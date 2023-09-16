@@ -48,7 +48,7 @@ public class AnimalController {
             @ApiResponse(code = 500, message = "Ошибка при поиске животного")
     })
     @GetMapping("{id}")
-    public ResponseEntity<Animal> find(@PathVariable Long id) {
+    public ResponseEntity<Animal> find(@PathVariable Integer id) {
         return ResponseEntity.ok(animalService.findAnimal(id));
 
     }
@@ -79,7 +79,7 @@ public class AnimalController {
             @ApiResponse(code = 500, message = "Ошибка при удалении животного")
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> remove(@PathVariable Long id) {
+    public ResponseEntity<Void> remove(@PathVariable Integer id) {
         animalService.removeAnimal(id);
         return ResponseEntity.ok().build();
     }

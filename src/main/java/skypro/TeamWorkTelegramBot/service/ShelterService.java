@@ -20,7 +20,7 @@ public interface ShelterService {
      * @return приют, найденный по указанному идентификатору
      */
 
-    Shelter findShelter(Long id);
+    Shelter findShelter(Integer id);
     /**
      * метод редактирования приюта в базе данных.
      * @param shelter Приют для редактирования.
@@ -32,7 +32,7 @@ public interface ShelterService {
      * @param id Идентификатор приюта для поиска.
      * @return Удаленный приют.
      */
-    void removeShelter(Long id);
+    void removeShelter(Integer id);
     /**
      * метод получить все приюты из базы данных.
      */
