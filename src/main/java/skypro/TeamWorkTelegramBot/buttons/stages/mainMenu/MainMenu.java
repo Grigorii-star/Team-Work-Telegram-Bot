@@ -86,17 +86,17 @@ public class MainMenu implements Command {
             );
         } else if (callData.equals("чат")) {
 
+
+
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-            Volunteer volunteer = new Volunteer();
-            try {
-                volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
-            } catch (NullPointerException e) {
-                log.error("NullPointerException");
-            }
+
+
 
 
             //если пользователь
+            Volunteer volunteer;
             if (!animalOwner.getBeVolunteer()) {
+                volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         GREETING_MESSAGE,
@@ -110,7 +110,7 @@ public class MainMenu implements Command {
                         telegramBotService
                 );
             } else {
-
+                volunteer = volunteersRepository.findByIdChat(chatId);
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatId),
                         "Связь с пользователем прервана",
@@ -125,6 +125,7 @@ public class MainMenu implements Command {
                 );
             }
             interruptChat(animalOwner,volunteer);
+
 
         }
     }
