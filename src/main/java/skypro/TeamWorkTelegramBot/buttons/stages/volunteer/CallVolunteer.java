@@ -4,7 +4,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
@@ -19,11 +21,13 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHA
 public class CallVolunteer implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
+    private final VolunteersRepository volunteersRepository;
 
-    public CallVolunteer(SendMessageService sendMessageService,
-                         AnimalOwnerRepository animalOwnerRepository) {
+    public CallVolunteer(SendMessageService sendMessageService, AnimalOwnerRepository animalOwnerRepository, VolunteersRepository volunteersRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
+
+        this.volunteersRepository = volunteersRepository;
     }
 
     String[] buttonsText = {INTERRUPT_CHAT_BUTTON};
@@ -43,18 +47,31 @@ public class CallVolunteer implements Command {
 
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
-        if (!animalOwner.getBeVolunteer()) {
+        //Long volunteerId = getChatIdVolunteer();
+        Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
+//        animalOwner.setHelpVolunteer(true); //устанавливаем что владельцу сейчас помогает волонтер
+        animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
+        volunteer.setIsBusy(true); // волонтеру ставим, что занят
+        volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
+        //сохраняем в базу данных все
+        animalOwnerRepository.save(animalOwner);
+        volunteersRepository.save(volunteer);
+
+        //если н волонтер
+//        if (!animalOwner.getBeVolunteer()) {
 
             animalOwner.setHelpVolunteer(true);
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
-                    String.valueOf(chatId),
-                    "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.",
-                    buttonsText,
-                    buttonsCallData,
-                    telegramBotService
-            );
-        }
+                    String.valueOf(chatId), "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.", buttonsText, buttonsCallData, telegramBotService);
+//        } else if (animalOwner.getBeVolunteer()) {
+
+            animalOwner.setHelpVolunteer(true);
+            animalOwnerRepository.save(animalOwner);
+
+            sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
+                    String.valueOf(volunteer.getIdChat()), "Сейчас с тобой свяжется пользователь.", buttonsText, buttonsCallData, telegramBotService);
+//        }
     }
 }

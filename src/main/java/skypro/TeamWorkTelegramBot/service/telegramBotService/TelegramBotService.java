@@ -22,7 +22,6 @@ import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts;
 import skypro.TeamWorkTelegramBot.buttons.stages.start.Start;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.CallVolunteer;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -116,6 +115,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
      * Основной метод, который получает из объекта update телеграмм бота значения и делегирует эти
      * сообщения классам реализуйщий интерфейс Command с помощью ключ, значение хэшМапы. Создает
      * нового пользователя в базе данных по chatId
+     *
      * @param update - объект телеграмма для получения значений из телеграмм бота
      */
     @Override
@@ -140,8 +140,18 @@ public class TelegramBotService extends TelegramLongPollingBot {
             if (!update.getMessage().getText().isEmpty() && matchesResult) {
                 commandMap.get(SAVE_USER_CONTACTS_COMMAND).execute(update, this);
             }
-            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) {
-                commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
+            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)
+                    && checkAnimalOwner != null) {
+                //здесь я проверяю, привязан ли владелец к волонтеру
+
+                if (checkAnimalOwner.getVolunteer() != null) {
+                    commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
+                    //или же он сам является волонтером с назначенным владельцу
+                }
+
+                if (checkAnimalOwner.getBeVolunteer()) {
+                    commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
+                }
             }
             if (checkAnimalOwner != null && checkAnimalOwner.getCanSendReport()
                     && update.getMessage().hasText() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) {
@@ -161,6 +171,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
      * Этот метод получает текст команды из кнопок, которые были нажаты пользователем в Telegram боте.
      * Он извлекает текст команды из объекта Update, который содержит информацию о произошедшем событии,
      * и сохраняет его в переменной commandTextFromButtons.
+     *
      * @param update объект телеграмма для получения значений из телеграмм бота
      * @return возвращает значение переменной commandTextFromButtons, которое является текстом команды из кнопок,
      * полученного из объекта Update.

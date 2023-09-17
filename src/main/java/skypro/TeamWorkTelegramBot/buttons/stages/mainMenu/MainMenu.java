@@ -1,11 +1,14 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.mainMenu;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
@@ -17,10 +20,12 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETIN
 /**
  * Класс, который нужен для формирования главного меню приюта
  */
+@Slf4j
 @Component
 public class MainMenu implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
+    private final VolunteersRepository volunteersRepository;
     private final SheltersRepository sheltersRepository;
 
     private final String DOG_SHELTER = "Dog";
@@ -38,9 +43,11 @@ public class MainMenu implements Command {
 
     public MainMenu(SendMessageService sendMessageService,
                     AnimalOwnerRepository animalOwnerRepository,
+                    VolunteersRepository volunteersRepository,
                     SheltersRepository sheltersRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
+        this.volunteersRepository = volunteersRepository;
         this.sheltersRepository = sheltersRepository;
     }
 
@@ -94,7 +101,60 @@ public class MainMenu implements Command {
                     buttonsCallData,
                     telegramBotService
             );
+        } else if (callData.equals("чат")) {
+
+
+
+            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+
+
+
+
+            //если пользователь
+            Volunteer volunteer;
+            if (!animalOwner.getBeVolunteer()) {
+                volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(chatId),
+                        GREETING_MESSAGE,
+                        buttonsText,
+                        buttonsCallData,
+                        telegramBotService
+                );
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(volunteer.getIdChat()),//поменять чат на волонтера
+                        "Связь с пользователем прервана",
+                        telegramBotService
+                );
+            } else {
+                volunteer = volunteersRepository.findByIdChat(chatId);
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(chatId),
+                        "Связь с пользователем прервана",
+                        telegramBotService
+                );
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(volunteer.getAnimalOwner().getIdChat()),
+                        "Связь с волонтером прервана",
+                        buttonsText,
+                        buttonsCallData,
+                        telegramBotService
+                );
+            }
+            interruptChat(animalOwner,volunteer);
+
+
         }
+    }
+
+    private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
+        animalOwner.setHelpVolunteer(false);
+        animalOwner.setVolunteer(null);
+        volunteer.setIsBusy(false);
+        volunteer.setAnimalOwner(null);
+        //сохраняем в базу данных все
+        animalOwnerRepository.save(animalOwner);
+        volunteersRepository.save(volunteer);
     }
 }
 
