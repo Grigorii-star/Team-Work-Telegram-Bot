@@ -47,5 +47,6 @@ public class ConstantsCallData {
     public static final String SECURITY = "охрана";
     public static final String SAFETY_PRECAUTIONS = "техника_безопасности";
 
+    public static final String CHAT = "чат";
 
 }

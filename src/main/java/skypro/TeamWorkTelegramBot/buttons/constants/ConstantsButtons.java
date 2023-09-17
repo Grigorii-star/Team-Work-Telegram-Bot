@@ -49,4 +49,6 @@ public class ConstantsButtons {
     public static final String REFUSAL_REASONS_DOG_BUTTON = "Список причин, почему могут отказать выдать собаку из приюта";
     public static final String REFUSAL_REASONS_CAT_BUTTON = "Список причин, почему могут отказать выдать кошку из приюта";
 
+    public static final String INTERRUPT_CHAT_BUTTON = "Прервать чат";
+
 }

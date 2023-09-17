@@ -11,15 +11,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Animal {
+public class BinaryContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    @ManyToOne
-    @JoinColumn(name = "shelter_id")
-    private Shelter shelter;
-    @ManyToOne
-    @JoinColumn(name = "animal_owner_id")
-    private AnimalOwner animalOwner;
+    @Lob
+    @Column(columnDefinition = "oid")
+    private byte[] data;
 }

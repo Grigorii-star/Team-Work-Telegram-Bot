@@ -9,6 +9,9 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.MENU_BUTTON;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.MENU;
+
 /**
  * Класс, для сохранению контактов пользователя в базу данных
  */
@@ -26,10 +29,8 @@ public class SaveUserContacts implements Command {
             "Для перехода в меню выбора приюта нажми на кнопку ниже /start";
 
 
-    String[] buttonsText = {
-            "Перейти в главное меню"};
-    String[] buttonsCallData = {
-            "меню"};
+    String[] buttonsText = {MENU_BUTTON};
+    String[] buttonsCallData = {MENU};
 
     public SaveUserContacts(SendMessageService sendMessageService,
                             AnimalOwnerRepository animalOwnerRepository) {
@@ -65,7 +66,7 @@ public class SaveUserContacts implements Command {
                     GREETING_MESSAGE,
                     telegramBotService
             );
-                                                                                    //добавил ниже && !animalOwner.getBeVolunteer()
+
         } else if (update.getMessage().hasText() && animalOwner.getCanSaveContact() && !animalOwner.getBeVolunteer()) {
             Long chatId = update.getMessage().getChatId();
             String contactInformationText = update.getMessage().getText();

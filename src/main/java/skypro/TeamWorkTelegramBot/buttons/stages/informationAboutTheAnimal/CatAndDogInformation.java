@@ -93,5 +93,4 @@ public class CatAndDogInformation implements Command {
                 break;
         }
     }
-
 }

@@ -8,6 +8,9 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.INTERRUPT_CHAT_BUTTON;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHAT;
+
 
 /**
  * Класс, для общения с волонтером
@@ -23,8 +26,8 @@ public class CallVolunteer implements Command {
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
-    String[] buttonsText = {"Прервать чат"};
-    String[] buttonsCallData = {"чат"};
+    String[] buttonsText = {INTERRUPT_CHAT_BUTTON};
+    String[] buttonsCallData = {CHAT};
 
     /**
      * Метод, который нужен для формирования ответа пользователю.
