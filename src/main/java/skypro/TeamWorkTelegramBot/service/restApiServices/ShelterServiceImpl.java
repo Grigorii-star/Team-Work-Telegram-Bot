@@ -11,8 +11,8 @@ import java.util.Collections;
 /**
  * класс реализации интерфейса ShelterService
  */
-@Service
 @Slf4j
+@Service
 public class ShelterServiceImpl implements ShelterService{
     private final SheltersRepository sheltersRepository;
 

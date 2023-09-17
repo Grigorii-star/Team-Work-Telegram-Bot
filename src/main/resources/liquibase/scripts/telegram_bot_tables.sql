@@ -27,8 +27,7 @@ CREATE TABLE volunteer (
     id_chat             bigint,
     name                text,
     is_busy             boolean,
-    shelter_id          int4,
-    animal_owner_id     int4
+    shelter_id          int4
 );
 
 -- changeset grigorii:create-report-table

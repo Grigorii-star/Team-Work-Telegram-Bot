@@ -140,7 +140,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
             if (!update.getMessage().getText().isEmpty() && matchesResult) {
                 commandMap.get(SAVE_USER_CONTACTS_COMMAND).execute(update, this);
             }
-            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) { //заменить на help_volunteer // ... && checkAnimalOwner.getTookTheAnimal()
+            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) {
                 commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
             }
             if (checkAnimalOwner != null && checkAnimalOwner.getCanSendReport()

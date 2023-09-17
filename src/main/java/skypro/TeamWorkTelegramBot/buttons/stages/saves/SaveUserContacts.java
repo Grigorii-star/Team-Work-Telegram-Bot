@@ -15,8 +15,8 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.MEN
 /**
  * Класс, для сохранению контактов пользователя в базу данных
  */
-@Component
 @Slf4j
+@Component
 public class SaveUserContacts implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;

@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * Реализация интрефейса SendMessageService
  */
-@Service
 @Slf4j
+@Service
 public class SendMessageServiceImpl implements SendMessageService {
 
     /**

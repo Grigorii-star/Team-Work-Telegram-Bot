@@ -4,7 +4,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
@@ -19,6 +21,10 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETIN
 public class MainMenu implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
+    private final SheltersRepository sheltersRepository;
+
+    private final String DOG_SHELTER = "Dog";
+    private final String CAT_SHELTER = "Cat";
 
 
     String[] buttonsText = {GET_INFO_SHELTER_BUTTON,
@@ -31,9 +37,11 @@ public class MainMenu implements Command {
                                 CALL_VOLUNTEER};
 
     public MainMenu(SendMessageService sendMessageService,
-                    AnimalOwnerRepository animalOwnerRepository) {
+                    AnimalOwnerRepository animalOwnerRepository,
+                    SheltersRepository sheltersRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
+        this.sheltersRepository = sheltersRepository;
     }
 
     /**
@@ -48,10 +56,13 @@ public class MainMenu implements Command {
         Long chatId = update.getCallbackQuery().getFrom().getId();
         String callData = update.getCallbackQuery().getData();
 
-        if (callData.equals(DOG)) {
+        if (callData.equals(DOG_SHELTER)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+            Shelter shelter = sheltersRepository.findByName(DOG_SHELTER);
             animalOwner.setDogLover(true);
+            animalOwner.setShelter(shelter);
             animalOwnerRepository.save(animalOwner);
+
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
@@ -60,10 +71,13 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals(CAT)) {
+        else if (callData.equals(CAT_SHELTER)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+            Shelter shelter = sheltersRepository.findByName(CAT_SHELTER);
             animalOwner.setDogLover(false);
+            animalOwner.setShelter(shelter);
             animalOwnerRepository.save(animalOwner);
+
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
@@ -72,7 +86,7 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals(MENU) || callData.equals("чат")) {
+        else if (callData.equals(MENU) || callData.equals(CHAT)) {
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
