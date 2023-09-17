@@ -6,11 +6,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.CatAndDogGetAnimalFromTheShelter;
-import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.BecomeVolunteer;
-import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.HelpVolunteer;
-import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
-import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
-import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.GetAnimalFromTheShelter;
 import skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal.CatAndDogInformation;
 import skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal.Information;
@@ -18,8 +13,13 @@ import skypro.TeamWorkTelegramBot.buttons.stages.mainMenu.MainMenu;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveReportAboutPet;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts;
 import skypro.TeamWorkTelegramBot.buttons.stages.start.Start;
+import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.BecomeVolunteer;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.CallVolunteer;
-
+import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.HelpVolunteer;
+import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.VolunteerOwnerChat;
+import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
+import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +47,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
     private final CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter;
     private final HelpVolunteer helpVolunteer;
     private final BecomeVolunteer becomeVolunteer;
+    private final VolunteerOwnerChat volunteerOwnerChat;
     /**
      * Мапа, которая хранит бины классов, реализующих интерфейс command
      */
@@ -58,7 +59,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
                               CatAndDogInformation catAndDogInformation, SaveUserContacts saveUserContacts,
                               CallVolunteer callVolunteer, SaveReportAboutPet saveReportAboutPet,
                               GetAnimalFromTheShelter getAnimalFromTheShelter,
-                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter, HelpVolunteer helpVolunteer, BecomeVolunteer becomeVolunteer) {
+                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter, HelpVolunteer helpVolunteer, BecomeVolunteer becomeVolunteer, VolunteerOwnerChat volunteerOwnerChat) {
         this.telegramBotConfiguration = telegramBotConfiguration;
         this.animalOwnerRepository = animalOwnerRepository;
         this.start = start;
@@ -72,6 +73,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         this.catAndDogGetAnimalFromTheShelter = catAndDogGetAnimalFromTheShelter;
         this.helpVolunteer = helpVolunteer;
         this.becomeVolunteer = becomeVolunteer;
+        this.volunteerOwnerChat = volunteerOwnerChat;
 
         this.commandMap = new HashMap<>();
         this.init();
@@ -92,6 +94,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         commandMap.put(BECOME_VOLUNTEER_COMMAND, becomeVolunteer);
         commandMap.put(CALL_VOLUNTEER_COMMAND, callVolunteer);
         commandMap.put(HELP_VOLUNTEER_COMMAND, helpVolunteer);
+        commandMap.put("startChat", volunteerOwnerChat);
     }
 
     @Override
@@ -108,6 +111,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
      * Основной метод, который получает из объекта update телеграмм бота значения и делегирует эти
      * сообщения классам реализуйщий интерфейс Command с помощью ключ, значение хэшМапы. Создает
      * нового пользователя в базе данных по chatId
+     *
      * @param update - объект телеграмма для получения значений из телеграмм бота
      */
     @Override
@@ -123,8 +127,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
             if (checkAnimalOwner == null) {
                 AnimalOwner animalOwner = new AnimalOwner();
                 animalOwner.setIdChat(chatId);
+//                animalOwner.setBeVolunteer(false); // я добавил, чтобы сразу установить
+//                animalOwner.setHelpVolunteer(false);
                 animalOwnerRepository.save(animalOwner);
             }
+
+
 
             if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
                 commandMap.get(START_COMMAND).execute(update, this);
@@ -135,8 +143,20 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 commandMap.get(commandText).execute(update, this);
             }
 
-            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals("/start")) { //заменить на help_volunteer // ... && checkAnimalOwner.getTookTheAnimal()
-                commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
+            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals("/start")
+                && checkAnimalOwner != null) {
+                //здесь я проверяю, привязан ли владелец к волонтеру
+
+                if (checkAnimalOwner.getVolunteer() != null) {
+                    commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
+                    //или же он сам является волонтером с назначенным владельцу
+                }
+
+                if (checkAnimalOwner.getBeVolunteer()) {
+                    commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
+                }
+
+
             }
 
         } else if (update.hasCallbackQuery()) {
@@ -149,6 +169,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
      * Этот метод получает текст команды из кнопок, которые были нажаты пользователем в Telegram боте.
      * Он извлекает текст команды из объекта Update, который содержит информацию о произошедшем событии,
      * и сохраняет его в переменной commandTextFromButtons.
+     *
      * @param update объект телеграмма для получения значений из телеграмм бота
      * @return возвращает значение переменной commandTextFromButtons, которое является текстом команды из кнопок,
      * полученного из объекта Update.

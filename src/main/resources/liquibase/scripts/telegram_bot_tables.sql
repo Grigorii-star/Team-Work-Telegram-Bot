@@ -11,6 +11,7 @@ CREATE TABLE animal_owner (
     can_save_contact    boolean,
     be_volunteer        boolean,
     help_volunteer      boolean,
+    volunteer_id        int4,
     shelter_id          int4
 );
 
