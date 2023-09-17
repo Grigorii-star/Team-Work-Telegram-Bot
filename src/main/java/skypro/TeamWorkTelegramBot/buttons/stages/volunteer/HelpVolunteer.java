@@ -38,27 +38,32 @@ public class HelpVolunteer implements Command {
 
         //я ищу владельца (он может быть волонтером в баазе по чату)
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+//        Volunteer volunteer = volunteersRepository
 
         //проверяю не волонтер ли он
         if (animalOwner.getBeVolunteer()) {
             //если он волонтер, то мне нужно найти такого волонтера по айди его чата
             Volunteer volunteer = volunteersRepository.findByIdChat(chatId);
-            System.out.println("отправляется сообщение от волонтера пользователю");
-            sendMessageService.SendMessageToUser(
-                    String.valueOf(volunteer.getAnimalOwner().getIdChat()),
-                    text,
-                    telegramBotService
-            );
+            if (volunteer.getAnimalOwner() != null) {
+                System.out.println("отправляется сообщение от волонтера пользователю");
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(volunteer.getAnimalOwner().getIdChat()),
+                        text,
+                        telegramBotService
+                );
+            }
         }
 
         // если это не волонтер, а будущий владелец, который хочет написать волонтеру:
         if (!animalOwner.getBeVolunteer()) {
-            System.out.println("отправляется сообщение от пользователя волонтёру");
-            sendMessageService.SendMessageToUser( // отправляется сообщение волонтёру
-                    String.valueOf(animalOwner.getVolunteer().getIdChat()), //заменить на volunteerId
-                    text,
-                    telegramBotService
-            );
+            if (animalOwner.getVolunteer() != null) {
+                System.out.println("отправляется сообщение от пользователя волонтёру");
+                sendMessageService.SendMessageToUser( // отправляется сообщение волонтёру
+                        String.valueOf(animalOwner.getVolunteer().getIdChat()), //заменить на volunteerId
+                        text,
+                        telegramBotService
+                );
+            }
         }
 //        sendMessageService.SendMessageToUser(String.valueOf(chatIdOwner),
 //                "Напишите сюда сообщение, волонтер на связи",

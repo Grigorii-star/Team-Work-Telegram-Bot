@@ -20,8 +20,7 @@ public class CallVolunteer implements Command {
     private final AnimalOwnerRepository animalOwnerRepository;
     private final VolunteersRepository volunteersRepository;
 
-    public CallVolunteer(SendMessageService sendMessageService,
-                         AnimalOwnerRepository animalOwnerRepository, VolunteersRepository volunteersRepository) {
+    public CallVolunteer(SendMessageService sendMessageService, AnimalOwnerRepository animalOwnerRepository, VolunteersRepository volunteersRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
 
@@ -55,18 +54,21 @@ public class CallVolunteer implements Command {
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 
-        if (!animalOwner.getBeVolunteer()) {
+        //если н волонтер
+//        if (!animalOwner.getBeVolunteer()) {
 
             animalOwner.setHelpVolunteer(true);
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
-                    String.valueOf(chatId),
-                    "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.",
-                    buttonsText,
-                    buttonsCallData,
-                    telegramBotService
-            );
-        }
+                    String.valueOf(chatId), "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.", buttonsText, buttonsCallData, telegramBotService);
+//        } else if (animalOwner.getBeVolunteer()) {
+
+            animalOwner.setHelpVolunteer(true);
+            animalOwnerRepository.save(animalOwner);
+
+            sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
+                    String.valueOf(volunteer.getIdChat()), "Сейчас с тобой свяжется пользователь.", buttonsText, buttonsCallData, telegramBotService);
+//        }
     }
 }

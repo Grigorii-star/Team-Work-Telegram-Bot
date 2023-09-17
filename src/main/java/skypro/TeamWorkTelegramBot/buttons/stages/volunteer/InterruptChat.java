@@ -34,18 +34,19 @@ public class InterruptChat implements Command {
 
         //Long volunteerId = getChatIdVolunteer();
         Volunteer volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
-//        animalOwner.setHelpVolunteer(true); //устанавливаем что владельцу сейчас помогает волонтер
-        animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
-        volunteer.setIsBusy(true); // волонтеру ставим, что занят
-        volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
-        //сохраняем в базу данных все
-        animalOwnerRepository.save(animalOwner);
-        volunteersRepository.save(volunteer);
+        interruptChat(animalOwner, volunteer);
 
     }
 
-
-
+    private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
+        animalOwner.setHelpVolunteer(false); //устанавливаем что владельцу сейчас помогает волонтер
+        animalOwner.setVolunteer(null); // устанавливаем его волонтера
+        volunteer.setIsBusy(false); // волонтеру ставим, что занят
+        volunteer.setAnimalOwner(null); // волонтеру ставим его владельца
+        //сохраняем в базу данных все
+        animalOwnerRepository.save(animalOwner);
+        volunteersRepository.save(volunteer);
+    }
 
 
 }

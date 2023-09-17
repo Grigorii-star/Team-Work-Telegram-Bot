@@ -31,6 +31,7 @@ public class BecomeVolunteer implements Command {
             animalOwner.setBeVolunteer(true);
             animalOwner.setCanSaveContact(true);
 
+
             animalOwnerRepository.save(animalOwner);
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),

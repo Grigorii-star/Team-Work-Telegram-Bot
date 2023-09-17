@@ -16,7 +16,6 @@ import skypro.TeamWorkTelegramBot.buttons.stages.start.Start;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.BecomeVolunteer;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.CallVolunteer;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.HelpVolunteer;
-import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.VolunteerOwnerChat;
 import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -47,7 +46,6 @@ public class TelegramBotService extends TelegramLongPollingBot {
     private final CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter;
     private final HelpVolunteer helpVolunteer;
     private final BecomeVolunteer becomeVolunteer;
-    private final VolunteerOwnerChat volunteerOwnerChat;
     /**
      * Мапа, которая хранит бины классов, реализующих интерфейс command
      */
@@ -59,7 +57,8 @@ public class TelegramBotService extends TelegramLongPollingBot {
                               CatAndDogInformation catAndDogInformation, SaveUserContacts saveUserContacts,
                               CallVolunteer callVolunteer, SaveReportAboutPet saveReportAboutPet,
                               GetAnimalFromTheShelter getAnimalFromTheShelter,
-                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter, HelpVolunteer helpVolunteer, BecomeVolunteer becomeVolunteer, VolunteerOwnerChat volunteerOwnerChat) {
+                              CatAndDogGetAnimalFromTheShelter catAndDogGetAnimalFromTheShelter,
+                              HelpVolunteer helpVolunteer, BecomeVolunteer becomeVolunteer) {
         this.telegramBotConfiguration = telegramBotConfiguration;
         this.animalOwnerRepository = animalOwnerRepository;
         this.start = start;
@@ -73,7 +72,6 @@ public class TelegramBotService extends TelegramLongPollingBot {
         this.catAndDogGetAnimalFromTheShelter = catAndDogGetAnimalFromTheShelter;
         this.helpVolunteer = helpVolunteer;
         this.becomeVolunteer = becomeVolunteer;
-        this.volunteerOwnerChat = volunteerOwnerChat;
 
         this.commandMap = new HashMap<>();
         this.init();
@@ -94,7 +92,6 @@ public class TelegramBotService extends TelegramLongPollingBot {
         commandMap.put(BECOME_VOLUNTEER_COMMAND, becomeVolunteer);
         commandMap.put(CALL_VOLUNTEER_COMMAND, callVolunteer);
         commandMap.put(HELP_VOLUNTEER_COMMAND, helpVolunteer);
-        commandMap.put("startChat", volunteerOwnerChat);
     }
 
     @Override
@@ -220,6 +217,10 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 break;
             case CALL_VOLUNTEER:
                 commandTextFromButtons = CALL_VOLUNTEER_COMMAND;
+                break;
+//            case "чат":
+//                commandTextFromButtons = "interruptChat";
+//                break;
         }
         return commandTextFromButtons;
     }
