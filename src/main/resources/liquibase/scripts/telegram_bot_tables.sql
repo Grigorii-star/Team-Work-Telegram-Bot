@@ -12,6 +12,7 @@ CREATE TABLE animal_owner (
     be_volunteer        boolean,
     help_volunteer      boolean,
     can_send_report     boolean,
+    volunteer_id        int4,
     shelter_id          int4
 );
 

@@ -17,8 +17,8 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 /**
  * Класс, приветсвтвующий пользователя и дают выбрать приют кошек или собак
  */
-@Component
 @Slf4j
+@Component
 public class Start implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
@@ -50,21 +50,21 @@ public class Start implements Command {
         Long textChatId = 0L;
         String start = "";
 
-        Long queryChatId = 0L;
-        String data = "";
+//        Long queryChatId = 0L;
+//        String data = "";
         try {
             textChatId = update.getMessage().getChatId();
             start = update.getMessage().getText();
 
-            queryChatId = update.getCallbackQuery().getFrom().getId();
-            data = update.getCallbackQuery().getData();
+//            queryChatId = update.getCallbackQuery().getFrom().getId();
+//            data = update.getCallbackQuery().getData();
 
         } catch (NullPointerException e) {
             log.error("Error NullPointerException по update.getMessage().getChatId()");
         }
 
         AnimalOwner animalOwnerText = animalOwnerRepository.findByIdChat(textChatId);
-        AnimalOwner animalOwnerQuery = animalOwnerRepository.findByIdChat(queryChatId);
+//        AnimalOwner animalOwnerQuery = animalOwnerRepository.findByIdChat(queryChatId);
 
         if (start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered() == null) {
             animalOwnerText.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
@@ -85,8 +85,8 @@ public class Start implements Command {
         } else if ((start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered())) {
             animalOwnerText.setCanSaveContact(false);
             animalOwnerText.setCanSendReport(false);
-            //animalOwner.setBeVolunteer(false); //добавил, а может тут и не надо
             animalOwnerRepository.save(animalOwnerText);
+
             sendMessageService.SendMessageToUser(
                     String.valueOf(textChatId),
                     "Можете выбрать приют.",
@@ -95,17 +95,18 @@ public class Start implements Command {
                     telegramBotService
             );
         }
-        else if ((data.equals("меню_выбора_животного") && animalOwnerQuery.getRegistered()) && animalOwnerQuery.getBeVolunteer()) {
-            animalOwnerQuery.setCanSaveContact(false);
-            //animalOwner.setBeVolunteer(false); //добавил, а может тут и не надо
-            animalOwnerRepository.save(animalOwnerQuery);
-            sendMessageService.SendMessageToUser(
-                    String.valueOf(queryChatId),
-                    "Можете выбрать приют.",
-                    buttonsText,
-                    buttonsCallData,
-                    telegramBotService
-            );
-        }
+//        else if ((data.equals("меню_выбора_животного") && animalOwnerQuery.getRegistered())
+//                && animalOwnerQuery.getBeVolunteer()) {
+//            animalOwnerQuery.setCanSaveContact(false);
+//            animalOwnerRepository.save(animalOwnerQuery);
+//
+//            sendMessageService.SendMessageToUser(
+//                    String.valueOf(queryChatId),
+//                    "Можете выбрать приют.",
+//                    buttonsText,
+//                    buttonsCallData,
+//                    telegramBotService
+//            );
+//        }
     }
 }

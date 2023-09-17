@@ -12,8 +12,8 @@ import java.util.Collections;
  * Класс реализации интерфейса VolunteerService
  */
 
-@Service
 @Slf4j
+@Service
 public class VolunteerServiceImpl implements VolunteerService{
     private final VolunteersRepository volunteersRepository;
 
