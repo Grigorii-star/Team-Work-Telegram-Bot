@@ -25,4 +25,6 @@ public class Volunteer {
     @ManyToOne
     @JoinColumn(name = "shelter_id")
     private Shelter shelter;
+    @OneToOne
+    private AnimalOwner animalOwner;
 }

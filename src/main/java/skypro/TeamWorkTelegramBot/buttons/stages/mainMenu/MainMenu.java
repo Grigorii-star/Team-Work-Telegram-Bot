@@ -93,7 +93,7 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals(MENU) || callData.equals(CHAT)) {
+        else if (callData.equals(MENU)) {
             sendMessageService.SendMessageToUser(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
@@ -101,14 +101,9 @@ public class MainMenu implements Command {
                     buttonsCallData,
                     telegramBotService
             );
-        } else if (callData.equals("чат")) {
-
-
+        } else if (callData.equals(CHAT)) {
 
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-
-
-
 
             //если пользователь
             Volunteer volunteer;
@@ -142,8 +137,6 @@ public class MainMenu implements Command {
                 );
             }
             interruptChat(animalOwner,volunteer);
-
-
         }
     }
 
