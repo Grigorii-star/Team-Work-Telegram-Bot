@@ -21,62 +21,27 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report addAnimal(Report report) {
-//        log.info("Invoked a method for adding a animal");
-//
-//        Animal animalExistsCheck = animalsRepository.findByName(animal.getName());
-//        if (animalExistsCheck != null && animalExistsCheck.getName().equals(animal.getName())) {
-//            log.error("The animal {} already exists", animalExistsCheck);
-//        }
-//
-//        Animal addedAnimal = animalsRepository.save(animal);
-//        log.debug("Animal {} was added", addedAnimal);
-        return null;
-    }
+    public Report findReport(Integer id) {
+        log.info("Invoked a method for finding report");
 
-    @Override
-    public Report findAnimal(Integer id) {
-        log.info("Invoked a method for finding animal");
-
-        animalIdValidation(id);
+        reportIdValidation(id);
 
         Report foundReport = reportsRepository.findById(id).get();
-        log.debug("Animal with id {} was found", id);
+        log.debug("Report with id {} was found", id);
         return foundReport;
     }
 
     @Override
-    public Report editAnimal(Report report) {
-        log.info("Invoked a method for updating a animal");
+    public Collection<Report> getAllReports() {
+        log.info("Invoked a method for getting all reports");
 
-        animalIdValidation(report.getId());
-
-        Report updatedReport = reportsRepository.save(report);
-        log.debug("Animal {} was updated", updatedReport);
-        return updatedReport;
-    }
-
-    @Override
-    public void removeAnimal(Integer id) {
-        log.info("Invoked a method for removing a animal");
-
-        animalIdValidation(id);
-
-        log.debug("Animal with id {} was removed", id);
-        reportsRepository.deleteById(id);
-    }
-
-    @Override
-    public Collection<Report> getAllAnimals() {
-        log.info("Invoked a method for getting all animals");
-
-        log.debug("All animals were received");
+        log.debug("All reports were received");
         return Collections.unmodifiableCollection(reportsRepository.findAll());
     }
 
-    private void animalIdValidation(Integer id) {
+    private void reportIdValidation(Integer id) {
         if (!reportsRepository.existsById(id)) {
-            log.error("There is no animal with id = {}", id);
+            log.error("There is no report with id = {}", id);
         }
     }
 }

@@ -48,3 +48,11 @@ CREATE TABLE binary_content (
     id                  serial PRIMARY KEY,
     data                oid
 );
+
+-- changeset grigorii:create-animal-table
+CREATE TABLE animal (
+    id                  serial PRIMARY KEY,
+    name                text,
+    shelter_id          int4,
+    animal_owner_id     int4
+);

@@ -18,7 +18,6 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETIN
 @Component
 public class Information implements Command {
     private final SendMessageService sendMessageService;
-    private final AnimalOwnerRepository animalOwnerRepository;
 
     String[] buttonsText = {
             GET_MORE_INFO_SHELTER_BUTTON,
@@ -37,10 +36,8 @@ public class Information implements Command {
             CALL_VOLUNTEER,
             MENU};
 
-    public Information(SendMessageService sendMessageService,
-                       AnimalOwnerRepository animalOwnerRepository) {
+    public Information(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
-        this.animalOwnerRepository = animalOwnerRepository;
     }
 
     /**

@@ -92,14 +92,14 @@ public class TelegramBotService extends TelegramLongPollingBot {
         commandMap.put(MAIN_MENU_COMMAND, mainMenu);
         commandMap.put(INFORMATION_COMMAND, information);
         commandMap.put(CAT_AND_DOG_INFO_COMMAND, catAndDogInformation);
-        commandMap.put(SAVE_USER_CONTACTS_COMMAND, saveUserContacts);
-        commandMap.put(SAVE_REPORT_COMMAND, saveReportAboutPet);
         commandMap.put(GET_ANIMAL_COMMAND, getAnimalFromTheShelter);
         commandMap.put(CAT_AND_DOG_GET_ANIMAL_COMMAND, catAndDogGetAnimalFromTheShelter);
         commandMap.put(BECOME_VOLUNTEER_COMMAND, becomeVolunteer);
         commandMap.put(CALL_VOLUNTEER_COMMAND, callVolunteer);
         commandMap.put(HELP_VOLUNTEER_COMMAND, helpVolunteer);
-        commandMap.put("savePhoto", savePhoto);
+        commandMap.put(SAVE_USER_CONTACTS_COMMAND, saveUserContacts);
+        commandMap.put(SAVE_REPORT_COMMAND, saveReportAboutPet);
+        commandMap.put(SAVE_PHOTO_COMMAND, savePhoto);
     }
 
     @Override
@@ -134,28 +134,25 @@ public class TelegramBotService extends TelegramLongPollingBot {
             String patternNumber = "([\\+]?[7|8][\\s-(]?[9][0-9]{2}[\\s-)]?)?([\\d]{3})[\\s-]?([\\d]{2})[\\s-]?([\\d]{2})";
             boolean matchesResult = Pattern.matches(patternNumber, messageText);
 
-            if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals("/start")) {
+            if (!update.getMessage().getText().isEmpty() && update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) {
                 commandMap.get(START_COMMAND).execute(update, this);
             }
-
             if (!update.getMessage().getText().isEmpty() && matchesResult) {
-                String commandText = "saveUserContacts";
-                commandMap.get(commandText).execute(update, this);
+                commandMap.get(SAVE_USER_CONTACTS_COMMAND).execute(update, this);
             }
-
-            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals("/start")) { //заменить на help_volunteer // ... && checkAnimalOwner.getTookTheAnimal()
+            if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) { //заменить на help_volunteer // ... && checkAnimalOwner.getTookTheAnimal()
                 commandMap.get(HELP_VOLUNTEER_COMMAND).execute(update, this);
             }
             if (checkAnimalOwner != null && checkAnimalOwner.getCanSendReport()
-                    && update.getMessage().hasText() && !update.getMessage().getText().equals("/start")) {
-                commandMap.get("savePhoto").execute(update, this);
+                    && update.getMessage().hasText() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)) {
+                commandMap.get(SAVE_PHOTO_COMMAND).execute(update, this);
             }
         } else if (update.hasCallbackQuery()) {
             String commandTextFromButtons = getCommandTextFromButtons(update);
             commandMap.get(commandTextFromButtons).execute(update, this);
         } else if (update.getMessage().hasPhoto()) {
             if (update.getMessage().hasPhoto() && update.getMessage().getPhoto() != null) {
-                commandMap.get("savePhoto").execute(update, this);
+                commandMap.get(SAVE_PHOTO_COMMAND).execute(update, this);
             }
         }
     }
@@ -175,7 +172,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
             case DOG:
             case CAT:
             case MENU:
-            case "чат":
+            case CHAT:
                 commandTextFromButtons = MAIN_MENU_COMMAND;
                 break;
             case INFO:

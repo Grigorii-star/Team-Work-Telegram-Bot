@@ -8,7 +8,6 @@ import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.exception.UploadFileException;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 import skypro.TeamWorkTelegramBot.service.fileService.FileService;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
@@ -23,7 +22,6 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 public class SavePhoto implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private final ReportsRepository reportsRepository;
     private final FileService fileService;
 
     String[] buttonsText = {MENU_BUTTON};
@@ -31,11 +29,9 @@ public class SavePhoto implements Command {
 
     public SavePhoto(SendMessageService sendMessageService,
                      AnimalOwnerRepository animalOwnerRepository,
-                     ReportsRepository reportsRepository,
                      FileService fileService) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
-        this.reportsRepository = reportsRepository;
         this.fileService = fileService;
     }
 

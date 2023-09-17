@@ -6,8 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
-import skypro.TeamWorkTelegramBot.service.fileService.FileService;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
@@ -19,16 +17,11 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 public class SaveReportAboutPet implements Command {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-    private final ReportsRepository reportsRepository;
-    private final FileService fileService;
 
     public SaveReportAboutPet(SendMessageService sendMessageService,
-                              AnimalOwnerRepository animalOwnerRepository,
-                              ReportsRepository reportsRepository, FileService fileService) {
+                              AnimalOwnerRepository animalOwnerRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
-        this.reportsRepository = reportsRepository;
-        this.fileService = fileService;
     }
 
     /**
@@ -50,7 +43,7 @@ public class SaveReportAboutPet implements Command {
 
         sendMessageService.SendMessageToUser(
                 String.valueOf(userChatIdQuery),
-                "Отправьте фото с прикрепленным текстовым отчетом. " +
+                "Отправьте фото с прикрепленным текстовым отчетом. \n" +
                         "Отчет должен содержать: \n" +
                         "Рацион животного. \n" +
                         "Общее самочувствие и привыкание к новому месту. \n" +

@@ -11,6 +11,7 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.START_TELEGRAM_BOT_COMMAND;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
@@ -65,7 +66,7 @@ public class Start implements Command {
         AnimalOwner animalOwnerText = animalOwnerRepository.findByIdChat(textChatId);
         AnimalOwner animalOwnerQuery = animalOwnerRepository.findByIdChat(queryChatId);
 
-        if (start.equals("/start") && animalOwnerText.getRegistered() == null) {
+        if (start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered() == null) {
             animalOwnerText.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
             animalOwnerText.setCanSaveContact(false); // чтобы можно было сохранить контактные данные только пройдя по кнопке
             animalOwnerText.setBeVolunteer(false); //для того, чтобы стать волонтером и пройти по кнопке
@@ -81,7 +82,7 @@ public class Start implements Command {
                     buttonsCallData,
                     telegramBotService
             );
-        } else if ((start.equals("/start") && animalOwnerText.getRegistered())) {
+        } else if ((start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered())) {
             animalOwnerText.setCanSaveContact(false);
             animalOwnerText.setCanSendReport(false);
             //animalOwner.setBeVolunteer(false); //добавил, а может тут и не надо

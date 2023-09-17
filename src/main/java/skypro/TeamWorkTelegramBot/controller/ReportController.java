@@ -14,86 +14,41 @@ import java.util.Collection;
  * контроллер для животного
  */
 @RestController
-@RequestMapping("animal")
+@RequestMapping("animal-report")
 public class ReportController {
     private final ReportService reportService;
 
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
+
     /**
-     * метод, который добавляет нового животного.
-     * @param report объект Animal, который будет добавлен
-     * @return ResponseEntity с добавленным объектом Animal
+     * метод, который находит отчет о животном по идентификатору владельца.
+     * @param id идентификатор владельца животного
+     * @return ResponseEntity с найденным объектом отчета
      */
-    @ApiOperation(value = "Добавить нового животного")
+    @ApiOperation(value = "Найти отчет о животном по id")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Животное успешно добавлено"),
-            @ApiResponse(code = 400, message = "Предоставлены некорректные данные"),
-            @ApiResponse(code = 500, message = "Ошибка при добавлении животного")
-    })
-    @PostMapping
-    public ResponseEntity<Report> add(@RequestBody Report report) {
-        return ResponseEntity.ok(reportService.addAnimal(report));
-    }
-    /**
-     * метод, который находит животное по его идентификатору.
-     * @param id идентификатор животного
-     * @return ResponseEntity с найденным объектом животного
-     */
-    @ApiOperation(value = "Найти животное по id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Животное успешно найдено"),
-            @ApiResponse(code = 404, message = "Животное не найдено"),
-            @ApiResponse(code = 500, message = "Ошибка при поиске животного")
+            @ApiResponse(code = 200, message = "Отчет о животном успешно найдено"),
+            @ApiResponse(code = 404, message = "Отчет о животном не найдено"),
+            @ApiResponse(code = 500, message = "Ошибка при поиске отчета о животном")
     })
     @GetMapping("{id}")
     public ResponseEntity<Report> find(@PathVariable Integer id) {
-        return ResponseEntity.ok(reportService.findAnimal(id));
+        return ResponseEntity.ok(reportService.findReport(id));
+    }
 
-    }
     /**
-     * метод, который редактирует информацию о волонтере.
-     * @param report объект Animal, содержащий измененную информацию о животном
-     * @return ResponseEntity с объектом Animal после редактирования
+     * метод, который получает список всех отчетов о животных.
+     * @return ResponseEntity с коллекцией объектов Report
      */
-    @ApiOperation(value = "Редактировать животное")
+    @ApiOperation(value = "Получить список всех отчетов о животных")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Информация о животном успешно отредактирована"),
-            @ApiResponse(code = 400, message = "Предоставлены некорректные данные для редактирования"),
-            @ApiResponse(code = 500, message = "Ошибка при редактировании информации о животном")
-    })
-    @PutMapping
-    public ResponseEntity<Report> edit(@RequestBody Report report) {
-        return ResponseEntity.ok(reportService.editAnimal(report));
-    }
-    /**
-     * метод, который удаляет животоне по его идентификатору.
-     * @param id идентификатор животного, который будет удален
-     * @return ResponseEntity без тела, указывающий на успешное удаление животного
-     */
-    @ApiOperation(value = "Удалить животное по id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Животное успешно удалено"),
-            @ApiResponse(code = 404, message = "Животное не найдено"),
-            @ApiResponse(code = 500, message = "Ошибка при удалении животного")
-    })
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> remove(@PathVariable Integer id) {
-        reportService.removeAnimal(id);
-        return ResponseEntity.ok().build();
-    }
-    /**
-     * метод, который получает список всех животных.
-     * @return ResponseEntity с коллекцией объектов Animal
-     */
-    @ApiOperation(value = "Получить список всех животных")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список животных успешно получен"),
-            @ApiResponse(code = 500, message = "Ошибка при получении списка животных")
+            @ApiResponse(code = 200, message = "Список отчетов о животных успешно получен"),
+            @ApiResponse(code = 500, message = "Ошибка при получении списка отчетов о животных")
     })
     @GetMapping
     public ResponseEntity<Collection<Report>> getAll() {
-        return ResponseEntity.ok(reportService.getAllAnimals());
+        return ResponseEntity.ok(reportService.getAllReports());
     }
 }

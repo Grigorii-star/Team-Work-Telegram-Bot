@@ -54,7 +54,7 @@ class ReportControllerTest {
 
         Report report = new Report(1, "TestName", "test/path", 10L, "testType");
 
-        when(reportService.findAnimal(1L)).thenReturn(report);
+        when(reportService.findReport(1L)).thenReturn(report);
 
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -91,7 +91,7 @@ class ReportControllerTest {
         animalObject.put("type","testType");
 
 
-        when(reportService.getAllAnimals()).thenReturn(reportList);
+        when(reportService.getAllReports()).thenReturn(reportList);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/animal")
@@ -112,7 +112,7 @@ class ReportControllerTest {
         animalObject.put("type","testType");
 
 
-        when(reportService.findAnimal(2L)).thenReturn(report);
+        when(reportService.findReport(2L)).thenReturn(report);
         when(reportService.addAnimal(report)).thenReturn(report);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -135,7 +135,7 @@ class ReportControllerTest {
         animalObject.put("type","testType");
 
 
-        when(reportService.findAnimal(2L)).thenReturn(report);
+        when(reportService.findReport(2L)).thenReturn(report);
         when(reportService.addAnimal(report)).thenReturn(report);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -158,7 +158,7 @@ class ReportControllerTest {
         animalObject.put("type","testType");
 
 
-        when(reportService.findAnimal(2L)).thenReturn(report);
+        when(reportService.findReport(2L)).thenReturn(report);
         when(reportService.addAnimal(report)).thenReturn(report);
 
         mockMvc.perform(MockMvcRequestBuilders
