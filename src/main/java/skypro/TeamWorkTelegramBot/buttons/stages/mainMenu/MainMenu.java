@@ -63,7 +63,7 @@ public class MainMenu implements Command {
         Long chatId = update.getCallbackQuery().getFrom().getId();
         String callData = update.getCallbackQuery().getData();
 
-        if (callData.equals(DOG_SHELTER)) {
+        if (callData.equals(DOG)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
             Shelter shelter = sheltersRepository.findByName(DOG_SHELTER);
             animalOwner.setDogLover(true);
@@ -78,7 +78,7 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals(CAT_SHELTER)) {
+        else if (callData.equals(CAT)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
             Shelter shelter = sheltersRepository.findByName(CAT_SHELTER);
             animalOwner.setDogLover(false);
