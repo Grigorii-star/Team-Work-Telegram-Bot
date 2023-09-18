@@ -37,22 +37,20 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
 
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
-        String callData = callbackQuery.getData();
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
 
-        switch (callData) {
+        switch (callbackQuery.getData()) {
             case MEETING_DOG_RULES:
             case MEETING_CAT_RULES:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage2/dog-rules.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage2/cat-rules.txt"),
                             telegramBotService
                     );
@@ -60,14 +58,14 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
                 break;
             case DOC_LIST:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage2/doc-list.txt"),
                         telegramBotService
                 );
                 break;
             case TRANSPORTATION:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage2/transfer.txt"),
                         telegramBotService
                 );
@@ -76,13 +74,13 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
             case PUSSY_HOUSE:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage2/doggy-house.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage2/kitten-house.txt"),
                             telegramBotService
                     );
@@ -90,35 +88,35 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
                 break;
             case PET_HOUSE:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage2/adult-pet-house.txt"),
                         telegramBotService
                 );
                 break;
             case INVALID_HOUSE:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage2/invalid-adult-pet-house.txt"),
                         telegramBotService
                 );
                 break;
             case DOG_HANDLER_ADVICE:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         "Здесь должны быть советы кинолога по первичному общению с собакой",
                         telegramBotService
                 );
                 break;
             case DOG_HANDLER_CONTACTS:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         "Здесь должны быть контактные данные проверенных кинологов",
                         telegramBotService
                 );
                 break;
             case REFUSAL_REASONS:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage2/refuse-reasons.txt"),
                         telegramBotService
                 );

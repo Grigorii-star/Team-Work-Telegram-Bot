@@ -40,40 +40,38 @@ public class CallVolunteer extends CommandAbstractClass {
      * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
      * Вызывает метод sendMessageService.SendMessageToUser() и передает в него chatId
      *
-     * @param update             объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery             объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
-
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-
-        //Long volunteerId = getChatIdVolunteer();
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
-//        animalOwner.setHelpVolunteer(true); //устанавливаем что владельцу сейчас помогает волонтер
+
         animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
+        animalOwner.setHelpVolunteer(true);
         volunteer.setIsBusy(true); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
-        //сохраняем в базу данных все
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 
-        //если н волонтер
-//        if (!animalOwner.getBeVolunteer()) {
+        sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+                String.valueOf(callbackQuery.getFrom().getId()),
+                "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.",
+                buttonsText,
+                buttonsCallData,
+                telegramBotService
+        );
 
-            animalOwner.setHelpVolunteer(true);
-            animalOwnerRepository.save(animalOwner);
+        animalOwner.setHelpVolunteer(true);
+        animalOwnerRepository.save(animalOwner);
 
-            sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
-                    String.valueOf(chatId), "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.", buttonsText, buttonsCallData, telegramBotService);
-//        } else if (animalOwner.getBeVolunteer()) {
-
-            animalOwner.setHelpVolunteer(true);
-            animalOwnerRepository.save(animalOwner);
-
-            sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
-                    String.valueOf(volunteer.getIdChat()), "Сейчас с тобой свяжется пользователь.", buttonsText, buttonsCallData, telegramBotService);
-//        }
+        sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+                String.valueOf(volunteer.getIdChat()),
+                "Сейчас с тобой свяжется пользователь.",
+                buttonsText,
+                buttonsCallData,
+                telegramBotService
+        );
     }
 }

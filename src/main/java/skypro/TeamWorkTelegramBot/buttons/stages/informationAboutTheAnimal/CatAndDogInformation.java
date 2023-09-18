@@ -31,26 +31,24 @@ public class CatAndDogInformation extends CommandAbstractClass {
      * Используя полученный chatId, получается объект animalOwner из репозитория
      * animalOwnerRepository с использованием метода findByIdChat(chatId).Обрабатывает разные варианты
      * callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
-     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
-        String callData = callbackQuery.getData();
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
 
-        switch (callData) {
+        switch (callbackQuery.getData()) {
             case ABOUT_SHELTER:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/dog-shelter-info.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/cat-shelter-info.txt"),
                             telegramBotService
                     );
@@ -59,13 +57,13 @@ public class CatAndDogInformation extends CommandAbstractClass {
             case SCHEDULE:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/dog-schedule-address.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/cat-schedule-address.txt"),
                             telegramBotService
                     );
@@ -74,13 +72,13 @@ public class CatAndDogInformation extends CommandAbstractClass {
             case SECURITY:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/dog-security-phone.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/cat-security-phone.txt"),
                             telegramBotService
                     );
@@ -88,7 +86,7 @@ public class CatAndDogInformation extends CommandAbstractClass {
                 break;
             case SAFETY_PRECAUTIONS:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage1/safety_rules.txt"),
                         telegramBotService
                 );

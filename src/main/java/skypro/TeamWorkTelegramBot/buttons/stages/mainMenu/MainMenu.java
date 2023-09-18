@@ -57,62 +57,60 @@ public class MainMenu extends CommandAbstractClass {
      * данный метод обрабатывает разные варианты callData, устанавливает настройки "любителя собак" или
      * "любителя кошек" в зависимости от выбранной опции, сохраняет изменения в репозитории и отправляет
      * приветственное сообщение с кнопками пользователю.
-     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
-        String callData = callbackQuery.getData();
 
-        if (callData.equals(DOG)) {
-            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        if (callbackQuery.getData().equals(DOG)) {
+            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
             Shelter shelter = sheltersRepository.findByName(DOG_SHELTER);
             animalOwner.setDogLover(true);
             animalOwner.setShelter(shelter);
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     GREETING_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
             );
         }
-        else if (callData.equals(CAT)) {
-            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        else if (callbackQuery.getData().equals(CAT)) {
+            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
             Shelter shelter = sheltersRepository.findByName(CAT_SHELTER);
             animalOwner.setDogLover(false);
             animalOwner.setShelter(shelter);
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     GREETING_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
             );
         }
-        else if (callData.equals(MENU)) {
+        else if (callbackQuery.getData().equals(MENU)) {
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     GREETING_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
             );
-        } else if (callData.equals(CHAT)) {
+        } else if (callbackQuery.getData().equals(CHAT)) {
 
-            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+            AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
 
             //если пользователь
             Volunteer volunteer;
             if (!animalOwner.getBeVolunteer()) {
                 volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
                 sendMessageService.SendMessageToUserWithButtons(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         GREETING_MESSAGE,
                         buttonsText,
                         buttonsCallData,
@@ -124,9 +122,9 @@ public class MainMenu extends CommandAbstractClass {
                         telegramBotService
                 );
             } else {
-                volunteer = volunteersRepository.findByIdChat(chatId);
+                volunteer = volunteersRepository.findByIdChat(callbackQuery.getFrom().getId());
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         "Связь с пользователем прервана",
                         telegramBotService
                 );

@@ -50,10 +50,9 @@ public class Information extends CommandAbstractClass {
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
 
         sendMessageService.SendMessageToUserWithButtons(
-                String.valueOf(chatId),
+                String.valueOf(callbackQuery.getFrom().getId()),
                 GREETING_MESSAGE,
                 buttonsText,
                 buttonsCallData,

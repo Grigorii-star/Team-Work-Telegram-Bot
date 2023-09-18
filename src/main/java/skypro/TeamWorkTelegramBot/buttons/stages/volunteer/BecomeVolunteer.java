@@ -2,15 +2,13 @@ package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
-import static skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts.GREETING_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.stages.saves.CanSaveContacts.GREETING_MESSAGE;
 
 @Component
 public class BecomeVolunteer extends CommandAbstractClass {
@@ -25,9 +23,8 @@ public class BecomeVolunteer extends CommandAbstractClass {
 
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
 
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         if (!animalOwner.getBeVolunteer()) {
 
             animalOwner.setBeVolunteer(true);
@@ -35,7 +32,7 @@ public class BecomeVolunteer extends CommandAbstractClass {
 
             animalOwnerRepository.save(animalOwner);
             sendMessageService.SendMessageToUser(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     "Спасибо за твою готовность помогать!\n" +
                             GREETING_MESSAGE,
                     telegramBotService

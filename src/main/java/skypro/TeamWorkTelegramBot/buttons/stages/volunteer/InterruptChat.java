@@ -29,15 +29,9 @@ public class InterruptChat extends CommandAbstractClass {
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
 
-        //чат ай ди пользователя
-        Long chatId = callbackQuery.getFrom().getId();
-
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-
-        //Long volunteerId = getChatIdVolunteer();
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         Volunteer volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
         interruptChat(animalOwner, volunteer);
-
     }
 
     private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
@@ -45,10 +39,8 @@ public class InterruptChat extends CommandAbstractClass {
         animalOwner.setVolunteer(null); // устанавливаем его волонтера
         volunteer.setIsBusy(false); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(null); // волонтеру ставим его владельца
-        //сохраняем в базу данных все
+
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
     }
-
-
 }

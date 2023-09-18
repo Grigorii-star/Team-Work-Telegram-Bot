@@ -87,12 +87,11 @@ public class GetAnimalFromTheShelter extends CommandAbstractClass {
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
-        Long chatId = callbackQuery.getFrom().getId();
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
 
         if (animalOwner.getDogLover()) {
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     GREETING_MESSAGE,
                     buttonsTextDog,
                     buttonsCallDataDog,
@@ -101,7 +100,7 @@ public class GetAnimalFromTheShelter extends CommandAbstractClass {
         }
         else {
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     GREETING_MESSAGE,
                     buttonsTextCat,
                     buttonsCallDataCat,
