@@ -27,6 +27,7 @@ public class AnimalOwner {
     private Boolean isVolunteer;
     private Boolean helpVolunteer;
     private Boolean canSendReport;
+    private Boolean inChat;
     @OneToOne
     private Volunteer volunteer;
     @ManyToOne

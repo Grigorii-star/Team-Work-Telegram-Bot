@@ -56,6 +56,7 @@ public class Start extends CommandAbstractClass {
             animalOwner.setTookTheAnimal(false); //для того, чтобы взять животное и пройти по кнопке
             animalOwner.setHelpVolunteer(false); //для того, чтобы получить помощь и пройти по кнопке
             animalOwner.setCanSendReport(false); // для того, чтобы отправить отчет только нажав кнопку
+            animalOwner.setInChat(false);
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUser(String.valueOf(message.getChatId()),

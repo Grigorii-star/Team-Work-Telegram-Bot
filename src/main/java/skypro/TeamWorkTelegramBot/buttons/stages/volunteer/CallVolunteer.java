@@ -1,5 +1,6 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,6 +20,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHA
 /**
  * Класс, для общения с волонтером
  */
+@Slf4j
 @Component
 public class CallVolunteer extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
@@ -40,7 +42,7 @@ public class CallVolunteer extends CommandAbstractClass {
      * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
      * Вызывает метод sendMessageService.SendMessageToUser() и передает в него chatId
      *
-     * @param callbackQuery             объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery      объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
@@ -48,10 +50,13 @@ public class CallVolunteer extends CommandAbstractClass {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
 
-        animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
         animalOwner.setHelpVolunteer(true);
+        animalOwner.setInChat(true);
+        animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
+
         volunteer.setIsBusy(true); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
+
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 
@@ -62,10 +67,8 @@ public class CallVolunteer extends CommandAbstractClass {
                 buttonsCallData,
                 telegramBotService
         );
-
-        animalOwner.setHelpVolunteer(true);
-        animalOwnerRepository.save(animalOwner);
-
+//        animalOwner.setHelpVolunteer(true);
+//        animalOwnerRepository.save(animalOwner);
         sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
                 String.valueOf(volunteer.getIdChat()),
                 "Сейчас с тобой свяжется пользователь.",

@@ -13,7 +13,7 @@ public class ConstantsButtons {
     public static final String BECOME_A_VOLUNTEER_BUTTON = "Стать волонтёром";
 
 
-    public static final String POST_CONTACT_BUTTON = "Оставить контактные данные, чтобы волонтер мог связаться";
+    public static final String POST_CONTACT_BUTTON = "Оставить контактные данные";
     public static final String CALL_VOLUNTEER_BUTTON = "Позвать волонтера";
     public static final String MENU_BUTTON = "Перейти в главное меню";
 
@@ -34,8 +34,8 @@ public class ConstantsButtons {
     //Константы для вывода текста на кнопках из этапа Взять животное из приюта
    
 
-    public static final String MEETING_DOG_RULES_BUTTON = "Правила знакомства с собакой до того, как взять его из приюта";
-    public static final String MEETING_CAT_RULES_BUTTON = "Правила знакомства с кошкой до того, как взять его из приюта";
+    public static final String MEETING_DOG_RULES_BUTTON = "Правила знакомства с собакой до того, как взять ее из приюта";
+    public static final String MEETING_CAT_RULES_BUTTON = "Правила знакомства с кошкой до того, как взять ее из приюта";
     public static final String DOC_LIST_DOG_BUTTON = "Список документов, необходимых для того, чтобы взять собаку из приюта";
     public static final String DOC_LIST_CAT_BUTTON = "Список документов, необходимых для того, чтобы взять кошку из приюта";
     public static final String TRANSPORTATION_DOG_BUTTON = "Список рекомендаций по транспортировке собаки";
