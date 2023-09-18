@@ -3,8 +3,6 @@ package skypro.TeamWorkTelegramBot.buttons.stages.mainMenu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
@@ -107,7 +105,7 @@ public class MainMenu extends CommandAbstractClass {
 
             //если пользователь
             Volunteer volunteer;
-            if (!animalOwner.getBeVolunteer()) {
+            if (!animalOwner.getIsVolunteer()) {
                 volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(callbackQuery.getFrom().getId()),

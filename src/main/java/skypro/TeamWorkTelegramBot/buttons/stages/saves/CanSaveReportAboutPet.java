@@ -3,8 +3,6 @@ package skypro.TeamWorkTelegramBot.buttons.stages.saves;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -16,12 +14,12 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
  */
 @Slf4j
 @Component
-public class SaveReportAboutPet extends CommandAbstractClass {
+public class CanSaveReportAboutPet extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
-    public SaveReportAboutPet(SendMessageService sendMessageService,
-                              AnimalOwnerRepository animalOwnerRepository) {
+    public CanSaveReportAboutPet(SendMessageService sendMessageService,
+                                 AnimalOwnerRepository animalOwnerRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
     }

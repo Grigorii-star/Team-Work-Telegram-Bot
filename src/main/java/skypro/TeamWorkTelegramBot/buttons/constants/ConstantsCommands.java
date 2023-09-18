@@ -15,7 +15,7 @@ public class ConstantsCommands {
     public static final String CAT_AND_DOG_INFO_COMMAND = "catAndDogInformation";
     public static final String CAN_SAVE_CONTACTS_COMMAND = "canSaveContacts";
     public static final String BECOME_VOLUNTEER_COMMAND = "becomeVolunteer";
-    public static final String SAVE_REPORT_COMMAND = "saveReportAboutPet";
+    public static final String SAVE_REPORT_COMMAND = "canSaveReportAboutPet";
     public static final String  SAVE_PHOTO_COMMAND = "savePhoto";
     public static final String GET_ANIMAL_COMMAND = "getAnimalFromTheShelter";
     public static final String CAT_AND_DOG_GET_ANIMAL_COMMAND = "catAndDogGetAnimalFromTheShelter";

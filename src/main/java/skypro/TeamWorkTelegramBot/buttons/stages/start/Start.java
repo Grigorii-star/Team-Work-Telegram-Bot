@@ -3,8 +3,6 @@ package skypro.TeamWorkTelegramBot.buttons.stages.start;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -26,11 +24,11 @@ public class Start extends CommandAbstractClass {
     private final AnimalOwnerRepository animalOwnerRepository;
 
     String[] buttonsText = {DOG_SHELTER_BUTTON,
-                            CAT_SHELTER_BUTTON,
-                            BECOME_A_VOLUNTEER_BUTTON};
+            CAT_SHELTER_BUTTON,
+            BECOME_A_VOLUNTEER_BUTTON};
     String[] buttonsCallData = {DOG,
-                                CAT,
-                                BEST_VOLUNTEER};
+            CAT,
+            BEST_VOLUNTEER};
 
     public Start(SendMessageService sendMessageService,
                  AnimalOwnerRepository animalOwnerRepository) {
@@ -49,42 +47,36 @@ public class Start extends CommandAbstractClass {
 
     @Override
     public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
-        Long textChatId = 0L;
-        String start = "";
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(message.getChatId());
 
-        try {
-            textChatId = message.getChatId();
-            start = message.getText();
+        if (message.getText().equals(START_TELEGRAM_BOT_COMMAND) && animalOwner.getRegistered() == null) {
+            animalOwner.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
+            animalOwner.setCanSaveContact(false); // чтобы можно было сохранить контактные данные только пройдя по кнопке
+            animalOwner.setIsVolunteer(false); //для того, чтобы стать волонтером и пройти по кнопке
+            animalOwner.setTookTheAnimal(false); //для того, чтобы взять животное и пройти по кнопке
+            animalOwner.setHelpVolunteer(false); //для того, чтобы получить помощь и пройти по кнопке
+            animalOwner.setCanSendReport(false); // для того, чтобы отправить отчет только нажав кнопку
+            animalOwnerRepository.save(animalOwner);
 
-        } catch (NullPointerException e) {
-            log.error("Error NullPointerException по update.getMessage().getChatId()");
-        }
+            sendMessageService.SendMessageToUser(String.valueOf(message.getChatId()),
+                    GREETING_MESSAGE,
+                    telegramBotService
+            );
 
-        AnimalOwner animalOwnerText = animalOwnerRepository.findByIdChat(textChatId);
-
-        if (start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered() == null) {
-            animalOwnerText.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
-            animalOwnerText.setCanSaveContact(false); // чтобы можно было сохранить контактные данные только пройдя по кнопке
-            animalOwnerText.setBeVolunteer(false); //для того, чтобы стать волонтером и пройти по кнопке
-            animalOwnerText.setTookTheAnimal(false); //для того, чтобы взять животное и пройти по кнопке
-            animalOwnerText.setHelpVolunteer(false); //для того, чтобы получить помощь и пройти по кнопке
-            animalOwnerText.setCanSendReport(false); // для того, чтобы отправить отчет только нажав кнопку
-            animalOwnerRepository.save(animalOwnerText);
-            sendMessageService.SendMessageToUser(String.valueOf(textChatId), GREETING_MESSAGE, telegramBotService);
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(textChatId),
+                    String.valueOf(message.getChatId()),
                     getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"),
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
             );
-        } else if ((start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered())) {
-            animalOwnerText.setCanSaveContact(false);
-            animalOwnerText.setCanSendReport(false);
-            animalOwnerRepository.save(animalOwnerText);
+        } else if ((message.getText().equals(START_TELEGRAM_BOT_COMMAND) && animalOwner.getRegistered())) {
+            animalOwner.setCanSaveContact(false);
+            animalOwner.setCanSendReport(false);
+            animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUserWithButtons(
-                    String.valueOf(textChatId),
+                    String.valueOf(message.getChatId()),
                     "Можете выбрать приют.",
                     buttonsText,
                     buttonsCallData,

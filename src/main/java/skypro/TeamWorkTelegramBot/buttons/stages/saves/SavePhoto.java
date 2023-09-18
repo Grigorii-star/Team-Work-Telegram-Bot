@@ -47,6 +47,7 @@ public class SavePhoto extends CommandAbstractClass {
 
     private void uploadReport(Message message, TelegramBotService telegramBotService) throws IOException {
         log.info("Invoked a method for uploading animal report");
+//        AnimalOwner animalOwnerCheck = animalOwnerRepository.findByIdChat(message.getChatId());
 
         if (message.hasPhoto() && message.getPhoto() != null && message.getCaption() != null) {
 

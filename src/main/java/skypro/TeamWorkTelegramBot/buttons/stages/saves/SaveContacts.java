@@ -35,7 +35,7 @@ public class SaveContacts extends CommandAbstractClass {
     public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(message.getChatId());
 
-        if (message.hasText() && animalOwner.getCanSaveContact() && !animalOwner.getBeVolunteer()) {
+        if (message.hasText() && animalOwner.getCanSaveContact() && !animalOwner.getIsVolunteer()) {
 
             animalOwner.setContactInformation(String.valueOf(message.getText()));
             animalOwner.setCanSaveContact(false);
@@ -49,7 +49,7 @@ public class SaveContacts extends CommandAbstractClass {
                     telegramBotService
             );
         }
-        else if (message.hasText() && animalOwner.getCanSaveContact() && animalOwner.getBeVolunteer()) {
+        else if (message.hasText() && animalOwner.getCanSaveContact() && animalOwner.getIsVolunteer()) {
 
             animalOwner.setContactInformation(String.valueOf(message.getText()));
             animalOwner.setCanSaveContact(false);
