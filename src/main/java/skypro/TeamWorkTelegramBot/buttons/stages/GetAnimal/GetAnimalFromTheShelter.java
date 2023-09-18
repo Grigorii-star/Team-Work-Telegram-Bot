@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -16,7 +18,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
  * Класс, для создания кнопок меню информацию по приюту в телеграмм
  */
 @Component
-public class GetAnimalFromTheShelter implements Command {
+public class GetAnimalFromTheShelter extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -80,16 +82,16 @@ public class GetAnimalFromTheShelter implements Command {
     /**
      * данный метод отправляет приветственное сообщение с кнопками в зависимости от того, является
      * ли пользователь любителем собак или кошек, полученных в параметре Update.
-     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        Long chatId = callbackQuery.getFrom().getId();
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
         if (animalOwner.getDogLover()) {
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
                     buttonsTextDog,
@@ -98,7 +100,7 @@ public class GetAnimalFromTheShelter implements Command {
             );
         }
         else {
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
                     buttonsTextCat,

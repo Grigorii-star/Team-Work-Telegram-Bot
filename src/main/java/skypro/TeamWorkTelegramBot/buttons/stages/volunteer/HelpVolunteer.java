@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -11,12 +13,8 @@ import skypro.TeamWorkTelegramBot.service.restApiServices.VolunteerService;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 @Component
-public class HelpVolunteer implements Command {
+public class HelpVolunteer extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
     private final VolunteersRepository volunteersRepository;
@@ -31,9 +29,9 @@ public class HelpVolunteer implements Command {
     }
 
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getMessage().getFrom().getId(); //userId
-        String text = update.getMessage().getText(); //userText
+    public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
+        Long chatId = message.getFrom().getId(); //userId
+        String text = message.getText(); //userText
 
 
         //я ищу владельца (он может быть волонтером в баазе по чату)

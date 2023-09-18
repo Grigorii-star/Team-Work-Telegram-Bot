@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -18,7 +20,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHA
  * Класс, для общения с волонтером
  */
 @Component
-public class CallVolunteer implements Command {
+public class CallVolunteer extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
     private final VolunteersRepository volunteersRepository;
@@ -42,8 +44,8 @@ public class CallVolunteer implements Command {
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        Long chatId = callbackQuery.getFrom().getId();
 
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
@@ -63,14 +65,14 @@ public class CallVolunteer implements Command {
             animalOwner.setHelpVolunteer(true);
             animalOwnerRepository.save(animalOwner);
 
-            sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
+            sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
                     String.valueOf(chatId), "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.", buttonsText, buttonsCallData, telegramBotService);
 //        } else if (animalOwner.getBeVolunteer()) {
 
             animalOwner.setHelpVolunteer(true);
             animalOwnerRepository.save(animalOwner);
 
-            sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
+            sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
                     String.valueOf(volunteer.getIdChat()), "Сейчас с тобой свяжется пользователь.", buttonsText, buttonsCallData, telegramBotService);
 //        }
     }

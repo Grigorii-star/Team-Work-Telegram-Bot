@@ -15,7 +15,8 @@ public interface SendMessageService {
      * @param buttonsCallData id кнопки
      * @param telegramBotService
      */
-    void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService);
+    void SendMessageToUserWithButtons(String chatId, String textToSend, String[] buttonsText,
+                                      String[] buttonsCallData, TelegramBotService telegramBotService);
 
     /**
      * метод для передачи сообщения пользователю
@@ -24,4 +25,7 @@ public interface SendMessageService {
      * @param telegramBotService
      */
     void SendMessageToUser(String chatId, String textToSend, TelegramBotService telegramBotService);
+
+//    void SendMessageToUserWithChangeButtons(String chatId, Long messageId, String textToSend,
+//                                            String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService);
 }

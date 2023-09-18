@@ -3,6 +3,7 @@ package skypro.TeamWorkTelegramBot.service.sendMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -27,7 +28,7 @@ public class SendMessageServiceImpl implements SendMessageService {
      * @param buttonsCallData - id кнопки
      */
     @Override
-    public void SendMessageToUser(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
+    public void SendMessageToUserWithButtons(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
         SendMessage sendMessage = new SendMessage(chatId, textToSend);
 
         SendMessage buttonsMessage = createButtons(sendMessage, buttonsText, buttonsCallData);
@@ -53,6 +54,14 @@ public class SendMessageServiceImpl implements SendMessageService {
             log.error("TelegramApiException in SendMessageToUser method");
         }
     }
+
+//    @Override
+//    public void SendMessageToUserWithChangeButtons(String chatId, Long messageId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
+//        EditMessageText message = new EditMessageText();
+//        message.setChatId(String.valueOf(chatId));
+//        message.setText(textToSend);
+//        message.setMessageId((int) messageId);
+//    }
 
     /**
      * Метод, который создаёт кнопки. Принимает:

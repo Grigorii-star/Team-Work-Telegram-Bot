@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.exception.UploadFileException;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -19,7 +20,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 
 @Slf4j
 @Component
-public class SavePhoto implements Command {
+public class SavePhoto extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
     private final FileService fileService;
@@ -36,9 +37,9 @@ public class SavePhoto implements Command {
     }
 
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
+    public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
         try {
-            uploadReport(update.getMessage(), telegramBotService);
+            uploadReport(message, telegramBotService);
         } catch (IOException | NullPointerException e) {
             log.error("Exception in method execute SaveReportAboutPet class");
         }
@@ -55,7 +56,7 @@ public class SavePhoto implements Command {
                 animalOwner.setCanSendReport(false);
                 animalOwnerRepository.save(animalOwner);
 
-                sendMessageService.SendMessageToUser(
+                sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(message.getChatId()),
                         "Фото и отчет успешно загружены. Перейдите в главное меню.",
                         buttonsText,

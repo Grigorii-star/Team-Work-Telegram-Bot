@@ -2,8 +2,10 @@ package skypro.TeamWorkTelegramBot.buttons.stages.saves;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -14,7 +16,7 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
  */
 @Slf4j
 @Component
-public class SaveReportAboutPet implements Command {
+public class SaveReportAboutPet extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -33,10 +35,10 @@ public class SaveReportAboutPet implements Command {
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
         log.info("Invoked a method for save animal report");
 
-        Long userChatIdQuery = update.getCallbackQuery().getFrom().getId();
+        Long userChatIdQuery = callbackQuery.getFrom().getId();
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(userChatIdQuery);
         animalOwner.setCanSendReport(true);
         animalOwnerRepository.save(animalOwner);

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -17,7 +18,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.MEN
  */
 @Slf4j
 @Component
-public class SaveUserContacts implements Command {
+public class SaveUserContacts extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -45,7 +46,7 @@ public class SaveUserContacts implements Command {
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
+    public void updatesExtractor(Update update, TelegramBotService telegramBotService) {
         AnimalOwner animalOwner = new AnimalOwner();
 
         try {
@@ -75,7 +76,7 @@ public class SaveUserContacts implements Command {
             animalOwner.setCanSaveContact(false);
             animalOwnerRepository.save(animalOwner);
 
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(chatId),
                     GREETING_MESSAGE_OK,
                     buttonsText,

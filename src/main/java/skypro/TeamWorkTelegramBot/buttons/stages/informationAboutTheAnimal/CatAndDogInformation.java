@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -15,7 +17,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
  * Класс, отвечающий за логику кнопок из класса information
  */
 @Component
-public class CatAndDogInformation implements Command {
+public class CatAndDogInformation extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -33,9 +35,9 @@ public class CatAndDogInformation implements Command {
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
-        String callData = update.getCallbackQuery().getData();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        Long chatId = callbackQuery.getFrom().getId();
+        String callData = callbackQuery.getData();
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
         switch (callData) {

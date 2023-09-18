@@ -2,8 +2,10 @@ package skypro.TeamWorkTelegramBot.buttons.stages.mainMenu;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
@@ -22,7 +24,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETIN
  */
 @Slf4j
 @Component
-public class MainMenu implements Command {
+public class MainMenu extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
     private final VolunteersRepository volunteersRepository;
@@ -59,18 +61,18 @@ public class MainMenu implements Command {
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
-        String callData = update.getCallbackQuery().getData();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        Long chatId = callbackQuery.getFrom().getId();
+        String callData = callbackQuery.getData();
 
-        if (callData.equals(DOG_SHELTER)) {
+        if (callData.equals(DOG)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
             Shelter shelter = sheltersRepository.findByName(DOG_SHELTER);
             animalOwner.setDogLover(true);
             animalOwner.setShelter(shelter);
             animalOwnerRepository.save(animalOwner);
 
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
                     buttonsText,
@@ -78,14 +80,14 @@ public class MainMenu implements Command {
                     telegramBotService
             );
         }
-        else if (callData.equals(CAT_SHELTER)) {
+        else if (callData.equals(CAT)) {
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
             Shelter shelter = sheltersRepository.findByName(CAT_SHELTER);
             animalOwner.setDogLover(false);
             animalOwner.setShelter(shelter);
             animalOwnerRepository.save(animalOwner);
 
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
                     buttonsText,
@@ -94,7 +96,7 @@ public class MainMenu implements Command {
             );
         }
         else if (callData.equals(MENU)) {
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(chatId),
                     GREETING_MESSAGE,
                     buttonsText,
@@ -109,7 +111,7 @@ public class MainMenu implements Command {
             Volunteer volunteer;
             if (!animalOwner.getBeVolunteer()) {
                 volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
-                sendMessageService.SendMessageToUser(
+                sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(chatId),
                         GREETING_MESSAGE,
                         buttonsText,
@@ -128,7 +130,7 @@ public class MainMenu implements Command {
                         "Связь с пользователем прервана",
                         telegramBotService
                 );
-                sendMessageService.SendMessageToUser(
+                sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(volunteer.getAnimalOwner().getIdChat()),
                         "Связь с волонтером прервана",
                         buttonsText,

@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -11,7 +13,7 @@ import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
 @Component
-public class InterruptChat implements Command {
+public class InterruptChat extends CommandAbstractClass {
 
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
@@ -25,10 +27,10 @@ public class InterruptChat implements Command {
     }
 
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
 
         //чат ай ди пользователя
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+        Long chatId = callbackQuery.getFrom().getId();
 
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 

@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -15,7 +17,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.getInfo
  * класс, отвечающий за логику кнопок из класса GetAnimalFromTheShelter
  */
 @Component
-public class CatAndDogGetAnimalFromTheShelter implements Command {
+public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -29,14 +31,14 @@ public class CatAndDogGetAnimalFromTheShelter implements Command {
      * Данный метод получает данные в параметре Update, в соответствии с содержимым переменной callData, использует
      * сервис sendMessageService для отправки сообщений через telegramBotService в ответ на запросы.Метод
      * обрабатывает разные варианты callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
-     * @param update  объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery  объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
 
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
-        String callData = update.getCallbackQuery().getData();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        Long chatId = callbackQuery.getFrom().getId();
+        String callData = callbackQuery.getData();
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
         switch (callData) {

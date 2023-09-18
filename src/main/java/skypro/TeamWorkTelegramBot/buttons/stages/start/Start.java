@@ -2,8 +2,10 @@ package skypro.TeamWorkTelegramBot.buttons.stages.start;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -19,7 +21,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
  */
 @Slf4j
 @Component
-public class Start implements Command {
+public class Start extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -42,29 +44,23 @@ public class Start implements Command {
      * отправляет сообщение, полученное из текстового файла,
      * и необходимые кнопки для пользователя
      *
-     * @param update - объект телеграмма для получения значений из телеграмм бота
+     * @param message - объект телеграмма для получения значений из телеграмм бота
      */
 
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
+    public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
         Long textChatId = 0L;
         String start = "";
 
-//        Long queryChatId = 0L;
-//        String data = "";
         try {
-            textChatId = update.getMessage().getChatId();
-            start = update.getMessage().getText();
-
-//            queryChatId = update.getCallbackQuery().getFrom().getId();
-//            data = update.getCallbackQuery().getData();
+            textChatId = message.getChatId();
+            start = message.getText();
 
         } catch (NullPointerException e) {
             log.error("Error NullPointerException по update.getMessage().getChatId()");
         }
 
         AnimalOwner animalOwnerText = animalOwnerRepository.findByIdChat(textChatId);
-//        AnimalOwner animalOwnerQuery = animalOwnerRepository.findByIdChat(queryChatId);
 
         if (start.equals(START_TELEGRAM_BOT_COMMAND) && animalOwnerText.getRegistered() == null) {
             animalOwnerText.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
@@ -75,7 +71,7 @@ public class Start implements Command {
             animalOwnerText.setCanSendReport(false); // для того, чтобы отправить отчет только нажав кнопку
             animalOwnerRepository.save(animalOwnerText);
             sendMessageService.SendMessageToUser(String.valueOf(textChatId), GREETING_MESSAGE, telegramBotService);
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(textChatId),
                     getInfo("src/main/resources/bot-files/stage0/about_shelter.txt"),
                     buttonsText,
@@ -87,7 +83,7 @@ public class Start implements Command {
             animalOwnerText.setCanSendReport(false);
             animalOwnerRepository.save(animalOwnerText);
 
-            sendMessageService.SendMessageToUser(
+            sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(textChatId),
                     "Можете выбрать приют.",
                     buttonsText,
@@ -95,18 +91,5 @@ public class Start implements Command {
                     telegramBotService
             );
         }
-//        else if ((data.equals("меню_выбора_животного") && animalOwnerQuery.getRegistered())
-//                && animalOwnerQuery.getBeVolunteer()) {
-//            animalOwnerQuery.setCanSaveContact(false);
-//            animalOwnerRepository.save(animalOwnerQuery);
-//
-//            sendMessageService.SendMessageToUser(
-//                    String.valueOf(queryChatId),
-//                    "Можете выбрать приют.",
-//                    buttonsText,
-//                    buttonsCallData,
-//                    telegramBotService
-//            );
-//        }
     }
 }

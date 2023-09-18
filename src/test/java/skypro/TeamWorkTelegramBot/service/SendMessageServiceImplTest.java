@@ -41,7 +41,7 @@ class SendMessageServiceImplTest {
         String[] buttonCallData = {"Правда", "Ложь"};
 
         sendMessageService.SendMessageToUser("1","text",telegramBotService);
-        sendMessageService.SendMessageToUser("1","text",buttonText, buttonCallData,telegramBotService);
+        sendMessageService.SendMessageToUserWithButtons("1","text",buttonText, buttonCallData,telegramBotService);
         verify(telegramBotService, times(2));
 
 //        when(telegramBotService.execute(any(SendMessage.class))).thenThrow(new TelegramApiException());
