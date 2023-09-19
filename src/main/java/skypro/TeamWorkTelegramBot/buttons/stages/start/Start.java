@@ -74,6 +74,7 @@ public class Start extends CommandAbstractClass {
         } else if ((message.getText().equals(START_TELEGRAM_BOT_COMMAND) && animalOwner.getRegistered())) {
             animalOwner.setCanSaveContact(false);
             animalOwner.setCanSendReport(false);
+            animalOwner.setInChat(false);
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUserWithButtons(

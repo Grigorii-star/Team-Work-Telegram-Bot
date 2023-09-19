@@ -25,7 +25,7 @@ public class BecomeVolunteer extends CommandAbstractClass {
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
 
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
-        if (!animalOwner.getIsVolunteer()) {
+        if (!animalOwner.getIsVolunteer() && !animalOwner.getInChat()) {
 
             animalOwner.setIsVolunteer(true);
             animalOwner.setCanSaveContact(true);

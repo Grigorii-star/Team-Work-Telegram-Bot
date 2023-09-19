@@ -106,6 +106,9 @@ public class MainMenu extends CommandAbstractClass {
             //если пользователь
             Volunteer volunteer;
             if (!animalOwner.getIsVolunteer()) {
+                animalOwner.setInChat(false);
+                animalOwnerRepository.save(animalOwner);
+
                 volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(callbackQuery.getFrom().getId()),
