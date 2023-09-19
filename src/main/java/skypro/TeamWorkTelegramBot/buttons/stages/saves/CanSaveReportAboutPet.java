@@ -2,8 +2,8 @@ package skypro.TeamWorkTelegramBot.buttons.stages.saves;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -14,12 +14,12 @@ import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
  */
 @Slf4j
 @Component
-public class SaveReportAboutPet implements Command {
+public class CanSaveReportAboutPet extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
-    public SaveReportAboutPet(SendMessageService sendMessageService,
-                              AnimalOwnerRepository animalOwnerRepository) {
+    public CanSaveReportAboutPet(SendMessageService sendMessageService,
+                                 AnimalOwnerRepository animalOwnerRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
     }
@@ -29,20 +29,19 @@ public class SaveReportAboutPet implements Command {
      * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
      * Вызывает метод sendMessageService.SendMessageToUser() и передает в него chatId
      *
-     * @param update             объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery             объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
         log.info("Invoked a method for save animal report");
 
-        Long userChatIdQuery = update.getCallbackQuery().getFrom().getId();
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(userChatIdQuery);
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         animalOwner.setCanSendReport(true);
         animalOwnerRepository.save(animalOwner);
 
         sendMessageService.SendMessageToUser(
-                String.valueOf(userChatIdQuery),
+                String.valueOf(callbackQuery.getFrom().getId()),
                 "Отправьте фото с прикрепленным текстовым отчетом. \n" +
                         "Отчет должен содержать: \n" +
                         "Рацион животного. \n" +

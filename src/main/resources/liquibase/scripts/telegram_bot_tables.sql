@@ -9,9 +9,10 @@ CREATE TABLE animal_owner (
     dog_lover           boolean,
     took_the_animal     boolean,
     can_save_contact    boolean,
-    be_volunteer        boolean,
+    is_volunteer        boolean,
     help_volunteer      boolean,
     can_send_report     boolean,
+    in_chat             boolean,
     volunteer_id        int4,
     shelter_id          int4
 );

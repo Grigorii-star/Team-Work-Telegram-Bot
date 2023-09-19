@@ -1,9 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
-import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
@@ -16,7 +17,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETIN
  * Класс, который нужен для формирования кнопок для раздела информации по приюту
  */
 @Component
-public class Information implements Command {
+public class Information extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
 
     String[] buttonsText = {
@@ -45,14 +46,13 @@ public class Information implements Command {
      * Содержит id пользователя и сообщение для пользователя,
      * отправляет сообщение, полученное из текстового файла,
      * и необходимые кнопки для пользователя
-     * @param update - объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery - объект телеграмма для получения значений из телеграмм бота
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
 
-        sendMessageService.SendMessageToUser(
-                String.valueOf(chatId),
+        sendMessageService.SendMessageToUserWithButtons(
+                String.valueOf(callbackQuery.getFrom().getId()),
                 GREETING_MESSAGE,
                 buttonsText,
                 buttonsCallData,

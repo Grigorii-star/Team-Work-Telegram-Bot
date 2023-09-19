@@ -1,17 +1,17 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
-import static skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveUserContacts.GREETING_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.stages.saves.CanSaveContacts.GREETING_MESSAGE;
 
 @Component
-public class BecomeVolunteer implements Command {
+public class BecomeVolunteer extends CommandAbstractClass {
 
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
@@ -22,18 +22,17 @@ public class BecomeVolunteer implements Command {
     }
 
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
 
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-        if (!animalOwner.getBeVolunteer()) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
+        if (!animalOwner.getIsVolunteer() && !animalOwner.getInChat()) {
 
-            animalOwner.setBeVolunteer(true);
+            animalOwner.setIsVolunteer(true);
             animalOwner.setCanSaveContact(true);
 
             animalOwnerRepository.save(animalOwner);
             sendMessageService.SendMessageToUser(
-                    String.valueOf(chatId),
+                    String.valueOf(callbackQuery.getFrom().getId()),
                     "Спасибо за твою готовность помогать!\n" +
                             GREETING_MESSAGE,
                     telegramBotService

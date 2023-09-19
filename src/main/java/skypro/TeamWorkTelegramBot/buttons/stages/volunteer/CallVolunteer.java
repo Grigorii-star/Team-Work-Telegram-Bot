@@ -1,8 +1,11 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.volunteer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
@@ -17,8 +20,9 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHA
 /**
  * Класс, для общения с волонтером
  */
+@Slf4j
 @Component
-public class CallVolunteer implements Command {
+public class CallVolunteer extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
     private final VolunteersRepository volunteersRepository;
@@ -38,40 +42,39 @@ public class CallVolunteer implements Command {
      * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
      * Вызывает метод sendMessageService.SendMessageToUser() и передает в него chatId
      *
-     * @param update             объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery      объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
-
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
-
-        //Long volunteerId = getChatIdVolunteer();
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
-//        animalOwner.setHelpVolunteer(true); //устанавливаем что владельцу сейчас помогает волонтер
+
+        animalOwner.setHelpVolunteer(true);
+        animalOwner.setInChat(true);
         animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
+
         volunteer.setIsBusy(true); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
-        //сохраняем в базу данных все
+
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 
-        //если н волонтер
-//        if (!animalOwner.getBeVolunteer()) {
-
-            animalOwner.setHelpVolunteer(true);
-            animalOwnerRepository.save(animalOwner);
-
-            sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
-                    String.valueOf(chatId), "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.", buttonsText, buttonsCallData, telegramBotService);
-//        } else if (animalOwner.getBeVolunteer()) {
-
-            animalOwner.setHelpVolunteer(true);
-            animalOwnerRepository.save(animalOwner);
-
-            sendMessageService.SendMessageToUser( //логика по авзову волонтёра// вызывается
-                    String.valueOf(volunteer.getIdChat()), "Сейчас с тобой свяжется пользователь.", buttonsText, buttonsCallData, telegramBotService);
-//        }
+        sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+                String.valueOf(callbackQuery.getFrom().getId()),
+                "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.",
+                buttonsText,
+                buttonsCallData,
+                telegramBotService
+        );
+//        animalOwner.setHelpVolunteer(true);
+//        animalOwnerRepository.save(animalOwner);
+        sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+                String.valueOf(volunteer.getIdChat()),
+                "Сейчас с тобой свяжется пользователь.",
+                buttonsText,
+                buttonsCallData,
+                telegramBotService
+        );
     }
 }

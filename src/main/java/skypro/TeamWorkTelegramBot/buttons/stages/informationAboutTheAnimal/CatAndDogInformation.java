@@ -1,8 +1,10 @@
 package skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.Command;
+import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
@@ -15,7 +17,7 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
  * Класс, отвечающий за логику кнопок из класса information
  */
 @Component
-public class CatAndDogInformation implements Command {
+public class CatAndDogInformation extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
@@ -29,26 +31,24 @@ public class CatAndDogInformation implements Command {
      * Используя полученный chatId, получается объект animalOwner из репозитория
      * animalOwnerRepository с использованием метода findByIdChat(chatId).Обрабатывает разные варианты
      * callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
-     * @param update объект телеграмма для получения значений из телеграмм бота
+     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
      * @param telegramBotService
      */
     @Override
-    public void execute(Update update, TelegramBotService telegramBotService) {
-        Long chatId = update.getCallbackQuery().getFrom().getId();
-        String callData = update.getCallbackQuery().getData();
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+    public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
+        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
 
-        switch (callData) {
+        switch (callbackQuery.getData()) {
             case ABOUT_SHELTER:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/dog-shelter-info.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/cat-shelter-info.txt"),
                             telegramBotService
                     );
@@ -57,13 +57,13 @@ public class CatAndDogInformation implements Command {
             case SCHEDULE:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/dog-schedule-address.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/cat-schedule-address.txt"),
                             telegramBotService
                     );
@@ -72,13 +72,13 @@ public class CatAndDogInformation implements Command {
             case SECURITY:
                 if (animalOwner.getDogLover()) {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/dog-security-phone.txt"),
                             telegramBotService
                     );
                 } else {
                     sendMessageService.SendMessageToUser(
-                            String.valueOf(chatId),
+                            String.valueOf(callbackQuery.getFrom().getId()),
                             getInfo("src/main/resources/bot-files/stage1/cat-security-phone.txt"),
                             telegramBotService
                     );
@@ -86,7 +86,7 @@ public class CatAndDogInformation implements Command {
                 break;
             case SAFETY_PRECAUTIONS:
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(chatId),
+                        String.valueOf(callbackQuery.getFrom().getId()),
                         getInfo("src/main/resources/bot-files/stage1/safety_rules.txt"),
                         telegramBotService
                 );
