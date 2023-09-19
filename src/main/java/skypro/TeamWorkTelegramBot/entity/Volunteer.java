@@ -30,4 +30,11 @@ public class Volunteer {
     private Shelter shelter;
     @OneToOne
     private AnimalOwner animalOwner;
+
+    public Volunteer(Integer id, Long idChat, String name, Boolean isBusy) {
+        this.id = id;
+        this.idChat = idChat;
+        this.name = name;
+        this.isBusy = isBusy;
+    }
 }

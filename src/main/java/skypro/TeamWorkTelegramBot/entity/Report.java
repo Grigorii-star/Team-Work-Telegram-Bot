@@ -31,4 +31,12 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "animal_owner_id")
     private AnimalOwner animalOwner;
+
+    public Report(Integer id, LocalDate date, String report, String telegramFieldId, Integer fileSize) {
+        this.id = id;
+        this.date = date;
+        this.report = report;
+        this.telegramFieldId = telegramFieldId;
+        this.fileSize = fileSize;
+    }
 }

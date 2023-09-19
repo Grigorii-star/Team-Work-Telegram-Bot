@@ -31,4 +31,9 @@ public class Shelter {
     @OneToMany(mappedBy = "shelter")
     @JsonIgnore
     private Collection<Volunteer> volunteers;
+
+    public Shelter(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
