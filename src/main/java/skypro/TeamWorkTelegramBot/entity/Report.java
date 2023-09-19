@@ -16,16 +16,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 public class Report {
-
-    public Report(Integer id, LocalDate date, String report, String telegramFieldId, Integer fileSize) {
-        this.id = id;
-        this.date = date;
-        this.report = report;
-        this.telegramFieldId = telegramFieldId;
-        this.fileSize = fileSize;
-    }
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
