@@ -6,8 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
@@ -15,7 +15,8 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.STA
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
- * Класс, приветсвтвующий пользователя и дают выбрать приют кошек или собак
+ * Класс приветсвтвует пользователя и дают выбрать приют кошек или собак,
+ * а также возможность стать волонтером.
  */
 @Slf4j
 @Component
@@ -37,25 +38,28 @@ public class Start extends CommandAbstractClass {
     }
 
     /**
-     * Метод, который нужен для формирования ответа пользователю.
-     * Содержит id пользователя и сообщение для пользователя,
-     * отправляет сообщение, полученное из текстового файла,
-     * и необходимые кнопки для пользователя
+     * Метод формирует приветствие для нового пользователя и предоставляет
+     * выбрать один из приютов. Приют для кошек или приют для собак. А также предоставляет
+     * возможность стать волонтером.<br>
+     * Метод задает набор стартовых boolean значений для объекта AnimalOwner.
      *
-     * @param message - объект телеграмма для получения значений из телеграмм бота
+     * @param message - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see AnimalOwner
+     * @see SendMessageService
      */
-
     @Override
     public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(message.getChatId());
 
         if (message.getText().equals(START_TELEGRAM_BOT_COMMAND) && animalOwner.getRegistered() == null) {
-            animalOwner.setRegistered(true); // для повторного нажатия страт не выводилось приветствие
-            animalOwner.setCanSaveContact(false); // чтобы можно было сохранить контактные данные только пройдя по кнопке
-            animalOwner.setIsVolunteer(false); //для того, чтобы стать волонтером и пройти по кнопке
-            animalOwner.setTookTheAnimal(false); //для того, чтобы взять животное и пройти по кнопке
-            animalOwner.setHelpVolunteer(false); //для того, чтобы получить помощь и пройти по кнопке
-            animalOwner.setCanSendReport(false); // для того, чтобы отправить отчет только нажав кнопку
+            animalOwner.setRegistered(true);
+            animalOwner.setCanSaveContact(false);
+            animalOwner.setIsVolunteer(false);
+            animalOwner.setTookTheAnimal(false);
+            animalOwner.setHelpVolunteer(false);
+            animalOwner.setCanSendReport(false);
             animalOwner.setInChat(false);
             animalOwnerRepository.save(animalOwner);
 
@@ -79,7 +83,7 @@ public class Start extends CommandAbstractClass {
 
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(message.getChatId()),
-                    "Можете выбрать приют.",
+                    "Можете выбрать приют или стать волонтером.", // TODO: 19.09.2023 вынести в константу
                     buttonsText,
                     buttonsCallData,
                     telegramBotService

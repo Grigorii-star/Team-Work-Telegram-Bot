@@ -5,12 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Константы для сообщений
+ * Класс содержит константы для сообщений.
  */
 public class ConstantsText {
 
     //Константа приветствия, после кнопки старт
-
     public final static String GREETING_MESSAGE = "Привет! Я бот, который поможет тебе забрать питомца из нашего приюта в Астане. " +
             "Я отвечу на все вопросы и помогу определиться с выбором.";
 

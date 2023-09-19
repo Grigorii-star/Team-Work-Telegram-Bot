@@ -6,18 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * класс, для передечи из application.properties токена и имени телеграмм бота
+ * Класс для передечи из application.properties токена и имени Telegram бота.
  */
 @Data
 @PropertySource("application.properties")
 @Configuration
 public class TelegramBotConfiguration{
 
-
     @Value("${telegram.bot.token}")
     private String token;
 
     @Value("${telegram.bot.name}")
     private String name;
-
 }

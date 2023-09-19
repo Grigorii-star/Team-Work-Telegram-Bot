@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.buttons.stages.mainMenu;
+package skypro.TeamWorkTelegramBot.buttons.stages.menu;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,15 +10,15 @@ import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETING_MESSAGE;
 
 /**
- * Класс, который нужен для формирования главного меню приюта
+ * Класс формирует главное меню приюта.
  */
 @Slf4j
 @Component
@@ -30,7 +30,6 @@ public class MainMenu extends CommandAbstractClass {
 
     private final String DOG_SHELTER = "Dog";
     private final String CAT_SHELTER = "Cat";
-
 
     String[] buttonsText = {GET_INFO_SHELTER_BUTTON,
                             GET_PET_BUTTON,
@@ -52,11 +51,17 @@ public class MainMenu extends CommandAbstractClass {
     }
 
     /**
-     * данный метод обрабатывает разные варианты callData, устанавливает настройки "любителя собак" или
+     * Метод обрабатывает разные варианты callbackQuery, устанавливает настройки "любителя собак" или
      * "любителя кошек" в зависимости от выбранной опции, сохраняет изменения в репозитории и отправляет
-     * приветственное сообщение с кнопками пользователю.
-     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
-     * @param telegramBotService
+     * приветственное сообщение с кнопками пользователю.<br>
+     * Метод позволяет перейти в главное меню из разных этапов.<br>
+     * Метод позволяет разъеденить чат с волонтером и перевести пользователя в главное меню.
+     *
+     * @param callbackQuery - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see SendMessageService
+     * @see CallbackQuery
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
@@ -100,10 +105,8 @@ public class MainMenu extends CommandAbstractClass {
                     telegramBotService
             );
         } else if (callbackQuery.getData().equals(CHAT)) {
-
             AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
 
-            //если пользователь
             Volunteer volunteer;
             if (!animalOwner.getIsVolunteer()) {
                 animalOwner.setInChat(false);
@@ -118,20 +121,20 @@ public class MainMenu extends CommandAbstractClass {
                         telegramBotService
                 );
                 sendMessageService.SendMessageToUser(
-                        String.valueOf(volunteer.getIdChat()),//поменять чат на волонтера
-                        "Связь с пользователем прервана",
+                        String.valueOf(volunteer.getIdChat()),
+                        "Связь с пользователем прервана", // TODO: 19.09.2023 вынести в константу
                         telegramBotService
                 );
             } else {
                 volunteer = volunteersRepository.findByIdChat(callbackQuery.getFrom().getId());
                 sendMessageService.SendMessageToUser(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "Связь с пользователем прервана",
+                        "Связь с пользователем прервана", // TODO: 19.09.2023 вынести в константу
                         telegramBotService
                 );
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(volunteer.getAnimalOwner().getIdChat()),
-                        "Связь с волонтером прервана",
+                        "Связь с волонтером прервана", // TODO: 19.09.2023 вынести в константу
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
@@ -141,12 +144,18 @@ public class MainMenu extends CommandAbstractClass {
         }
     }
 
+    /**
+     * Метод разъединяет чат пользователя и волонтера.
+     *
+     * @param animalOwner - объект пользователя.
+     * @param volunteer - объект волонтера.
+     */
     private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
         animalOwner.setHelpVolunteer(false);
         animalOwner.setVolunteer(null);
         volunteer.setIsBusy(false);
         volunteer.setAnimalOwner(null);
-        //сохраняем в базу данных все
+
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
     }

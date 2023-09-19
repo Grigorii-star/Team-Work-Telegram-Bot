@@ -1,48 +1,50 @@
-package skypro.TeamWorkTelegramBot.service.sendMessageService;
+package skypro.TeamWorkTelegramBot.service.message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Реализация интрефейса SendMessageService
+ * Реализация интрефейса SendMessageService.
  */
 @Slf4j
 @Service
 public class SendMessageServiceImpl implements SendMessageService {
 
     /**
-     * Перегруженный метод для отправки ответа пользователю, который принимает:
-     * @param chatId          - id телеграмма пользователя
-     * @param textToSend      - текст сообщения для пользователя
-     * @param buttonsText     - текст для кнопки
-     * @param buttonsCallData - id кнопки
+     * Метод для отправки сообщения пользователю, с прикрепленными кнопками.
+     *
+     * @param chatId          - id Telegram пользователя.
+     * @param textToSend      - текст сообщения для пользователя.
+     * @param buttonsText     - текст для кнопки.
+     * @param buttonsCallData - id кнопки.
      */
     @Override
-    public void SendMessageToUserWithButtons(String chatId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
+    public void SendMessageToUserWithButtons(String chatId, String textToSend,
+                                             String[] buttonsText, String[] buttonsCallData,
+                                             TelegramBotService telegramBotService) {
         SendMessage sendMessage = new SendMessage(chatId, textToSend);
-
         SendMessage buttonsMessage = createButtons(sendMessage, buttonsText, buttonsCallData);
+
         try {
             telegramBotService.execute(buttonsMessage);
         } catch (TelegramApiException e) {
-            log.error("TelegramApiException in SendMessageToUser method");
+            log.error("TelegramApiException in SendMessageToUserWithButtons method");
         }
     }
 
     /**
-     * Перегруженный метод для отправки ответа пользователю, который принимает:
-     * @param chatId          - id пользователя
-     * @param textToSend      - текст сообщения для пользователя
+     * Метод для отправки сообщения пользователю.
+     *
+     * @param chatId          - id Telegram пользователя.
+     * @param textToSend      - текст сообщения для пользователя.
      */
     @Override
     public void SendMessageToUser(String chatId, String textToSend, TelegramBotService telegramBotService) {
@@ -55,19 +57,12 @@ public class SendMessageServiceImpl implements SendMessageService {
         }
     }
 
-//    @Override
-//    public void SendMessageToUserWithChangeButtons(String chatId, Long messageId, String textToSend, String[] buttonsText, String[] buttonsCallData, TelegramBotService telegramBotService) {
-//        EditMessageText message = new EditMessageText();
-//        message.setChatId(String.valueOf(chatId));
-//        message.setText(textToSend);
-//        message.setMessageId((int) messageId);
-//    }
-
     /**
-     * Метод, который создаёт кнопки. Принимает:
-     * @param message         - сообщение для пользователя
-     * @param buttonsText     - текст для кнопки
-     * @param buttonsCallData - id кнопки
+     * Метод, который создаёт кнопки.
+     *
+     * @param message         - сообщение для пользователя.
+     * @param buttonsText     - текст для кнопки.
+     * @param buttonsCallData - id кнопки.
      */
     private SendMessage createButtons(SendMessage message, String[] buttonsText, String[] buttonsCallData) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();

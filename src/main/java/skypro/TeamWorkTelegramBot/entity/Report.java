@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
- * Класс модели Animal
+ * Сущность отчета о животном.
  */
 @Getter
 @Setter

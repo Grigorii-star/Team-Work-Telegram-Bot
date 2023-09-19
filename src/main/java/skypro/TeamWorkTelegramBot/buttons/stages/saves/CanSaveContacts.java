@@ -3,18 +3,14 @@ package skypro.TeamWorkTelegramBot.buttons.stages.saves;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
-
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.MENU_BUTTON;
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.MENU;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 /**
- * Класс, для сохранению контактов пользователя в базу данных
+ * Класс предоставляет шаблон заполнения для сохранения контакта пользователя.
  */
 @Slf4j
 @Component
@@ -32,12 +28,14 @@ public class CanSaveContacts extends CommandAbstractClass {
     }
 
     /**
-     * Метод, который нужен для формирования ответа пользователю.
-     * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
-     * Вызывает метод sendMessageService.SendMessageToUser() и передает в него chatId
+     * Метод формирует шаблон заполнения контакта и отправляет его пользователю.<br>
+     * Метод назначает пользователю AnimalOwner, boolean значение CanSaveContact(true).
      *
-     * @param callbackQuery      объект телеграмма для получения значений из телеграмм бота
-     * @param telegramBotService
+     * @param callbackQuery - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see SendMessageService
+     * @see AnimalOwner
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {

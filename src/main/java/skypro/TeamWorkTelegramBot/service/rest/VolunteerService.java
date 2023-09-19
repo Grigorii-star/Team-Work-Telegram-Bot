@@ -1,42 +1,47 @@
-package skypro.TeamWorkTelegramBot.service.restApiServices;
+package skypro.TeamWorkTelegramBot.service.rest;
 
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 
 import java.util.Collection;
 
 /**
- * интерфейс волонтера
+ * Интерфейс для rest запросов к БД с волонтерами.
  */
 public interface VolunteerService {
+
     /**
-     * метод добавления волонтера в базу данных.
+     * Метод добавления волонтера в базу данных.
+     *
      * @param volunteer Волонтер для добавления.
      * @return Добавленный волонтер.
      */
     Volunteer addVolunteer(Volunteer volunteer);
 
     /**
-     * метод который находит волонтера по указанному идентификатору.
+     * Метод который находит волонтера по указанному идентификатору.
+     *
      * @param id Идентификатор волонтера для поиска.
      * @return Волонтер, найденный по указанному идентификатору
      */
     Volunteer findVolunteer(Integer id);
 
     /**
-     * метод редактирования волонтера в базе данных.
+     * Метод редактирования волонтера в базе данных.
+     *
      * @param volunteer Волонтер для редактирования.
      * @return отредактированный волонтер.
      */
-
     Volunteer editVolunteer(Volunteer volunteer);
+
     /**
-     * метод удаляет волонтера из базы данных.
+     * Метод удаляет волонтера из базы данных.
+     *
      * @param id Идентификатор волонтера для поиска.
-     * @return удаленный волонтер.
      */
     void removeVolunteer(Integer id);
+
     /**
-     * метод получить всех волонтеров из базы данных.
+     * Метод получить всех волонтеров из базы данных.
      */
     Collection<Volunteer> getAllVolunteers();
 }

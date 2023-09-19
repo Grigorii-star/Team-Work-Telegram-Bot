@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.restApiServices;
+package skypro.TeamWorkTelegramBot.service.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * класс реализации интерфейса ShelterService
+ * Класс реализации интерфейса ShelterService.
  */
 @Slf4j
 @Service
@@ -20,6 +20,11 @@ public class ShelterServiceImpl implements ShelterService{
         this.sheltersRepository = sheltersRepository;
     }
 
+    /**
+     * Добавляет приют в базу данных.
+     * @param shelter приют для добавления.
+     * @return добавленный приют.
+     */
     @Override
     public Shelter addShelter(Shelter shelter) {
         log.info("Invoked a method for adding a shelter");
@@ -34,6 +39,12 @@ public class ShelterServiceImpl implements ShelterService{
         return addedShelter;
     }
 
+    /**
+     * Метод который находит приют по указанному идентификатору.
+     *
+     * @param id идентификатор приюта для поиска.
+     * @return приют, найденный по указанному идентификатору
+     */
     @Override
     public Shelter findShelter(Integer id) {
         log.info("Invoked a method for finding shelter");
@@ -45,6 +56,12 @@ public class ShelterServiceImpl implements ShelterService{
         return foundShelter;
     }
 
+    /**
+     * Метод редактирования приюта в базе данных.
+     *
+     * @param shelter приют для редактирования.
+     * @return отредактированный приют.
+     */
     @Override
     public Shelter editShelter(Shelter shelter) {
         log.info("Invoked a method for updating a shelter");
@@ -56,6 +73,11 @@ public class ShelterServiceImpl implements ShelterService{
         return updatedShelter;
     }
 
+    /**
+     * Метод удаляет приют из базы данных.
+     *
+     * @param id идентификатор приюта для поиска.
+     */
     @Override
     public void removeShelter(Integer id) {
         log.info("Invoked a method for removing a shelter");
@@ -66,6 +88,10 @@ public class ShelterServiceImpl implements ShelterService{
         sheltersRepository.deleteById(id);
     }
 
+    /**
+     * Метод получить все приюты из базы данных.
+     * @return список всех приютов.
+     */
     @Override
     public Collection<Shelter> getAllShelters() {
         log.info("Invoked a method for getting all shelters");
@@ -74,6 +100,10 @@ public class ShelterServiceImpl implements ShelterService{
         return Collections.unmodifiableCollection(sheltersRepository.findAll());
     }
 
+    /**
+     * Метод проверяет наличие приюта в БД по идентификатору.
+     * @param id идентификатор приюта.
+     */
     private void shelterIdValidation(Integer id) {
         if (!sheltersRepository.existsById(id)) {
             log.error("There is no shelter with id = {}", id);

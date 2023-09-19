@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 
 /**
- *Этот интерфейс используется для доступа к данным AnimalOwner в базе данных.
+ * Интерфейс для доступа к данным пользователей AnimalOwner в БД.
  */
 public interface AnimalOwnerRepository extends JpaRepository<AnimalOwner, Integer> {
     /**
-     * метод для поиска владельца животного по chatId телеграмм бота
-     * @param chatId id телеграмм бота
-     * @return
+     * Метод для поиска владельца животного по chatId Telegram бота.
+     *
+     * @param idChat Telegram бота.
+     * @return объект AnimalOwner из БД.
      */
-    AnimalOwner findByIdChat(Long chatId);
+    AnimalOwner findByIdChat(Long idChat);
 }

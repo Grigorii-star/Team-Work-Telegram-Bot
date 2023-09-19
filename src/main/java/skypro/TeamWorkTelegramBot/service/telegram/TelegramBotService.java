@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.telegramBotService;
+package skypro.TeamWorkTelegramBot.service.telegram;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
-import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.CatAndDogGetAnimalFromTheShelter;
+import skypro.TeamWorkTelegramBot.buttons.stages.get.CatAndDogGetAnimalFromTheShelter;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.SaveContacts;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.SavePhoto;
 import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.BecomeVolunteer;
@@ -15,10 +15,10 @@ import skypro.TeamWorkTelegramBot.buttons.stages.volunteer.HelpVolunteer;
 import skypro.TeamWorkTelegramBot.configuration.TelegramBotConfiguration;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal.GetAnimalFromTheShelter;
-import skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal.CatAndDogInformation;
-import skypro.TeamWorkTelegramBot.buttons.stages.informationAboutTheAnimal.Information;
-import skypro.TeamWorkTelegramBot.buttons.stages.mainMenu.MainMenu;
+import skypro.TeamWorkTelegramBot.buttons.stages.get.GetAnimalFromTheShelter;
+import skypro.TeamWorkTelegramBot.buttons.stages.information.CatAndDogInformation;
+import skypro.TeamWorkTelegramBot.buttons.stages.information.Information;
+import skypro.TeamWorkTelegramBot.buttons.stages.menu.MainMenu;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.CanSaveReportAboutPet;
 import skypro.TeamWorkTelegramBot.buttons.stages.saves.CanSaveContacts;
 import skypro.TeamWorkTelegramBot.buttons.stages.start.Start;
@@ -32,7 +32,8 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.*;
 
 /**
- * Сервисный класс телеграм бота
+ * Класс принимает все сообщения из Telegram бота и с помощью HashMap
+ * перенаправляет их в необходимый класс для последующей обработки.
  */
 @Slf4j
 @Getter
@@ -53,8 +54,11 @@ public class TelegramBotService extends TelegramLongPollingBot {
     private final BecomeVolunteer becomeVolunteer;
     private final SavePhoto savePhoto;
     private final SaveContacts saveContacts;
+
     /**
-     * Мапа, которая хранит бины классов, реализующих интерфейс command
+     * HashMap которая хранит бины классов наследников абстракного класса CommandAbstractClass.
+     *
+     * @see CommandAbstractClass
      */
     private final Map<String, CommandAbstractClass> commandMap;
 
@@ -88,7 +92,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     /**
-     * Метод, для добавления классов в мапу commandMap
+     * Метод для добавления классов в HashMap commandMap.
      */
     private void init() {
         commandMap.put(START_COMMAND, start);
@@ -117,11 +121,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     /**
-     * Основной метод, который получает из объекта update телеграмм бота значения и делегирует эти
-     * сообщения классам реализуйщий интерфейс Command с помощью ключ, значение хэшМапы. Создает
-     * нового пользователя в базе данных по chatId
+     * Основной метод, который получает из объекта Update Telegram бота значения и делегирует эти
+     * сообщения классам наследников абстракного класса CommandAbstractClass, которые содержаться
+     * в HashMap commandMap.<br>
+     * Метод создает нового пользователя в БД по chatId Telegram бота.
      *
-     * @param update - объект телеграмма для получения значений из телеграмм бота
+     * @param update - объект телеграм для получения значений из Telegram бота.
      */
     @Override
     public void onUpdateReceived(Update update) {
@@ -173,13 +178,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     /**
-     * Этот метод получает текст команды из кнопок, которые были нажаты пользователем в Telegram боте.
-     * Он извлекает текст команды из объекта Update, который содержит информацию о произошедшем событии,
-     * и сохраняет его в переменной commandTextFromButtons.
+     * Метод принимает callbackQuery значения, достает из них Data текст команды от кнопок,
+     * которые были нажаты пользователем в Telegram боте и перебирает их в switch.
+     * При совпадении возвращает ключ значение для HashMap.
      *
-     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
-     * @return возвращает значение переменной commandTextFromButtons, которое является текстом команды из кнопок,
-     * полученного из объекта Update.
+     * @param callbackQuery - объект Telegram для получения значений из Telegram бота.
+     * @return String ключ-значение для HashMap commandMap.
      */
     private static String getCommandTextFromButtons(CallbackQuery callbackQuery) {
         String commandTextFromButtons = callbackQuery.getData();

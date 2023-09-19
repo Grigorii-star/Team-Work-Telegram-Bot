@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.restApiServices;
+package skypro.TeamWorkTelegramBot.service.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Класс реализации интерфейса VolunteerService
+ * Класс реализации интерфейса VolunteerService.
  */
 
 @Slf4j
@@ -21,6 +21,12 @@ public class VolunteerServiceImpl implements VolunteerService{
         this.volunteersRepository = volunteersRepository;
     }
 
+    /**
+     * Метод добавления волонтера в базу данных.
+     *
+     * @param volunteer Волонтер для добавления.
+     * @return Добавленный волонтер.
+     */
     @Override
     public Volunteer addVolunteer(Volunteer volunteer) {
         log.info("Invoked a method for adding a volunteer");
@@ -35,6 +41,12 @@ public class VolunteerServiceImpl implements VolunteerService{
         return addedVolunteer;
     }
 
+    /**
+     * Метод который находит волонтера по указанному идентификатору.
+     *
+     * @param id Идентификатор волонтера для поиска.
+     * @return Волонтер, найденный по указанному идентификатору
+     */
     @Override
     public Volunteer findVolunteer(Integer id) {
         log.info("Invoked a method for finding volunteer");
@@ -46,6 +58,12 @@ public class VolunteerServiceImpl implements VolunteerService{
         return foundVolunteer;
     }
 
+    /**
+     * Метод редактирования волонтера в базе данных.
+     *
+     * @param volunteer Волонтер для редактирования.
+     * @return отредактированный волонтер.
+     */
     @Override
     public Volunteer editVolunteer(Volunteer volunteer) {
         log.info("Invoked a method for updating a volunteer");
@@ -57,6 +75,11 @@ public class VolunteerServiceImpl implements VolunteerService{
         return updatedVolunteer;
     }
 
+    /**
+     * Метод удаляет волонтера из базы данных.
+     *
+     * @param id Идентификатор волонтера для поиска.
+     */
     @Override
     public void removeVolunteer(Integer id) {
         log.info("Invoked a method for removing a volunteer");
@@ -67,6 +90,11 @@ public class VolunteerServiceImpl implements VolunteerService{
         volunteersRepository.deleteById(id);
     }
 
+    /**
+     * Метод получить всех волонтеров из базы данных.
+     *
+     * @return список всех волонтеров.
+     */
     @Override
     public Collection<Volunteer> getAllVolunteers() {
         log.info("Invoked a method for getting all volunteers");
@@ -75,6 +103,10 @@ public class VolunteerServiceImpl implements VolunteerService{
         return Collections.unmodifiableCollection(volunteersRepository.findAll());
     }
 
+    /**
+     * Метод проверяет наличие волонтера в БД по идентификатору.
+     * @param id идентификатор волонтера.
+     */
     private void volunteerIdValidation(Integer id) {
         if (!volunteersRepository.existsById(id)) {
             log.error("There is no volunteer with id = {}", id);

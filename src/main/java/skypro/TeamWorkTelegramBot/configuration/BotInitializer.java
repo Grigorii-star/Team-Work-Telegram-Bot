@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 /**
- * Этот класс BotInitializer является компонентом инициализации бота для работы с Telegram API.
+ * Конфигурационный класс для инициализации бота для работы с Telegram API.
  * Данный класс выполняет инициализацию и регистрацию бота при старте приложения.
  */
 @Slf4j
@@ -21,7 +21,8 @@ public class BotInitializer {
     TelegramBotService bot;
 
     /**
-     * данный метод выполняет инициализацию и регистрацию бота на сервере Telegram при помощи Telegram API.
+     * Метод выполняет инициализацию и регистрацию бота на сервере Telegram при помощи Telegram API.
+     *
      * @throws TelegramApiException обрабатывает возможные исключения, связанные с регистрацией.
      */
     @EventListener({ContextRefreshedEvent.class})

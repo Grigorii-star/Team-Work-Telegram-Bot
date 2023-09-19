@@ -3,21 +3,22 @@ package skypro.TeamWorkTelegramBot.buttons.stages.saves;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.exception.UploadFileException;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.fileService.FileService;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.file.FileService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import java.io.IOException;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 
+/**
+ * Класс сохраняет отчет о животном пользователя в БД.
+ */
 @Slf4j
 @Component
 public class SavePhoto extends CommandAbstractClass {
@@ -36,18 +37,38 @@ public class SavePhoto extends CommandAbstractClass {
         this.fileService = fileService;
     }
 
+    /**
+     * Метод делегирует сохранение отчета о животном пользователя медоду uploadReport.
+     *
+     * @param message - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see SendMessageService
+     */
     @Override
     public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
         try {
             uploadReport(message, telegramBotService);
-        } catch (IOException | NullPointerException e) {
+        } catch (IOException | NullPointerException e) { // todo протестировать NullPointerException
             log.error("Exception in method execute SaveReportAboutPet class");
         }
     }
 
+    /**
+     * Метод проверяет отчет на праильность заполнения.<br>
+     * Если отчет соответствует требованиям указанным в классе CanSaveReportAboutPet
+     * отчет сохраняется в БД. Иначе информирует пользователя о некорректном
+     * заполнении отчета.
+     *
+     * @param message - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @throws IOException выбрасывается если загрузка отчета в БД не удалась.
+     * @see SendMessageService
+     * @see CanSaveReportAboutPet
+     */
     private void uploadReport(Message message, TelegramBotService telegramBotService) throws IOException {
         log.info("Invoked a method for uploading animal report");
-//        AnimalOwner animalOwnerCheck = animalOwnerRepository.findByIdChat(message.getChatId());
 
         if (message.hasPhoto() && message.getPhoto() != null && message.getCaption() != null) {
 
@@ -59,7 +80,7 @@ public class SavePhoto extends CommandAbstractClass {
 
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(message.getChatId()),
-                        "Фото и отчет успешно загружены. Перейдите в главное меню.",
+                        "Фото и отчет успешно загружены. Перейдите в главное меню.", // todo добавить константу
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
@@ -70,7 +91,7 @@ public class SavePhoto extends CommandAbstractClass {
 
                 sendMessageService.SendMessageToUser(
                         String.valueOf(message.getChatId()),
-                        "К сожалению загрузка фото и отчета не удалась.",
+                        "К сожалению загрузка фото и отчета не удалась.", // todo добавить константу
                         telegramBotService
                 );
             }
@@ -78,7 +99,7 @@ public class SavePhoto extends CommandAbstractClass {
         } else {
             sendMessageService.SendMessageToUser(
                     String.valueOf(message.getChatId()),
-                    "Неверный формат фото и отчета.",
+                    "Неверный формат фото и отчета.", // todo добавить константу
                     telegramBotService
             );
         }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Класс модели Volunteer
+ * Сущность волонтера.
  */
 @Getter
 @Setter
@@ -21,6 +21,9 @@ public class Volunteer {
     private Integer id;
     private Long idChat;
     private String name;
+    /**
+     * Позволяет проверить занят ли волонтр.
+     */
     private Boolean isBusy;
     @ManyToOne
     @JoinColumn(name = "shelter_id")

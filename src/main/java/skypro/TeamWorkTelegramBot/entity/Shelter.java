@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * Класс модели Shelter
+ * Сущность приюта для животных.
  */
 @Getter
 @Setter

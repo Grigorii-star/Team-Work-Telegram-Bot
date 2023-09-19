@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Сущность содержит бинарный код.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

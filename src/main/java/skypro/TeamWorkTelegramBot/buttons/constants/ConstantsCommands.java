@@ -1,13 +1,9 @@
 package skypro.TeamWorkTelegramBot.buttons.constants;
 
+/**
+ * Класс содержит константы ключевых команд бота для поиска в мапе.
+ */
 public class ConstantsCommands {
-
-    /**
-     * Константы для ключевых команд бота для поиска в мапе
-     *
-     * @param commandTextFromButtons
-     */
-
     public static final String START_TELEGRAM_BOT_COMMAND = "/start";
     public static final String START_COMMAND = "start";
     public static final String MAIN_MENU_COMMAND = "mainMenu";

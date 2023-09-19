@@ -1,20 +1,20 @@
-package skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal;
+package skypro.TeamWorkTelegramBot.buttons.stages.get;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.getInfo;
 
 /**
- * класс, отвечающий за логику кнопок из класса GetAnimalFromTheShelter
+ * Класс отвечает за логику кнопок из класса GetAnimalFromTheShelter.
+ *
+ * @see GetAnimalFromTheShelter
  */
 @Component
 public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
@@ -28,13 +28,14 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
     }
 
     /**
-     * Данный метод получает данные в параметре Update, в соответствии с содержимым переменной callData, использует
-     * сервис sendMessageService для отправки сообщений через telegramBotService в ответ на запросы.Метод
-     * обрабатывает разные варианты callData, отправляя разные сообщения пользователям в зависимости от выбранной опции.
-     * @param callbackQuery  объект телеграмма для получения значений из телеграмм бота
-     * @param telegramBotService
+     * Метод обрабатывает разные варианты callbackQuery, отправляя разные сообщения для
+     * пользователям в зависимости от выбранной опции.
+     *
+     * @param callbackQuery  - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see SendMessageService
      */
-
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
@@ -103,14 +104,14 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
             case DOG_HANDLER_ADVICE:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "Здесь должны быть советы кинолога по первичному общению с собакой",
+                        "Здесь должны быть советы кинолога по первичному общению с собакой", // todo прикрепить файл
                         telegramBotService
                 );
                 break;
             case DOG_HANDLER_CONTACTS:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "Здесь должны быть контактные данные проверенных кинологов",
+                        "Здесь должны быть контактные данные проверенных кинологов", // todo прикрепить файл
                         telegramBotService
                 );
                 break;
