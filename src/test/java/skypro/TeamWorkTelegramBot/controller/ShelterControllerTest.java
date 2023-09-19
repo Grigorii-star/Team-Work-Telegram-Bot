@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
+import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
 import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
 import skypro.TeamWorkTelegramBot.service.restApiServices.ShelterService;
@@ -40,6 +41,9 @@ class ShelterControllerTest {
     @MockBean
     VolunteerService volunteerService;
 
+    @MockBean
+    AnimalOwnerRepository animalOwnerRepository;
+
     @InjectMocks
     private ShelterController shelterController;
 
@@ -53,7 +57,7 @@ class ShelterControllerTest {
         shelterObject.put("name","TestName");
 
 
-        when(shelterService.findShelter(2L)).thenReturn(shelter);
+        when(shelterService.findShelter(2)).thenReturn(shelter);
         when(shelterService.addShelter(shelter)).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -68,7 +72,7 @@ class ShelterControllerTest {
     @Test
     void find() {
         Shelter shelter = new Shelter(1,"testShelter");
-        when(shelterService.findShelter(1L)).thenReturn(shelter);
+        when(shelterService.findShelter(1)).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/animal-shelter/1")
@@ -98,15 +102,14 @@ class ShelterControllerTest {
     @SneakyThrows
     @Test
     void edit() {
-        Shelter shelter = new Shelter(1,"testShelter");
+        Shelter shelter = new Shelter(1,"TestName");
 
         JSONObject shelterObject = new JSONObject();
-        shelterObject.put("id", "2");
+        shelterObject.put("id", "1");
         shelterObject.put("name","TestName");
 
 
-        when(shelterService.findShelter(2L)).thenReturn(shelter);
-        when(shelterService.addShelter(shelter)).thenReturn(shelter);
+        when(shelterService.editShelter(shelter)).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/animal-shelter")
@@ -119,15 +122,12 @@ class ShelterControllerTest {
     @SneakyThrows
     @Test
     void remove() {
-        Shelter shelter = new Shelter(1,"testShelter");
+        Shelter shelter = new Shelter(1,"TestName");
 
         JSONObject shelterObject = new JSONObject();
-        shelterObject.put("id", "2");
+        shelterObject.put("id", "1");
         shelterObject.put("name","TestName");
 
-
-        when(shelterService.findShelter(2L)).thenReturn(shelter);
-        when(shelterService.addShelter(shelter)).thenReturn(shelter);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/animal-shelter/1")

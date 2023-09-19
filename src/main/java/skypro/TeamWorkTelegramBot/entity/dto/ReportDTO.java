@@ -1,5 +1,6 @@
 package skypro.TeamWorkTelegramBot.entity.dto;
 
+import lombok.Builder;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 

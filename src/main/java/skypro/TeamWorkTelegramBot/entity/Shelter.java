@@ -18,6 +18,12 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class Shelter {
+
+    public Shelter(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

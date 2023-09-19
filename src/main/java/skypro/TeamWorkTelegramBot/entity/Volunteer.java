@@ -16,6 +16,14 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class Volunteer {
+
+    public Volunteer(Integer id, Long idChat, String name, Boolean isBusy) {
+        this.id = id;
+        this.idChat = idChat;
+        this.name = name;
+        this.isBusy = isBusy;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
