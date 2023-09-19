@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
+import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
 import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
 import skypro.TeamWorkTelegramBot.service.restApiServices.ShelterService;
@@ -39,6 +40,9 @@ class VolunteerControllerTest {
 
     @MockBean
     VolunteerService volunteerService;
+
+    @MockBean
+    AnimalOwnerRepository animalOwnerRepository;
 
     @InjectMocks
     VolunteerController volunteerController;
@@ -112,11 +116,10 @@ class VolunteerControllerTest {
         volunteerObject.put("isBusy","false");
 
 
-        when(volunteerService.findVolunteer(1)).thenReturn(volunteer);
-        when(volunteerService.addVolunteer(volunteer)).thenReturn(volunteer);
+        when(volunteerService.editVolunteer(volunteer)).thenReturn(volunteer);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/animal-shelter")
+                        .put("/volunteer")
                         .content(volunteerObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -134,11 +137,9 @@ class VolunteerControllerTest {
         volunteerObject.put("isBusy","false");
 
 
-        when(volunteerService.findVolunteer(1)).thenReturn(volunteer);
-        when(volunteerService.addVolunteer(volunteer)).thenReturn(volunteer);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/animal-shelter/1")
+                        .delete("/volunteer/1")
                         .content(volunteerObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

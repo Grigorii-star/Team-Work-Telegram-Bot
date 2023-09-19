@@ -17,6 +17,29 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class AnimalOwner {
+
+    public AnimalOwner(Integer id,
+                       Long idChat,
+                       String contactInformation,
+                       Boolean registered,
+                       Boolean dogLover,
+                       Boolean tookTheAnimal,
+                       Boolean canSaveContact,
+                       Boolean beVolunteer,
+                       Boolean helpVolunteer,
+                       Boolean canSendReport) {
+        this.id = id;
+        this.idChat = idChat;
+        this.contactInformation = contactInformation;
+        this.registered = registered;
+        this.dogLover = dogLover;
+        this.tookTheAnimal = tookTheAnimal;
+        this.canSaveContact = canSaveContact;
+        this.beVolunteer = beVolunteer;
+        this.helpVolunteer = helpVolunteer;
+        this.canSendReport = canSendReport;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
