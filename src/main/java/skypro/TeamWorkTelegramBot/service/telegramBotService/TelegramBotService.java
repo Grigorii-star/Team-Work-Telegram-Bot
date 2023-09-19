@@ -144,7 +144,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 commandMap.get(SAVE_CONTACTS_COMMAND).messagesExtractor(update.getMessage(), this);
             }
             if (!update.getMessage().getText().isEmpty() && !update.getMessage().getText().equals(START_TELEGRAM_BOT_COMMAND)
-                    && checkAnimalOwner != null) {
+                    && checkAnimalOwner != null && !matchesResult) {
 
                 if (checkAnimalOwner.getVolunteer() != null) {
                     commandMap.get(HELP_VOLUNTEER_COMMAND).messagesExtractor(update.getMessage(), this);

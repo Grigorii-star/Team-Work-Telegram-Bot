@@ -37,10 +37,10 @@ public class InterruptChat extends CommandAbstractClass {
     private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
         animalOwner.setHelpVolunteer(false); //устанавливаем что владельцу сейчас помогает волонтер
         animalOwner.setVolunteer(null); // устанавливаем его волонтера
+        animalOwnerRepository.save(animalOwner);
+
         volunteer.setIsBusy(false); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(null); // волонтеру ставим его владельца
-
-        animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
     }
 }
