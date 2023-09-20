@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.restApiServices;
+package skypro.TeamWorkTelegramBot.service.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -12,12 +12,10 @@ import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * Класс реализации интерфейса AnimalService
+ * Класс реализации интерфейса ReportService.
  */
 @Slf4j
 @Service
@@ -28,6 +26,12 @@ public class ReportServiceImpl implements ReportService {
         this.reportsRepository = reportsRepository;
     }
 
+    /**
+     * Метод, который выгружает из БД отчет о питомце по id отчета.
+     *
+     * @param reportId Идентификатор отчета для поиска.
+     * @return отчет, найденный по указанному идентификатору.
+     */
     @Override
     public Report findReport(Integer reportId) {
         log.info("Invoked a method for finding report by report id");
@@ -43,7 +47,13 @@ public class ReportServiceImpl implements ReportService {
 //        return foundedReport;
 //    }
 
-
+    /**
+     * Метод выгружает из БД все отчеты постранично.
+     *
+     * @param pageNumber количество страниц.
+     * @param pageSize размер страницы.
+     * @return список найденных отчетов.
+     */
     @Override
     public List<Report> getAllReportsByPages(Integer pageNumber, Integer pageSize) {
         log.info("Invoked a method for getting all reports by pages");
@@ -52,6 +62,12 @@ public class ReportServiceImpl implements ReportService {
         return reportsRepository.findAll(pageRequest).getContent();
     }
 
+    /**
+     * Метод выгружает из БД все отчеты по идентификатору владельца
+     *
+     * @param userId идентификатор владельца питомца.
+     * @return избранный список полей отчета.
+     */
     @Override
     public List<ReportDTO> getAllReportsByUserId(Integer userId) {
         log.info("Invoked a method for getting all reports");
@@ -60,6 +76,12 @@ public class ReportServiceImpl implements ReportService {
         return reportsRepository.findByAnimalOwnerId(userId);
     }
 
+    /**
+     * Метод для выгрузки фото из БД бинарного кода.
+     *
+     * @param binaryContent закодированный объект.
+     * @return выгруженный файл.
+     */
     @Override
     public FileSystemResource getFileSystemResource(BinaryContent binaryContent) {
         try {
@@ -70,12 +92,6 @@ public class ReportServiceImpl implements ReportService {
         } catch (IOException e) {
             log.error("IOException method getFileSystemResource");
             return null;
-        }
-    }
-
-    private void reportIdValidation(Integer reportId) {
-        if (!reportsRepository.existsById(reportId)) {
-            log.error("There is no report with id = {}", reportId);
         }
     }
 }

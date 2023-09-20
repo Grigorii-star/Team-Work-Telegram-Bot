@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.fileService;
+package skypro.TeamWorkTelegramBot.service.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,13 +22,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 
+/**
+ * Класс осуществляет сохранение отчетов о животном в БД.
+ */
 @Slf4j
 @Service
 public class FileServiceImpl implements FileService{
+    /**
+     * Переменная содержит токен Telegram бота.
+     */
     @Value("${telegram.bot.token}")
     private String token;
+    /**
+     * Переменная содержит адрес Telegram расположения файла.
+     */
     @Value("${service.file_info.uri}")
     private String fileInfoUri;
+    /**
+     * Переменная содержит адрес Telegram по которому можно скачать файл.
+     */
     @Value("${service.file_storage.uri}")
     private String fileStorageUri;
 
@@ -44,9 +56,17 @@ public class FileServiceImpl implements FileService{
         this.animalOwnerRepository = animalOwnerRepository;
     }
 
+    /**
+     * Метод обрабатывает Message сообщения, достает из них значения фото, fieldId, chatId
+     * и подпись. Добавляет текущую дату и создает новый объект отчета Report.
+     * После чего сохраняет его в БД.
+     *
+     * @param telegramMessage - объект Telegram для получения значений из Telegram бота.
+     * @return объект Report сохраненный в БД.
+     */
     @Override
     public Report animalReport(Message telegramMessage) {
-        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(0);
+        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(0); // todo проверить размер фото
         String fileId = telegramPhoto.getFileId();
         Long chatId = telegramMessage.getChatId();
         String report = telegramMessage.getCaption();
@@ -66,6 +86,16 @@ public class FileServiceImpl implements FileService{
         }
     }
 
+    /**
+     * Метод собирает новый объект Report.
+     *
+     * @param telegramPhoto содержит размер фото из Telegram Message.
+     * @param binaryContent содержит закодированный путь к фото файлу.
+     * @param animalOwner содержит отправителя отчета.
+     * @param report содержит письменный отчет.
+     * @param date содержит дату отправки отчета.
+     * @return собранный отчет Report.
+     */
     private Report buildTransientAnimal(PhotoSize telegramPhoto,
                                         BinaryContent binaryContent,
                                         AnimalOwner animalOwner,
@@ -81,6 +111,12 @@ public class FileServiceImpl implements FileService{
                 .build();
     }
 
+    /**
+     * Метод делает Http get запрос к серверу Telegram.
+     *
+     * @param fileId содержит fileId фото.
+     * @return HttpStatus в виде String.
+     */
     private ResponseEntity<String> getFilePath(String fileId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -96,6 +132,12 @@ public class FileServiceImpl implements FileService{
         );
     }
 
+    /**
+     * Метод собирает новый BinaryContent объект и сохраняет его в БД.
+     *
+     * @param response принимает HttpStatus от Telegram сервера в виде String.
+     * @return созданный объект BinaryContent.
+     */
     private BinaryContent getBinaryContent(ResponseEntity<String> response) {
         String filePath = getFilePath(response);
         byte[] fileInByte = downloadFile(filePath);
@@ -105,6 +147,13 @@ public class FileServiceImpl implements FileService{
         return binaryContentRepository.save(transientBinaryContent);
     }
 
+    /**
+     * Метод приобразует HttpStatus в виде String от Telegram
+     * сервера в JSONObject, после чего преобразует его в String.
+     *
+     * @param response HttpStatus в виде String от Telegram сервера.
+     * @return собранный из JSONObject новый String объект.
+     */
     private String getFilePath(ResponseEntity<String> response) {
         JSONObject jsonObject = new JSONObject(response.getBody());
         return String.valueOf(jsonObject
@@ -112,10 +161,19 @@ public class FileServiceImpl implements FileService{
                 .getString("file_path"));
     }
 
+    /**
+     * Метод формирует URi, после чего помещает его в URL адрес
+     * для скачивания файла из Telegram хранилища. Преобразует
+     * скаченный файл в бинарный код.
+     *
+     * @param filePath путь для скачивания файла.
+     * @return вовзвращает бинарный код закаченного файла.
+     */
     private byte[] downloadFile(String filePath) {
         String fullUri = fileStorageUri.replace("{telegram.bot.token}", token)
                 .replace("{filePath}", filePath);
         URL urlObj = null;
+
         try {
             urlObj = new URL(fullUri);
         } catch (MalformedURLException e) {

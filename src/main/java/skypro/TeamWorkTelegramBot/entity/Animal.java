@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Сущность животного.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

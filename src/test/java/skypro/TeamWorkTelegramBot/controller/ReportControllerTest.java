@@ -1,10 +1,7 @@
 package skypro.TeamWorkTelegramBot.controller;
 
 import lombok.SneakyThrows;
-import org.json.JSONObject;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
@@ -17,12 +14,9 @@ import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Report;
-import skypro.TeamWorkTelegramBot.entity.Shelter;
-import skypro.TeamWorkTelegramBot.entity.dto.ReportDTO;
 import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
-import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
+import skypro.TeamWorkTelegramBot.service.rest.ReportService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

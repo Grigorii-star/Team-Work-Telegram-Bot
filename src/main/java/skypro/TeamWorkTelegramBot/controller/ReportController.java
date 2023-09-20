@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import skypro.TeamWorkTelegramBot.entity.Report;
 import skypro.TeamWorkTelegramBot.entity.dto.ReportDTO;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
+import skypro.TeamWorkTelegramBot.service.rest.ReportService;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
- * контроллер для животного
+ * REST API для запросов к БД с отчетами владельцев питомцев.
  */
 @Slf4j
 @RestController
@@ -29,18 +28,19 @@ public class ReportController {
     }
 
     /**
-     * метод, который находит отчет о животном по идентификатору владельца.
-     * @param reportId идентификатор владельца животного
-     * @return ResponseEntity с найденным объектом отчета
+     * Метод, который выгружает из БД фото питомца по id отчета.
+     *
+     * @param reportId идентификатор id отчета.
+     * @return ResponseEntity с найденным фото отчета.
      */
-    @ApiOperation(value = "Найти отчет о животном по id")
+    @ApiOperation(value = "Найти фото питомца по id отчета.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Отчет о животном успешно найдено"),
-            @ApiResponse(code = 404, message = "Отчет о животном не найдено"),
-            @ApiResponse(code = 500, message = "Ошибка при поиске отчета о животном")
+            @ApiResponse(code = 200, message = "Фото питомца успешно найдено."),
+            @ApiResponse(code = 404, message = "Фото питомца не найдено."),
+            @ApiResponse(code = 500, message = "Ошибка при поиске фото питомца.")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/get-report")
-    public ResponseEntity<?> find(@RequestParam("reportId") Integer reportId) {
+    @RequestMapping(method = RequestMethod.GET, value = "/get-report-photo")
+    public ResponseEntity<?> find(@RequestParam("reportId") Integer reportId) { // todo переработать на id владельца животного
 
         var photo = reportService.findReport(reportId);
         if (photo == null) {
@@ -75,14 +75,16 @@ public class ReportController {
 //    }
 
     /**
-     * метод, который получает список всех отчетов о животных постранично.
-     * @param
-     * @return ResponseEntity с коллекцией объектов Report
+     * Метод, который получает список всех отчетов о животных постранично.
+     *
+     * @param pageNumber количество страниц.
+     * @param pageSize размер страницы.
+     * @return ResponseEntity с коллекцией объектов Report.
      */
-    @ApiOperation(value = "Получить список всех отчетов о животных")
+    @ApiOperation(value = "Получить список всех отчетов о питомцах.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список отчетов о животных успешно получен"),
-            @ApiResponse(code = 500, message = "Ошибка при получении списка отчетов о животных")
+            @ApiResponse(code = 200, message = "Список отчетов о питомцах успешно получен."),
+            @ApiResponse(code = 500, message = "Ошибка при получении списка отчетов о питомцах.")
     })
     @GetMapping("/all-reports-by-pages")
     public ResponseEntity<List<Report>> getReportsByPages(@RequestParam("page") Integer pageNumber,
@@ -90,7 +92,7 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getAllReportsByPages(pageNumber, pageSize));
     }
 
-    @GetMapping("/all-reports-by-userId")
+    @GetMapping("/all-reports-by-userId") // todo требует доработки
     public ResponseEntity<List<ReportDTO>> getAllByUserId(@RequestParam("userId") Integer userId) {
         return ResponseEntity.ok(reportService.getAllReportsByUserId(userId));
     }

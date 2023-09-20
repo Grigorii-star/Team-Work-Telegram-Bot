@@ -1,33 +1,24 @@
-package skypro.TeamWorkTelegramBot.buttons.stages.GetAnimal;
+package skypro.TeamWorkTelegramBot.buttons.stages.get;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import skypro.TeamWorkTelegramBot.buttons.Command;
 import skypro.TeamWorkTelegramBot.buttons.CommandAbstractClass;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
- * Класс, для создания кнопок меню информацию по приюту в телеграмм
+ * Класс формирует кнопоки для раздела взять животное из приюта.
  */
 @Component
 public class GetAnimalFromTheShelter extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-
-    public GetAnimalFromTheShelter(SendMessageService sendMessageService,
-                                   AnimalOwnerRepository animalOwnerRepository) {
-        this.sendMessageService = sendMessageService;
-        this.animalOwnerRepository = animalOwnerRepository;
-    }
-
     String[] buttonsTextDog = {
             MEETING_DOG_RULES_BUTTON,
             DOC_LIST_DOG_BUTTON,
@@ -41,7 +32,6 @@ public class GetAnimalFromTheShelter extends CommandAbstractClass {
             POST_CONTACT_BUTTON,
             CALL_VOLUNTEER_BUTTON,
             MENU_BUTTON};
-
     String[] buttonsCallDataDog = {
             MEETING_DOG_RULES,
             DOC_LIST,
@@ -79,11 +69,20 @@ public class GetAnimalFromTheShelter extends CommandAbstractClass {
             CALL_VOLUNTEER,
             MENU};
 
+    public GetAnimalFromTheShelter(SendMessageService sendMessageService,
+                                   AnimalOwnerRepository animalOwnerRepository) {
+        this.sendMessageService = sendMessageService;
+        this.animalOwnerRepository = animalOwnerRepository;
+    }
+
     /**
-     * данный метод отправляет приветственное сообщение с кнопками в зависимости от того, является
-     * ли пользователь любителем собак или кошек, полученных в параметре Update.
-     * @param callbackQuery объект телеграмма для получения значений из телеграмм бота
-     * @param telegramBotService
+     * Метод приветствует пользователя першедшего в меню взять животное из приюта и отправляет ему
+     * кнопки с информацией.
+     *
+     * @param callbackQuery - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see SendMessageService
      */
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {

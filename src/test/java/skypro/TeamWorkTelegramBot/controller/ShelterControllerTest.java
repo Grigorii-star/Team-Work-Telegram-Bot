@@ -13,9 +13,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
-import skypro.TeamWorkTelegramBot.service.restApiServices.ReportService;
-import skypro.TeamWorkTelegramBot.service.restApiServices.ShelterService;
-import skypro.TeamWorkTelegramBot.service.restApiServices.VolunteerService;
+import skypro.TeamWorkTelegramBot.service.rest.ReportService;
+import skypro.TeamWorkTelegramBot.service.rest.ShelterService;
+import skypro.TeamWorkTelegramBot.service.rest.VolunteerService;
 
 import java.util.ArrayList;
 import java.util.List;

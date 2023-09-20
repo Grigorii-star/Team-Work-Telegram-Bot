@@ -6,12 +6,11 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import java.util.regex.Pattern;
 
@@ -61,7 +60,7 @@ class TelegramBotServiceTest {
     public void startTest() {
         AnimalOwner animalOwner = new AnimalOwner(1, 1L, "contact", true,
                 false, false, false, false, false,
-                false, null, null);
+                false);
 
         when(animalOwnerRepository.findByIdChat(1L)).thenReturn(animalOwner);
         when(animalOwnerRepository.save(animalOwner)).thenReturn(animalOwner);
