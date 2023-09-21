@@ -36,7 +36,7 @@ CREATE TABLE volunteer (
 -- changeset grigorii:create-report-table
 CREATE TABLE report (
     id                  serial PRIMARY KEY,
-    date                date,
+    date                timestamp,
     report              text,
     telegram_field_id   text,
     file_size           integer,
@@ -58,3 +58,4 @@ CREATE TABLE animal (
     shelter_id          int4,
     animal_owner_id     int4
 );
+--SELECT MIN(date) FROM report WHERE date <= current_date - interval '30 days';

@@ -3,7 +3,7 @@ package skypro.TeamWorkTelegramBot.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Класс модели Animal
@@ -19,7 +19,7 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDate date;
+    private LocalDateTime date;
     private String report;
     private String telegramFieldId;
     private Integer fileSize;

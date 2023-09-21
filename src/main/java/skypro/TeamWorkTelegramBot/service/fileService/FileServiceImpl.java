@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -50,7 +50,7 @@ public class FileServiceImpl implements FileService{
         String fileId = telegramPhoto.getFileId();
         Long chatId = telegramMessage.getChatId();
         String report = telegramMessage.getCaption();
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
 
         ResponseEntity<String> response = getFilePath(fileId);
@@ -70,7 +70,7 @@ public class FileServiceImpl implements FileService{
                                         BinaryContent binaryContent,
                                         AnimalOwner animalOwner,
                                         String report,
-                                        LocalDate date) {
+                                        LocalDateTime date) {
         return Report.builder()
                 .telegramFieldId(telegramPhoto.getFileId())
                 .binaryContent(binaryContent)
