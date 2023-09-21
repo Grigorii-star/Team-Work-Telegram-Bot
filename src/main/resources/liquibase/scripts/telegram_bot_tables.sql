@@ -42,8 +42,7 @@ CREATE TABLE report (
     file_size               integer,
     binary_content_id       int4,
     shelter_id              int4,
-    animal_owner_id         int4,
-    date_and_time_report_id int4
+    animal_owner_id         int4
 );
 
 -- changeset grigorii:create-binary-content-table
@@ -63,6 +62,7 @@ CREATE TABLE animal (
 -- changeset alexandr:create-date_and_time_report-table
 CREATE TABLE date_and_time_report (
     id                   serial PRIMARY KEY,
-    date                 timestamp,
+    date_actual          timestamp,
+    date_first           timestamp,
     id_chat_animal_owner bigint
 );

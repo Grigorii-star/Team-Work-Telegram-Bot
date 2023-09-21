@@ -15,6 +15,6 @@ public interface ReportsRepository extends JpaRepository<Report, Integer> {
 
     //    @Query(value = "SELECT MIN(r.date) FROM Report r WHERE r.date <= current_date - interval ('30 days')")
 //    LocalDateTime findByAnimalOwnerId(Long id);
-    @Query(value = "SELECT MIN(r.date) FROM report r, animal_owner a WHERE a.id_chat = ?1 AND r.date <= current_date - interval '30 days'", nativeQuery = true)
+    @Query(value = "SELECT MIN(r.date) FROM report r, animal_owner a WHERE a.id_chat = ?1 AND r.date = (current_date - interval '30 days')", nativeQuery = true)
     LocalDateTime findDateByAnimalOwnerId(Long chatId);
 }

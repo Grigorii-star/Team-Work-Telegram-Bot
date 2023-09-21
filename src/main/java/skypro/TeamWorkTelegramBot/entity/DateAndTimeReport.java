@@ -19,7 +19,7 @@ public class DateAndTimeReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime date;
+    private LocalDateTime dateActual;
+    private LocalDateTime dateFirst;
     private Long idChatAnimalOwner;
-
 }
