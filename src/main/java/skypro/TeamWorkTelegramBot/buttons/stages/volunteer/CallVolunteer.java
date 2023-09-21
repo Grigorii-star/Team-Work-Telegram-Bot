@@ -13,6 +13,11 @@ import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.INTERRUPT_CHAT_BUTTON;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHAT;
 
@@ -37,6 +42,9 @@ public class CallVolunteer extends CommandAbstractClass {
     String[] buttonsText = {INTERRUPT_CHAT_BUTTON};
     String[] buttonsCallData = {CHAT};
 
+    List<Volunteer> notBusyVolunteers = new ArrayList<>();
+
+
     /**
      * Метод, который нужен для формирования ответа пользователю.
      * Этот метод Вытягивает chatId из update с помощью getCallbackQuery().getFrom().getId().
@@ -48,15 +56,51 @@ public class CallVolunteer extends CommandAbstractClass {
     @Override
     public void callBackQueryExtractor(CallbackQuery callbackQuery, TelegramBotService telegramBotService) {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
-        Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
 
+        /**
+         * Чтобы не заходить каждый раз в базу, проверяем наш список, есть ли там волонтеры
+         */
+        if (notBusyVolunteers.isEmpty()) {
+
+            /**
+             * Если список пустой, то подгружаем свободных волонтеров из базы
+             */
+            notBusyVolunteers = volunteersRepository.findVolunteersByIsBusy(false);
+
+            if (notBusyVolunteers.isEmpty()) {
+                /**
+                 * Если после выгрузки из базы список все равно пустой, то говорим, что сейчас нет свободных волонтеров
+                 */
+                sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+                        String.valueOf(callbackQuery.getFrom().getId()),
+                        "Сейчас все волонтеры заняты, попробуй позже",
+                        buttonsText,
+                        buttonsCallData,
+                        telegramBotService
+                );
+            } else {
+                /**
+                 * Если после выгрузки из базы волонтеры появились в списке, то отрабатываем логику класса
+                 */
+                setVolunteerToUser(callbackQuery, telegramBotService, animalOwner);
+            }
+        } else {
+            /**
+             * Если волонтеры все еще есть в списке, то отрабатываем логику класса
+             */
+            setVolunteerToUser(callbackQuery, telegramBotService, animalOwner);
+
+        }
+    }
+
+    private void setVolunteerToUser(CallbackQuery callbackQuery, TelegramBotService telegramBotService, AnimalOwner animalOwner) {
+        Volunteer volunteer = notBusyVolunteers.get(0);
+        notBusyVolunteers.remove(0);
         animalOwner.setHelpVolunteer(true);
         animalOwner.setInChat(true);
         animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
-
         volunteer.setIsBusy(true); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
-
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 
@@ -67,8 +111,6 @@ public class CallVolunteer extends CommandAbstractClass {
                 buttonsCallData,
                 telegramBotService
         );
-//        animalOwner.setHelpVolunteer(true);
-//        animalOwnerRepository.save(animalOwner);
         sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
                 String.valueOf(volunteer.getIdChat()),
                 "Сейчас с тобой свяжется пользователь.",
