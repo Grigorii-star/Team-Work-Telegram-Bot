@@ -31,4 +31,6 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "animal_owner_id")
     private AnimalOwner animalOwner;
+    @OneToOne
+    private DateAndTimeReport dateAndTimeReport;
 }

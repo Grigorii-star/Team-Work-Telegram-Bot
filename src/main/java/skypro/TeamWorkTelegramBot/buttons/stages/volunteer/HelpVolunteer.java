@@ -38,6 +38,15 @@ public class HelpVolunteer extends CommandAbstractClass {
                         telegramBotService
                 );
             }
+            if (message.getText().contains("--")) {
+                String resultId = message.getText().replaceAll("--", "");
+                System.out.println("отправляется сообщение от волонтера пользователю");
+                sendMessageService.SendMessageToUser(
+                        String.valueOf(resultId),
+                        "С тобой сейчас свяжется волонтёр",
+                        telegramBotService
+                );
+            }
         }
 
         if (!animalOwner.getIsVolunteer()) {

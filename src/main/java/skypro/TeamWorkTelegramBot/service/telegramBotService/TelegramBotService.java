@@ -149,7 +149,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 if (checkAnimalOwner.getVolunteer() != null) {
                     commandMap.get(HELP_VOLUNTEER_COMMAND).messagesExtractor(update.getMessage(), this);
                 }
-                if (checkAnimalOwner.getIsVolunteer()) {
+                if (checkAnimalOwner.getIsVolunteer() || update.getMessage().getText().contains("--")) { //добавил || update.getMessage().getText().contains("--")
                     commandMap.get(HELP_VOLUNTEER_COMMAND).messagesExtractor(update.getMessage(), this);
                 }
             }

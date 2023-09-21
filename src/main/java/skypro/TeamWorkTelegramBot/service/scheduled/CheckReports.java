@@ -53,10 +53,11 @@ public class CheckReports {
 
             LocalDateTime date = LocalDateTime.now();
             LocalDateTime dateReport = report.getDate();
-            LocalDateTime reportFirst = reportsRepository.findByAnimalOwnerId(chatIdOwner);
+            //LocalDateTime reportFirst = reportsRepository.findDateByAnimalOwnerId(chatIdOwner);
 
             long difference1 = Duration.between(dateReport, date).toDays();
-            long difference2 = Duration.between(reportFirst, date).toDays();
+            System.out.println(difference1);
+//            long difference2 = Duration.between(reportFirst, date).toDays();
 
             if (difference1 >= 1 && difference1 <= 2) {
                 sendMessageService.SendMessageToUser(
@@ -68,7 +69,8 @@ public class CheckReports {
             if (difference1 > 2) {
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdVolunteer1),
-                        "Владелец животного не присылает отчёт, вот его chatId: " + chatIdOwner,
+                        "Владелец животного не присылает отчёт два дня! Для связи с владельцем" +
+                                " напиши его chatId в формате: --" + chatIdOwner,
                         telegramBotService
                 );
 
@@ -79,39 +81,39 @@ public class CheckReports {
                 );
             }
 
-            if (difference2 == 0) {
-                sendMessageService.SendMessageToUserWithButtons(
-                        String.valueOf(chatIdVolunteer1),
-                        "Владелец животного 30 дней присылает отчёт," +
-                                " вот его chatId: " + chatIdOwner
-                                + "Выбери что сделать далее:",
-                        buttonsText,
-                        buttonsCallData,
-                        telegramBotService
-                );
-            }
-            if (difference2 == 14) {
-                sendMessageService.SendMessageToUserWithButtons(
-                        String.valueOf(chatIdVolunteer1),
-                        "У владелеца животного прошло 14 дней испытательного срока," +
-                                " вот его chatId: " + chatIdOwner
-                                + "Выбери что сделать далее:",
-                        buttonsText1,
-                        buttonsCallData1,
-                        telegramBotService
-                );
-            }
-            if (difference2 == 30) {
-                sendMessageService.SendMessageToUserWithButtons(
-                        String.valueOf(chatIdVolunteer1),
-                        "У владелеца животного прошло 30 дней испытательного срока," +
-                                " вот его chatId: " + chatIdOwner
-                                + "Выбери что сделать далее:",
-                        buttonsText1,
-                        buttonsCallData1,
-                        telegramBotService
-                );
-            }
+//            if (difference2 == 0) {
+//                sendMessageService.SendMessageToUserWithButtons(
+//                        String.valueOf(chatIdVolunteer1),
+//                        "Владелец животного 30 дней присылает отчёт! Для связи с владельцем" +
+//                                " напиши его chatId в формате: --" + chatIdOwner
+//                                + " Или выбери что сделать далее:",
+//                        buttonsText,
+//                        buttonsCallData,
+//                        telegramBotService
+//                );
+//            }
+//            if (difference2 == 14) {
+//                sendMessageService.SendMessageToUserWithButtons(
+//                        String.valueOf(chatIdVolunteer1),
+//                        "У владелеца животного прошло 14 дней испытательного срока! Для связи с владельцем" +
+//                                " напиши его chatId в формате: --" + chatIdOwner
+//                                + " Или выбери что сделать далее:",
+//                        buttonsText1,
+//                        buttonsCallData1,
+//                        telegramBotService
+//                );
+//            }
+//            if (difference2 == 30) {
+//                sendMessageService.SendMessageToUserWithButtons(
+//                        String.valueOf(chatIdVolunteer1),
+//                        "У владелеца животного прошло 30 дней испытательного срока! Для связи с владельцем" +
+//                                " напиши его chatId в формате: --" + chatIdOwner
+//                                + " Или выбери что сделать далее:",
+//                        buttonsText1,
+//                        buttonsCallData1,
+//                        telegramBotService
+//                );
+//            }
         }
     }
 }
