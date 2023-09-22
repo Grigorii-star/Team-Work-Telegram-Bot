@@ -50,13 +50,17 @@ public class CallVolunteer extends CommandAbstractClass {
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(callbackQuery.getFrom().getId());
         Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
 
+        AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(volunteer.getIdChat());
         animalOwner.setHelpVolunteer(true);
         animalOwner.setInChat(true);
         animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
 
+        volunteerOwner.setInChat(true);
+
         volunteer.setIsBusy(true); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
 
+        animalOwnerRepository.save(volunteerOwner);
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 

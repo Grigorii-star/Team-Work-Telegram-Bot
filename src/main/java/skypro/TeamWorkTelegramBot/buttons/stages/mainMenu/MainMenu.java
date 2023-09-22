@@ -142,12 +142,17 @@ public class MainMenu extends CommandAbstractClass {
     }
 
     private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
-        animalOwner.setHelpVolunteer(false);
-        animalOwner.setVolunteer(null);
-        volunteer.setIsBusy(false);
-        volunteer.setAnimalOwner(null);
-        //сохраняем в базу данных все
+        AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(volunteer.getIdChat());
+
+        animalOwner.setHelpVolunteer(false); //устанавливаем что владельцу сейчас помогает волонтер
+        animalOwner.setVolunteer(null); // устанавливаем его волонтера
+        animalOwner.setInChat(false);
+        volunteerOwner.setInChat(false);
         animalOwnerRepository.save(animalOwner);
+        animalOwnerRepository.save(volunteerOwner);
+
+        volunteer.setIsBusy(false); // волонтеру ставим, что занят
+        volunteer.setAnimalOwner(null); // волонтеру ставим его владельца
         volunteersRepository.save(volunteer);
     }
 }

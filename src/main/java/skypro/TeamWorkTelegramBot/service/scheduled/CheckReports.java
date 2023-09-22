@@ -49,7 +49,7 @@ public class CheckReports {
     String[] buttonsCallData1 = {"Поздравить",
             "Отказать"};
 
-    @Scheduled(cron = "0 * * * * *")   // @Scheduled(cron = "0 0 21 * * *")
+    //@Scheduled(cron = "0 * * * * *")   // @Scheduled(cron = "0 0 21 * * *")
     public void checkReportsPet() {
         List<DateAndTimeReport> reportList = dateAndTimeReportRepository.findAll();
 

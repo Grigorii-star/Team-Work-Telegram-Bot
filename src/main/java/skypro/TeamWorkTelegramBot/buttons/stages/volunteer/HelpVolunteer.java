@@ -31,19 +31,10 @@ public class HelpVolunteer extends CommandAbstractClass {
         if (animalOwner.getIsVolunteer()) {
             Volunteer volunteer = volunteersRepository.findByIdChat(message.getFrom().getId());
             if (volunteer.getAnimalOwner() != null) {
-                System.out.println("отправляется сообщение от волонтера пользователю");
+                System.out.println("отправляется сообщение от волонтера пользователю HelpVolunteer");
                 sendMessageService.SendMessageToUser(
                         String.valueOf(volunteer.getAnimalOwner().getIdChat()),
                         message.getText(),
-                        telegramBotService
-                );
-            }
-            if (message.getText().contains("--")) {
-                String resultId = message.getText().replaceAll("--", "");
-                System.out.println("отправляется сообщение от волонтера пользователю");
-                sendMessageService.SendMessageToUser(
-                        String.valueOf(resultId),
-                        "С тобой сейчас свяжется волонтёр",
                         telegramBotService
                 );
             }
@@ -51,7 +42,7 @@ public class HelpVolunteer extends CommandAbstractClass {
 
         if (!animalOwner.getIsVolunteer()) {
             if (animalOwner.getVolunteer() != null) {
-                System.out.println("отправляется сообщение от пользователя волонтёру");
+                System.out.println("отправляется сообщение от пользователя волонтёру HelpVolunteer");
                 sendMessageService.SendMessageToUser( // отправляется сообщение волонтёру
                         String.valueOf(animalOwner.getVolunteer().getIdChat()), //заменить на volunteerId
                         message.getText(),
