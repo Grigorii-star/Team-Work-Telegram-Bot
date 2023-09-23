@@ -91,7 +91,7 @@ public class GetAnimalFromTheShelter extends CommandAbstractClass {
         if (animalOwner.getDogLover()) {
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(callbackQuery.getFrom().getId()),
-                    GREETING_MESSAGE,
+                    START_GREETING_MESSAGE,
                     buttonsTextDog,
                     buttonsCallDataDog,
                     telegramBotService
@@ -100,7 +100,7 @@ public class GetAnimalFromTheShelter extends CommandAbstractClass {
         else {
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(callbackQuery.getFrom().getId()),
-                    GREETING_MESSAGE,
+                    START_GREETING_MESSAGE,
                     buttonsTextCat,
                     buttonsCallDataCat,
                     telegramBotService

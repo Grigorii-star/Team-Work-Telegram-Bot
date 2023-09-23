@@ -103,7 +103,7 @@ public class FileServiceImpl implements FileService{
      * @param date содержит дату отправки отчета.
      * @return собранный отчет Report.
      */
-    private Report buildTransientAnimal(PhotoSize telegramPhoto,
+    private Report buildTransientReport(PhotoSize telegramPhoto,
                                         BinaryContent binaryContent,
                                         AnimalOwner animalOwner,
                                         String report,
@@ -161,13 +161,10 @@ public class FileServiceImpl implements FileService{
                 .idChatAnimalOwner(chatId)
                 .build();
 
-
         DateAndTimeReport dateReportCheck = dateAndTimeReportRepository.findByIdChatAnimalOwner(chatId);
-        System.out.println(dateReportCheck);
+
         if (dateReportCheck != null) {
-
             dateReportCheck.setDateActual(date);
-
             dateAndTimeReportRepository.save(dateReportCheck);
         }
         else {

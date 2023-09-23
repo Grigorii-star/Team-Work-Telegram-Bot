@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
  * Класс сохраняет отчет о животном пользователя в БД.
@@ -25,7 +26,6 @@ public class SavePhoto extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
     private final FileService fileService;
-
     String[] buttonsText = {MENU_BUTTON};
     String[] buttonsCallData = {MENU};
 
@@ -80,7 +80,7 @@ public class SavePhoto extends CommandAbstractClass {
 
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(message.getChatId()),
-                        "Фото и отчет успешно загружены. Перейдите в главное меню.", // todo добавить константу
+                        SAVE_REPORT_SUCCESSFULLY_MESSAGE,
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
@@ -91,7 +91,7 @@ public class SavePhoto extends CommandAbstractClass {
 
                 sendMessageService.SendMessageToUser(
                         String.valueOf(message.getChatId()),
-                        "К сожалению загрузка фото и отчета не удалась.", // todo добавить константу
+                        SAVE_REPORT_ERROR_MESSAGE,
                         telegramBotService
                 );
             }
@@ -99,7 +99,7 @@ public class SavePhoto extends CommandAbstractClass {
         } else {
             sendMessageService.SendMessageToUser(
                     String.valueOf(message.getChatId()),
-                    "Неверный формат фото и отчета.", // todo добавить константу
+                    SAVE_REPORT_INVALID_MESSAGE,
                     telegramBotService
             );
         }

@@ -112,7 +112,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         commandMap.put(SAVE_REPORT_COMMAND, canSaveReportAboutPet);
         commandMap.put(SAVE_PHOTO_COMMAND, savePhoto);
         commandMap.put(SAVE_CONTACTS_COMMAND, saveContacts);
-        commandMap.put("connectionVolunteerOwner", connectionVolunteerOwner);
+        commandMap.put(CONNECTION_VOLUNTEER_OWNER_COMMAND, connectionVolunteerOwner);
     }
 
     @Override
@@ -159,8 +159,8 @@ public class TelegramBotService extends TelegramLongPollingBot {
                 if (checkAnimalOwner.getInChat()) {
                     commandMap.get(HELP_VOLUNTEER_COMMAND).messagesExtractor(update.getMessage(), this);
                 }
-                if (checkAnimalOwner.getIsVolunteer() || update.getMessage().getText().contains("-")) { //добавил || update.getMessage().getText().contains("--")
-                    commandMap.get("connectionVolunteerOwner").messagesExtractor(update.getMessage(), this);
+                if (checkAnimalOwner.getIsVolunteer() || update.getMessage().getText().contains(REPORT_CONNECT_TO_USER_COMMAND)) {
+                    commandMap.get(CONNECTION_VOLUNTEER_OWNER_COMMAND).messagesExtractor(update.getMessage(), this);
                 }
             }
             if (checkAnimalOwner != null && checkAnimalOwner.getCanSendReport() && update.getMessage().hasText()

@@ -11,13 +11,13 @@ import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.INTERRUPT_CHAT_BUTTON;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHAT;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.CALL_VOLUNTEER_TO_USER_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.CALL_VOLUNTEER_TO_VOLUNTEER_MESSAGE;
 
 
 /**
@@ -120,14 +120,14 @@ public class CallVolunteer extends CommandAbstractClass {
 
         sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
                 String.valueOf(callbackQuery.getFrom().getId()),
-                "Напиши свой вопрос волонтёру, и он в ближайшее время тебе ответит.", // todo вынести в константу
+                CALL_VOLUNTEER_TO_USER_MESSAGE,
                 buttonsText,
                 buttonsCallData,
                 telegramBotService
         );
         sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
                 String.valueOf(volunteer.getIdChat()),
-                "Сейчас с тобой свяжется пользователь.", // todo вынести в константу
+                CALL_VOLUNTEER_TO_VOLUNTEER_MESSAGE,
                 buttonsText,
                 buttonsCallData,
                 telegramBotService

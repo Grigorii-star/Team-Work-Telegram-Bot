@@ -3,7 +3,6 @@ package skypro.TeamWorkTelegramBot.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
  * Сущность волонтера.

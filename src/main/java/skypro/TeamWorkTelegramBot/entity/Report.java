@@ -32,7 +32,7 @@ public class Report {
     @JoinColumn(name = "animal_owner_id")
     private AnimalOwner animalOwner;
 
-    public Report(Integer id, LocalDate date, String report, String telegramFieldId, Integer fileSize) {
+    public Report(Integer id, LocalDateTime date, String report, String telegramFieldId, Integer fileSize) {
         this.id = id;
         this.date = date;
         this.report = report;

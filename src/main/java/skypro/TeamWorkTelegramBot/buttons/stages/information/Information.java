@@ -8,7 +8,7 @@ import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETING_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.START_GREETING_MESSAGE;
 
 /**
  * Класс формирует кнопоки для раздела информации по приюту.
@@ -52,7 +52,7 @@ public class Information extends CommandAbstractClass {
 
         sendMessageService.SendMessageToUserWithButtons(
                 String.valueOf(callbackQuery.getFrom().getId()),
-                GREETING_MESSAGE,
+                START_GREETING_MESSAGE,
                 buttonsText,
                 buttonsCallData,
                 telegramBotService

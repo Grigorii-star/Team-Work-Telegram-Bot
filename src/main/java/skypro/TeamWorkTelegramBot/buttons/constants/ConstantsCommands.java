@@ -5,6 +5,7 @@ package skypro.TeamWorkTelegramBot.buttons.constants;
  */
 public class ConstantsCommands {
     public static final String START_TELEGRAM_BOT_COMMAND = "/start";
+    public static final String REPORT_CONNECT_TO_USER_COMMAND = "-";
     public static final String START_COMMAND = "start";
     public static final String MAIN_MENU_COMMAND = "mainMenu";
     public static final String INFORMATION_COMMAND = "information";
@@ -18,5 +19,6 @@ public class ConstantsCommands {
     public static final String HELP_VOLUNTEER_COMMAND = "helpVolunteer";
     public static final String CALL_VOLUNTEER_COMMAND = "callVolunteer";
     public static final String SAVE_CONTACTS_COMMAND = "saveContacts";
+    public static final String CONNECTION_VOLUNTEER_OWNER_COMMAND = "connectionVolunteerOwner";
 
 }

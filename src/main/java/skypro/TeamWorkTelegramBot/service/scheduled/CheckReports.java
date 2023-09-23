@@ -1,59 +1,45 @@
 package skypro.TeamWorkTelegramBot.service.scheduled;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import skypro.TeamWorkTelegramBot.entity.DateAndTimeReport;
-import skypro.TeamWorkTelegramBot.entity.Report;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.DateAndTimeReportRepository;
-import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
+
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
+
+@Slf4j
 @Component
 public class CheckReports {
-    private final ReportsRepository reportsRepository;
     private final SendMessageService sendMessageService;
     private final VolunteersRepository volunteersRepository;
     private final TelegramBotService telegramBotService;
     private final DateAndTimeReportRepository dateAndTimeReportRepository;
 
-    public CheckReports(ReportsRepository reportsRepository,
-                        SendMessageService sendMessageService,
+    public CheckReports(SendMessageService sendMessageService,
                         VolunteersRepository volunteersRepository,
                         TelegramBotService telegramBotService,
                         DateAndTimeReportRepository dateAndTimeReportRepository) {
-        this.reportsRepository = reportsRepository;
         this.sendMessageService = sendMessageService;
         this.volunteersRepository = volunteersRepository;
         this.telegramBotService = telegramBotService;
         this.dateAndTimeReportRepository = dateAndTimeReportRepository;
     }
 
-    String[] buttonsText = {"Поздравить владельца",
-            "Продлить испытательный срок на 14 дней",
-            "Продлить испытательный срок на 30 дней",
-            "Отказать во владении животного"};
-    String[] buttonsCallData = {"Поздравить",
-            "Продлить_14",
-            "Продлить_30",
-            "Отказать"};
-
-    String[] buttonsText1 = {"Поздравить владельца",
-            "Отказать во владении животного"};
-    String[] buttonsCallData1 = {"Поздравить",
-            "Отказать"};
-
-    @Scheduled(cron = "0 * * * * *")   // @Scheduled(cron = "0 0 21 * * *")
+    // @Scheduled(cron = "0 0 21 * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void checkReportsPet() {
+        log.info("Invoked scheduled method checkReportsPet");
         List<DateAndTimeReport> reportList = dateAndTimeReportRepository.findAll();
-
-        //List<Report> reportList1 = reportsRepository.findAll();
 
         Volunteer volunteer = volunteersRepository.findDistinctFirstByIsBusy(false);
 
@@ -72,55 +58,42 @@ public class CheckReports {
             if (difference1 >= 1 && difference1 <= 2) {
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdOwner),
-                        "Отправьте отчёт",
+                        SAVE_REPORT_ONE_DAY_ERROR_TO_USER_MESSAGE,
                         telegramBotService
                 );
             }
             if (difference1 > 2) {
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdVolunteer1),
-                        "Владелец животного не присылает отчёт два дня! Для связи с владельцем" +
-                                " напиши его chatId в формате: -" + chatIdOwner,
+                        SAVE_REPORT_TWO_DAYS_ERROR_TO_VOLUNTEER_MESSAGE + chatIdOwner,
                         telegramBotService
                 );
 
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdOwner),
-                        "Ты не присылал отчёт более двух дней! С тобой свяжется волонтёр",
+                        SAVE_REPORT_TWO_DAYS_ERROR_TO_USER_MESSAGE,
                         telegramBotService
                 );
             }
 
             if (difference2 == 30) {
-                sendMessageService.SendMessageToUserWithButtons(
+                sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdVolunteer1),
-                        "Владелец животного 30 дней присылает отчёт! Для связи с владельцем" +
-                                " напиши его chatId в формате: -" + chatIdOwner
-                                + " Или выбери что сделать далее:",
-                        buttonsText,
-                        buttonsCallData,
+                        SAVE_REPORT_THIRTY_DAYS_SUCCESSFULLY_TO_VOLUNTEER_MESSAGE + chatIdOwner,
                         telegramBotService
                 );
             }
             if (difference2 == 44) {
-                sendMessageService.SendMessageToUserWithButtons(
+                sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdVolunteer1),
-                        "У владелеца животного прошло 14 дней испытательного срока! Для связи с владельцем" +
-                                " напиши его chatId в формате: -" + chatIdOwner
-                                + " Или выбери что сделать далее:",
-                        buttonsText1,
-                        buttonsCallData1,
+                        SAVE_REPORT_FOURTEEN_ADDITIONAL_DAYS_SUCCESSFULLY_TO_VOLUNTEER_MESSAGE + chatIdOwner,
                         telegramBotService
                 );
             }
             if (difference2 == 60) {
-                sendMessageService.SendMessageToUserWithButtons(
+                sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdVolunteer1),
-                        "У владелеца животного прошло 30 дней испытательного срока! Для связи с владельцем" +
-                                " напиши его chatId в формате: -" + chatIdOwner
-                                + " Или выбери что сделать далее:",
-                        buttonsText1,
-                        buttonsCallData1,
+                        SAVE_REPORT_THIRTY_ADDITIONAL_DAYS_SUCCESSFULLY_TO_VOLUNTEER_MESSAGE + chatIdOwner,
                         telegramBotService
                 );
             }

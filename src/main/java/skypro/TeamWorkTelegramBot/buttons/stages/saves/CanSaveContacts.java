@@ -9,6 +9,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.SAVE_CONTACT_MESSAGE;
+
 /**
  * Класс предоставляет шаблон заполнения для сохранения контакта пользователя.
  */
@@ -17,9 +19,6 @@ import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 public class CanSaveContacts extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-
-    public final static String GREETING_MESSAGE = "Введи свои контактные данные в формате:\n" +
-            "+7 999 999 99 99";
 
     public CanSaveContacts(SendMessageService sendMessageService,
                            AnimalOwnerRepository animalOwnerRepository) {
@@ -46,7 +45,7 @@ public class CanSaveContacts extends CommandAbstractClass {
 
         sendMessageService.SendMessageToUser(
                 String.valueOf(callbackQuery.getFrom().getId()),
-                GREETING_MESSAGE,
+                SAVE_CONTACT_MESSAGE,
                 telegramBotService
         );
     }

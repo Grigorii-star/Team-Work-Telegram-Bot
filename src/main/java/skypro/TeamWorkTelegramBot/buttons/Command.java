@@ -2,7 +2,6 @@ package skypro.TeamWorkTelegramBot.buttons;
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 /**

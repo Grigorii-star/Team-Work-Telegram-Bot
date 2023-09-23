@@ -15,7 +15,7 @@ import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.*;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.*;
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.GREETING_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 /**
  * Класс формирует главное меню приюта.
@@ -75,7 +75,7 @@ public class MainMenu extends CommandAbstractClass {
 
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(callbackQuery.getFrom().getId()),
-                    GREETING_MESSAGE,
+                    START_GREETING_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
@@ -90,7 +90,7 @@ public class MainMenu extends CommandAbstractClass {
 
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(callbackQuery.getFrom().getId()),
-                    GREETING_MESSAGE,
+                    START_GREETING_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
@@ -99,7 +99,7 @@ public class MainMenu extends CommandAbstractClass {
         else if (callbackQuery.getData().equals(MENU)) {
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(callbackQuery.getFrom().getId()),
-                    GREETING_MESSAGE,
+                    START_GREETING_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
@@ -115,26 +115,26 @@ public class MainMenu extends CommandAbstractClass {
                 volunteer = volunteersRepository.findByAnimalOwner(animalOwner);
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        GREETING_MESSAGE,
+                        INTERRUPT_CHAT_WITH_VOLUNTEER_MESSAGE,
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
                 );
                 sendMessageService.SendMessageToUser(
                         String.valueOf(volunteer.getIdChat()),
-                        "Связь с пользователем прервана", // TODO: 19.09.2023 вынести в константу
+                        INTERRUPT_CHAT_WITH_USER_MESSAGE,
                         telegramBotService
                 );
             } else {
                 volunteer = volunteersRepository.findByIdChat(callbackQuery.getFrom().getId());
                 sendMessageService.SendMessageToUser(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "Связь с пользователем прервана", // TODO: 19.09.2023 вынести в константу
+                        INTERRUPT_CHAT_WITH_USER_MESSAGE,
                         telegramBotService
                 );
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(volunteer.getAnimalOwner().getIdChat()),
-                        "Связь с волонтером прервана", // TODO: 19.09.2023 вынести в константу
+                        INTERRUPT_CHAT_WITH_VOLUNTEER_MESSAGE,
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
@@ -152,16 +152,26 @@ public class MainMenu extends CommandAbstractClass {
      */
     private void interruptChat(AnimalOwner animalOwner, Volunteer volunteer) {
         AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(volunteer.getIdChat());
+        AnimalOwner animalOwnerInterrupt = volunteer.getAnimalOwner();
 
-        animalOwner.setHelpVolunteer(false); //устанавливаем что владельцу сейчас помогает волонтер
-        animalOwner.setVolunteer(null); // устанавливаем его волонтера
-        animalOwner.setInChat(false);
+        if (!animalOwner.getIsVolunteer()) {
+            animalOwner.setHelpVolunteer(false); //устанавливаем что владельцу сейчас помогает волонтер
+            animalOwner.setVolunteer(null); // устанавливаем его волонтера
+            animalOwner.setInChat(false);
+            animalOwnerRepository.save(animalOwner);
+        } else {
+            animalOwnerInterrupt.setHelpVolunteer(false);
+            animalOwnerInterrupt.setVolunteer(null);
+            animalOwnerInterrupt.setInChat(false);
+            animalOwnerRepository.save(animalOwnerInterrupt);
+        }
+
         volunteerOwner.setInChat(false);
-        animalOwnerRepository.save(animalOwner);
-        animalOwnerRepository.save(volunteerOwner);
 
         volunteer.setIsBusy(false); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(null); // волонтеру ставим его владельца
+
+        animalOwnerRepository.save(volunteerOwner);
         volunteersRepository.save(volunteer);
     }
 }

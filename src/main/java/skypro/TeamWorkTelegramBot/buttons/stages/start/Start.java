@@ -64,7 +64,7 @@ public class Start extends CommandAbstractClass {
             animalOwnerRepository.save(animalOwner);
 
             sendMessageService.SendMessageToUser(String.valueOf(message.getChatId()),
-                    GREETING_MESSAGE,
+                    START_GREETING_MESSAGE,
                     telegramBotService
             );
 
@@ -83,7 +83,7 @@ public class Start extends CommandAbstractClass {
 
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(message.getChatId()),
-                    "Можете выбрать приют или стать волонтером.", // TODO: 19.09.2023 вынести в константу
+                    CHOOSE_A_SHELTER_OR_BECOME_A_VOLUNTEER_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService

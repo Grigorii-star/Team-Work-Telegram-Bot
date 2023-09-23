@@ -9,6 +9,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.SAVE_REPORT_MESSAGE;
+
 /**
  * Класс предоставляет шаблон заполнения для сохранения отчета о животном.
  */
@@ -44,11 +46,7 @@ public class CanSaveReportAboutPet extends CommandAbstractClass {
 
         sendMessageService.SendMessageToUser(
                 String.valueOf(callbackQuery.getFrom().getId()),
-                "Отправьте фото с прикрепленным текстовым отчетом. \n" +  // todo вынести в константу
-                        "Отчет должен содержать: \n" +
-                        "Рацион животного. \n" +
-                        "Общее самочувствие и привыкание к новому месту. \n" +
-                        "Изменение в поведении: отказ от старых привычек, приобретение новых. ",
+                SAVE_REPORT_MESSAGE,
                 telegramBotService
         );
     }

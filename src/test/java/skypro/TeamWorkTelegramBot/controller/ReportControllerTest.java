@@ -19,6 +19,7 @@ import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 import skypro.TeamWorkTelegramBot.service.rest.ReportService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.Mockito.when;
@@ -51,7 +52,7 @@ class ReportControllerTest {
     @Test
     public void find() {
 
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
 
         Report report1 = Report.builder()
                 .id(1)
@@ -84,7 +85,7 @@ class ReportControllerTest {
     @Test
     void getReportsByPages() {
 
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
 
         Report report1 = Report.builder()
                 .id(1)

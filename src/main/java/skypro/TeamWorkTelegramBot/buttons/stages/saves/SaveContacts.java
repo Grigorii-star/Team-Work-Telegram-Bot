@@ -11,6 +11,8 @@ import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.MENU_BUTTON;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.MENU;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.SAVE_CONTACT_WITH_MENU_SUCCESSFULLY_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.SAVE_CONTACT_WITH_START_SUCCESSFULLY_MESSAGE;
 
 /**
  * Класс сохраняет контакт пользователя в БД.
@@ -20,12 +22,6 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.MEN
 public class SaveContacts extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
-
-    public final static String GREETING_MESSAGE_OK = "Отлично! Я сохранил твои контактные данные.\n" +
-            "Для перехода в главное меню нажми на кнопку ниже.";
-    public final static String GREETING_MESSAGE_OK2 = "Отлично! Я сохранил твои контактные данные.\n" +
-            "Для перехода в меню выбора приюта нажми на кнопку ниже /start";
-
     String[] buttonsText = {MENU_BUTTON};
     String[] buttonsCallData = {MENU};
 
@@ -55,7 +51,7 @@ public class SaveContacts extends CommandAbstractClass {
 
             sendMessageService.SendMessageToUserWithButtons(
                     String.valueOf(message.getChatId()),
-                    GREETING_MESSAGE_OK,
+                    SAVE_CONTACT_WITH_MENU_SUCCESSFULLY_MESSAGE,
                     buttonsText,
                     buttonsCallData,
                     telegramBotService
@@ -69,7 +65,7 @@ public class SaveContacts extends CommandAbstractClass {
 
             sendMessageService.SendMessageToUser(
                     String.valueOf(message.getChatId()),
-                    GREETING_MESSAGE_OK2,
+                    SAVE_CONTACT_WITH_START_SUCCESSFULLY_MESSAGE,
                     telegramBotService
             );
         }

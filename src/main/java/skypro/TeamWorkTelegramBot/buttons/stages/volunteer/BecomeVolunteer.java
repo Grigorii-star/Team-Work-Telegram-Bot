@@ -8,7 +8,8 @@ import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
-import static skypro.TeamWorkTelegramBot.buttons.stages.saves.CanSaveContacts.GREETING_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.BECOME_VOLUNTEER_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.SAVE_CONTACT_MESSAGE;
 
 /**
  * Класс предоставляет шаблон заполнения для сохранения контакта волонтера.
@@ -19,7 +20,8 @@ public class BecomeVolunteer extends CommandAbstractClass {
     private final SendMessageService sendMessageService;
     private final AnimalOwnerRepository animalOwnerRepository;
 
-    public BecomeVolunteer(SendMessageService sendMessageService, AnimalOwnerRepository animalOwnerRepository) {
+    public BecomeVolunteer(SendMessageService sendMessageService,
+                           AnimalOwnerRepository animalOwnerRepository) {
         this.sendMessageService = sendMessageService;
         this.animalOwnerRepository = animalOwnerRepository;
     }
@@ -47,8 +49,8 @@ public class BecomeVolunteer extends CommandAbstractClass {
             animalOwnerRepository.save(animalOwner);
             sendMessageService.SendMessageToUser(
                     String.valueOf(callbackQuery.getFrom().getId()),
-                    "Спасибо за твою готовность помогать!\n" + // todo вынести в константу
-                            GREETING_MESSAGE,
+                    BECOME_VOLUNTEER_MESSAGE +
+                            SAVE_CONTACT_MESSAGE,
                     telegramBotService
             );
         }

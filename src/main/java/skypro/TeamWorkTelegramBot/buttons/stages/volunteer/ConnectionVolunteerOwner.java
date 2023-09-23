@@ -7,11 +7,15 @@ import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
 import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
-import skypro.TeamWorkTelegramBot.service.sendMessageService.SendMessageService;
-import skypro.TeamWorkTelegramBot.service.telegramBotService.TelegramBotService;
+import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
+import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
+
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.INTERRUPT_CHAT_BUTTON;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHAT;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.REPORT_CONNECT_TO_USER_COMMAND;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.ABOUT_REPORT_TO_USER_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.ABOUT_REPORT_TO_VOLUNTEER_MESSAGE;
 
 @Component
 public class ConnectionVolunteerOwner extends CommandAbstractClass {
@@ -38,18 +42,20 @@ public class ConnectionVolunteerOwner extends CommandAbstractClass {
         if (animalOwner.getIsVolunteer()) {
             Volunteer volunteer = volunteersRepository.findByIdChat(message.getFrom().getId());
 
-            if (message.getText().contains("-")) {
-                String resultId = message.getText().replaceAll("-", "");
+            if (message.getText().contains(REPORT_CONNECT_TO_USER_COMMAND)) {
+                String resultId = message.getText().replaceAll(REPORT_CONNECT_TO_USER_COMMAND, "");
+
                 System.out.println("отправляется сообщение от волонтера пользователю ConnectionVolunteerOwner");
+
                 sendMessageService.SendMessageToUser(
                         String.valueOf(resultId),
-                        "С тобой сейчас свяжется волонтёр по поводу отчётов",
+                        ABOUT_REPORT_TO_USER_MESSAGE,
                         telegramBotService
                 );
 
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(animalOwner.getIdChat()),
-                        "Сейчас ты пишешь владельцу с чатом: " + resultId,
+                        ABOUT_REPORT_TO_VOLUNTEER_MESSAGE + resultId,
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
