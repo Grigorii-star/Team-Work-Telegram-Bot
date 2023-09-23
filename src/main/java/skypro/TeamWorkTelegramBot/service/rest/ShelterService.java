@@ -1,5 +1,6 @@
 package skypro.TeamWorkTelegramBot.service.rest;
 
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 
 import java.util.Collection;
@@ -40,8 +41,14 @@ public interface ShelterService {
     void removeShelter(Integer id);
 
     /**
-     * Метод получить все приюты из базы данных.
+     * Метод получает все приюты из базы данных.
      * @return список всех приютов.
      */
     Collection<Shelter> getAllShelters();
+
+    /**
+     * Метод получает всех владельцев животных из базы данных.
+     * @return список всех владельцев животных.
+     */
+    Collection<AnimalOwner> getShelterAnimalOwners(Integer id);
 }

@@ -2,6 +2,7 @@ package skypro.TeamWorkTelegramBot.service.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.repository.SheltersRepository;
 
@@ -98,6 +99,26 @@ public class ShelterServiceImpl implements ShelterService{
 
         log.debug("All volunteers were received");
         return Collections.unmodifiableCollection(sheltersRepository.findAll());
+    }
+
+    /**
+     * Метод получает всех владельцев животных из базы данных.
+     * @return список всех владельцев животных.
+     */
+    @Override
+    public Collection<AnimalOwner> getShelterAnimalOwners(Integer id) {
+        log.info("Invoked a method for getting all the shelter's animal owners");
+
+        shelterIdValidation(id);
+        Collection<AnimalOwner> animalOwnersExistsCheck = sheltersRepository.findById(id)
+                .map(Shelter::getAnimalOwners)
+                .orElse(null);
+        if (animalOwnersExistsCheck != null && animalOwnersExistsCheck.isEmpty()) {
+            log.error("Shelter with id {} hasn't any animal owners", id);
+        }
+
+        log.debug("Animal owners of shelter with id {} were received", id);
+        return animalOwnersExistsCheck;
     }
 
     /**

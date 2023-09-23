@@ -1,7 +1,10 @@
 package skypro.TeamWorkTelegramBot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
+
+import java.util.Collection;
 
 /**
  * Интерфейс для доступа к данным приютов для животных Shelter в БД.

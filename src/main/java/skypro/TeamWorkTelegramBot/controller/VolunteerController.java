@@ -1,8 +1,11 @@
 package skypro.TeamWorkTelegramBot.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skypro.TeamWorkTelegramBot.entity.Volunteer;
@@ -27,12 +30,54 @@ public class VolunteerController {
      * @param volunteer объект Volunteer, который будет добавлен.
      * @return ResponseEntity с добавленным объектом Volunteer.
      */
-    @ApiOperation(value = "Добавить нового волонтера.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Волонтер успешно добавлен."),
-            @ApiResponse(code = 400, message = "Предоставлены некорректные данные."),
-            @ApiResponse(code = 500, message = "Ошибка при добавлении волонтера.")
-    })
+    @Operation(
+            summary = "ДОБАВИТЬ НОВОГО ВОЛОНТЕРА",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Внести нового волонтера",
+                    content = @Content(
+                            schema = @Schema(implementation = Volunteer.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = {
+                                    @ExampleObject(
+                                            name = "id: Вносить не требуется. Назначается автоматически"
+                                    ),
+                                    @ExampleObject(
+                                            name = "idChat: 37909765"
+                                    ),
+                                    @ExampleObject(
+                                            name = "name: Иванов Дмитрий Сергеевич"
+                                    ),
+                                    @ExampleObject(
+                                            name = "isBusy: обязательно назначить false"
+                                    )
+                            }
+                    )
+            ),
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Волонтер успешно добавлен",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Предоставлены некорректные данные",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при добавлении волонтера",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Volunteer controller"
+    )
     @PostMapping
     public ResponseEntity<Volunteer> add(@RequestBody Volunteer volunteer) {
         return ResponseEntity.ok(volunteerService.addVolunteer(volunteer));
@@ -44,14 +89,37 @@ public class VolunteerController {
      * @param id идентификатор волонтера.
      * @return ResponseEntity с найденным объектом волонтера.
      */
-    @ApiOperation(value = "Найти волонтера по id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Волонтер успешно найден."),
-            @ApiResponse(code = 404, message = "Волонтер не найден."),
-            @ApiResponse(code = 500, message = "Ошибка при поиске волонтера.")
-    })
+    @Operation(
+            summary = "НАЙТИ ВОЛОНТЕРА ПО id ВОЛОНТЕРА",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Волонтер успешно найден",
+                            content = @Content(
+                                    schema = @Schema(implementation = Volunteer.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Волонтер не найден",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при поиске волонтера",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Volunteer controller"
+    )
     @GetMapping("{id}")
-    public ResponseEntity<Volunteer> find(@PathVariable Integer id) {
+    public ResponseEntity<Volunteer> find(@Parameter(description = "Номер id волонтера")
+                                          @PathVariable Integer id) {
         return ResponseEntity.ok(volunteerService.findVolunteer(id));
     }
 
@@ -61,12 +129,54 @@ public class VolunteerController {
      * @param volunteer объект Volunteer, содержащий измененную информацию о волонтере.
      * @return ResponseEntity с объектом Volunteer после редактирования.
      */
-    @ApiOperation(value = "Редактировать волонтера.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Информация о волонтере успешно отредактирована."),
-            @ApiResponse(code = 400, message = "Предоставлены некорректные данные для редактирования."),
-            @ApiResponse(code = 500, message = "Ошибка при редактировании информации о волонтере.")
-    })
+    @Operation(
+            summary = "РЕДАКТИРОВАТЬ ВОЛОНТЕРА",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Отредактировать волонтера",
+                    content = @Content(
+                            schema = @Schema(implementation = Volunteer.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = {
+                                    @ExampleObject(
+                                            name = "id: Внести id волонтера, для его редактирования"
+                                    ),
+                                    @ExampleObject(
+                                            name = "idChat: 37909765"
+                                    ),
+                                    @ExampleObject(
+                                            name = "name: Иванов Дмитрий Сергеевич"
+                                    ),
+                                    @ExampleObject(
+                                            name = "isBusy: обязательно назначить false"
+                                    )
+                            }
+                    )
+            ),
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Информация о волонтере успешно отредактирована",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Предоставлены некорректные данные для редактирования",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при редактировании информации о волонтере",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Volunteer controller"
+    )
     @PutMapping
     public ResponseEntity<Volunteer> edit(@RequestBody Volunteer volunteer) {
         return ResponseEntity.ok(volunteerService.editVolunteer(volunteer));
@@ -78,14 +188,37 @@ public class VolunteerController {
      * @param id идентификатор волонтера, который будет удален.
      * @return ResponseEntity без тела, указывающий на успешное удаление волонтера.
      */
-    @ApiOperation(value = "Удалить волонтера по ID.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Волонтер успешно удален."),
-            @ApiResponse(code = 404, message = "Волонтер не найден."),
-            @ApiResponse(code = 500, message = "Ошибка при удалении волонтера.")
-    })
+    @Operation(
+            summary = "УДАЛИТЬ ВОЛОНТЕРА ПО id ВОЛОНТЕРА",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Волонтер успешно удален",
+                            content = @Content(
+                                    schema = @Schema(implementation = Volunteer.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Волонтер не найден",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при удалении волонтера",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Volunteer controller"
+    )
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> remove(@PathVariable Integer id) {
+    public ResponseEntity<Void> remove(@Parameter(description = "Номер id волонтера")
+                                       @PathVariable Integer id) {
         volunteerService.removeVolunteer(id);
         return ResponseEntity.ok().build();
     }
@@ -95,11 +228,34 @@ public class VolunteerController {
      *
      * @return ResponseEntity с коллекцией объектов Volunteer.
      */
-    @ApiOperation(value = "Получить список всех волонтеров.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список волонтеров успешно получен."),
-            @ApiResponse(code = 500, message = "Ошибка при получении списка волонтеров.")
-    })
+    @Operation(
+            summary = "ПОЛУЧИТЬ СПИСОК ВСЕХ ВОЛОНТЕРОВ",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Список волонтеров успешно получен",
+                            content = @Content(
+                                    schema = @Schema(implementation = Volunteer.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Волонтеры не найдены",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при получении списка волонтеров",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Volunteer controller"
+    )
     @GetMapping
     public ResponseEntity<Collection<Volunteer>> getAll() {
         return ResponseEntity.ok(volunteerService.getAllVolunteers());

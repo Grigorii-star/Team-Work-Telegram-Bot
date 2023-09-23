@@ -71,7 +71,7 @@ public class FileServiceImpl implements FileService{
      */
     @Override
     public Report animalReport(Message telegramMessage) {
-        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(3);
+        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(2);
         String fileId = telegramPhoto.getFileId();
         Long chatId = telegramMessage.getChatId();
         String report = telegramMessage.getCaption();

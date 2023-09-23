@@ -3,7 +3,6 @@ package skypro.TeamWorkTelegramBot.service.rest;
 import org.springframework.core.io.FileSystemResource;
 import skypro.TeamWorkTelegramBot.entity.BinaryContent;
 import skypro.TeamWorkTelegramBot.entity.Report;
-import skypro.TeamWorkTelegramBot.entity.dto.ReportDTO;
 
 import java.util.List;
 
@@ -18,9 +17,7 @@ public interface ReportService {
      * @param reportId Идентификатор отчета для поиска.
      * @return отчет, найденный по указанному идентификатору.
      */
-    Report findReport(Integer reportId);
-
-//    Report findReport2(Integer animalOwnerId);
+    Report getPhoto(Integer reportId);
 
     /**
      * Метод выгружает из БД все отчеты постранично.
@@ -30,14 +27,6 @@ public interface ReportService {
      * @return список найденных отчетов.
      */
     List<Report> getAllReportsByPages(Integer pageNumber, Integer pageSize);
-
-    /**
-     * Метод выгружает из БД все отчеты по идентификатору владельца
-     *
-     * @param userId идентификатор владельца питомца.
-     * @return избранный список полей отчета.
-     */
-    List<ReportDTO> getAllReportsByUserId(Integer userId);
 
     /**
      * Метод для выгрузки фото из БД бинарного кода.

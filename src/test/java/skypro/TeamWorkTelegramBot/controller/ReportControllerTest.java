@@ -18,7 +18,6 @@ import skypro.TeamWorkTelegramBot.entity.Report;
 import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 import skypro.TeamWorkTelegramBot.service.rest.ReportService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ class ReportControllerTest {
                 .fileSize(10)
                 .build();
 
-        when(reportService.findReport(1)).thenReturn(report1);
+        when(reportService.getPhoto(1)).thenReturn(report1);
 
 
         mockMvc.perform(MockMvcRequestBuilders
