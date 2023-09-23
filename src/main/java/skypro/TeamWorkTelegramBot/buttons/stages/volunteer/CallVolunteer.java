@@ -16,8 +16,7 @@ import java.util.List;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsButtons.INTERRUPT_CHAT_BUTTON;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCallData.CHAT;
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.CALL_VOLUNTEER_TO_USER_MESSAGE;
-import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.CALL_VOLUNTEER_TO_VOLUNTEER_MESSAGE;
+import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
 
 /**
@@ -45,11 +44,6 @@ public class CallVolunteer extends CommandAbstractClass {
 
     /**
      * Метод находит в БД свободного волонтера и соединяет с ним пользователя.
-     * Метод назначает пользователю AnimalOwner, boolean значение HelpVolunteer(true).
-     * Метод назначает пользователю AnimalOwner, boolean значение InChat(true).
-     * Метод присваивает пользователю AnimalOwner, свободного волонтера Volunteer(volunteer).
-     * Метод назначает волонтеру Volunteer, boolean значение IsBusy(true).
-     * Метод присваивает волонтеру Volunteer, пользователя AnimalOwner(animalOwner).
      *
      * @param callbackQuery - объект Telegram для получения значений из Telegram бота.
      * @param telegramBotService - объект передается в SendMessageService для возможности
@@ -76,9 +70,9 @@ public class CallVolunteer extends CommandAbstractClass {
                 /**
                  * Если после выгрузки из базы список все равно пустой, то говорим, что сейчас нет свободных волонтеров
                  */
-                sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+                sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "Сейчас все волонтеры заняты, попробуй позже",
+                        All_VOLUNTEERS_ARE_BUSY_MESSAGE,
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
@@ -98,34 +92,51 @@ public class CallVolunteer extends CommandAbstractClass {
         }
     }
 
+    /**
+     * Метод соединяет пользователя c волонтером.<br>
+     * Метод назначает пользователю AnimalOwner, boolean значение HelpVolunteer(true).<br>
+     * Метод назначает пользователю AnimalOwner, boolean значение InChat(true).<br>
+     * Метод присваивает пользователю AnimalOwner, свободного волонтера Volunteer(volunteer).<br>
+     * Метод присваивает волонтеру AnimalOwner, boolean значение InChat(true).<br>
+     * Метод назначает волонтеру Volunteer, boolean значение IsBusy(true).<br>
+     * Метод присваивает волонтеру Volunteer, пользователя AnimalOwner(animalOwner).<br>
+     *
+     * @param callbackQuery - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @param animalOwner - найденный в БД пользователь.
+     *
+     * @see SendMessageService
+     * @see Volunteer
+     */
     private void setVolunteerToUser(CallbackQuery callbackQuery, TelegramBotService telegramBotService, AnimalOwner animalOwner) {
         Volunteer volunteer = notBusyVolunteers.get(0);
         notBusyVolunteers.remove(0);
 
-        AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(volunteer.getIdChat()); // добавили
+        AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(volunteer.getIdChat());
 
         animalOwner.setHelpVolunteer(true);
         animalOwner.setInChat(true);
-        animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
+        animalOwner.setVolunteer(volunteer);
 
-        volunteerOwner.setInChat(true); // добавили
+        volunteerOwner.setInChat(true);
 
-        volunteer.setIsBusy(true); // волонтеру ставим, что занят
-        volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
+        volunteer.setIsBusy(true);
+        volunteer.setAnimalOwner(animalOwner);
 
-        animalOwnerRepository.save(volunteerOwner); // добавили
+        animalOwnerRepository.save(volunteerOwner);
 
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 
-        sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+        sendMessageService.SendMessageToUserWithButtons(
                 String.valueOf(callbackQuery.getFrom().getId()),
                 CALL_VOLUNTEER_TO_USER_MESSAGE,
                 buttonsText,
                 buttonsCallData,
                 telegramBotService
         );
-        sendMessageService.SendMessageToUserWithButtons( //логика по авзову волонтёра// вызывается
+        sendMessageService.SendMessageToUserWithButtons(
                 String.valueOf(volunteer.getIdChat()),
                 CALL_VOLUNTEER_TO_VOLUNTEER_MESSAGE,
                 buttonsText,

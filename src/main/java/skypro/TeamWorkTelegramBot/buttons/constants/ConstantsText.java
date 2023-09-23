@@ -14,6 +14,7 @@ public class ConstantsText {
     public final static String BECOME_VOLUNTEER_MESSAGE = "Спасибо за Вашу готовность помогать!\n";
     public final static String CALL_VOLUNTEER_TO_USER_MESSAGE = "Напишите свой вопрос волонтёру, и он в ближайшее время Вам ответит.";
     public final static String CALL_VOLUNTEER_TO_VOLUNTEER_MESSAGE = "Сейчас с Вами свяжется пользователь.";
+    public final static String All_VOLUNTEERS_ARE_BUSY_MESSAGE = "Сейчас все волонтеры заняты, попробуй позже.";
     public final static String INTERRUPT_CHAT_WITH_VOLUNTEER_MESSAGE = "Связь с волонтером прервана.";
     public final static String INTERRUPT_CHAT_WITH_USER_MESSAGE = "Связь с пользователем прервана.";
     public final static String ABOUT_REPORT_TO_USER_MESSAGE = "С Вами сейчас свяжется волонтёр по поводу отчётов.";

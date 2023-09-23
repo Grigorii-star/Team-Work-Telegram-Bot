@@ -17,6 +17,9 @@ import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsCommands.REP
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.ABOUT_REPORT_TO_USER_MESSAGE;
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.ABOUT_REPORT_TO_VOLUNTEER_MESSAGE;
 
+/**
+ * Класс соединяет волонтера с пользователем.
+ */
 @Component
 public class ConnectionVolunteerOwner extends CommandAbstractClass {
 
@@ -35,11 +38,26 @@ public class ConnectionVolunteerOwner extends CommandAbstractClass {
     String[] buttonsText = {INTERRUPT_CHAT_BUTTON};
     String[] buttonsCallData = {CHAT};
 
+    /**
+     * Метод получает из объекта Message текст волонтера с chatId пользователя
+     * и соединяет волонтера с пользователем.<br>
+     * Метод присваивает волонтеру Volunteer, пользователя AnimalOwner(animalOwner).<br>
+     * Метод назначает волонтеру Volunteer, boolean значение IsBusy(true).<br>
+     * Метод присваивает волонтеру AnimalOwner, boolean значение InChat(true).<br>
+     * Метод назначает пользователю AnimalOwner, boolean значение HelpVolunteer(true).<br>
+     * Метод назначает пользователю AnimalOwner, boolean значение InChat(true).<br>
+     * Метод присваивает пользователю AnimalOwner, волонтера который хочет с ним
+     * связаться Volunteer(volunteer).<br>
+     * @param message - объект Telegram для получения значений из Telegram бота.
+     * @param telegramBotService - объект передается в SendMessageService для возможности
+     *                             вызвать метод execute и отправить сообщение пользователю.
+     * @see SendMessageService
+     */
     @Override
     public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
-        AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(message.getFrom().getId());
+        AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(message.getFrom().getId());
 
-        if (animalOwner.getIsVolunteer()) {
+        if (volunteerOwner.getIsVolunteer()) {
             Volunteer volunteer = volunteersRepository.findByIdChat(message.getFrom().getId());
 
             if (message.getText().contains(REPORT_CONNECT_TO_USER_COMMAND)) {
@@ -54,22 +72,22 @@ public class ConnectionVolunteerOwner extends CommandAbstractClass {
                 );
 
                 sendMessageService.SendMessageToUserWithButtons(
-                        String.valueOf(animalOwner.getIdChat()),
+                        String.valueOf(volunteerOwner.getIdChat()),
                         ABOUT_REPORT_TO_VOLUNTEER_MESSAGE + resultId,
                         buttonsText,
                         buttonsCallData,
                         telegramBotService
                 );
-                AnimalOwner idChatOwner = animalOwnerRepository.findByIdChat(Long.valueOf(resultId));
-                volunteer.setAnimalOwner(idChatOwner);
+                AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(Long.valueOf(resultId));
+                volunteer.setAnimalOwner(animalOwner);
                 volunteer.setIsBusy(true);
+                volunteerOwner.setInChat(true);
+                animalOwner.setHelpVolunteer(true);
+                animalOwner.setVolunteer(volunteer);
                 animalOwner.setInChat(true);
-                idChatOwner.setHelpVolunteer(true);
-                idChatOwner.setVolunteer(volunteer);
-                idChatOwner.setInChat(true);
                 volunteersRepository.save(volunteer);
-                animalOwnerRepository.save(idChatOwner);
                 animalOwnerRepository.save(animalOwner);
+                animalOwnerRepository.save(volunteerOwner);
             }
         }
     }

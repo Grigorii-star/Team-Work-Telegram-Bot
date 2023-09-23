@@ -71,7 +71,7 @@ public class FileServiceImpl implements FileService{
      */
     @Override
     public Report animalReport(Message telegramMessage) {
-        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(0); // todo проверить размер фото
+        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(2);
         String fileId = telegramPhoto.getFileId();
         Long chatId = telegramMessage.getChatId();
         String report = telegramMessage.getCaption();
@@ -154,6 +154,11 @@ public class FileServiceImpl implements FileService{
         return binaryContentRepository.save(transientBinaryContent);
     }
 
+    /**
+     * Метод собирает новый DateAndTimeReport объект и сохраняет его в БД.
+     * @param date содержит дату отправки отчета.
+     * @param chatId содержит chatId пользователя.
+     */
     private void getDateAndTimeReport(LocalDateTime date, Long chatId) {
         DateAndTimeReport reportFirst = DateAndTimeReport.builder()
                 .dateActual(date)

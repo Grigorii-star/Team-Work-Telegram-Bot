@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import skypro.TeamWorkTelegramBot.entity.BinaryContent;
 import skypro.TeamWorkTelegramBot.entity.Report;
-import skypro.TeamWorkTelegramBot.entity.dto.ReportDTO;
 import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 
 import java.io.File;
@@ -33,19 +32,11 @@ public class ReportServiceImpl implements ReportService {
      * @return отчет, найденный по указанному идентификатору.
      */
     @Override
-    public Report findReport(Integer reportId) {
+    public Report getPhoto(Integer reportId) {
         log.info("Invoked a method for finding report by report id");
 
         return reportsRepository.findById(reportId).orElse(null);
     }
-
-//    public Report findReport2(Integer reportId) {
-//        log.info("Invoked a method for finding report by user id");
-//
-//        Report foundedReport = reportsRepository.findByAnimalOwnerId(reportId).orElse(new Report());
-//        log.debug("Report was with animal owner id {} founded", reportId);
-//        return foundedReport;
-//    }
 
     /**
      * Метод выгружает из БД все отчеты постранично.
@@ -60,20 +51,6 @@ public class ReportServiceImpl implements ReportService {
 
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return reportsRepository.findAll(pageRequest).getContent();
-    }
-
-    /**
-     * Метод выгружает из БД все отчеты по идентификатору владельца
-     *
-     * @param userId идентификатор владельца питомца.
-     * @return избранный список полей отчета.
-     */
-    @Override
-    public List<ReportDTO> getAllReportsByUserId(Integer userId) {
-        log.info("Invoked a method for getting all reports");
-
-        log.debug("All reports were received");
-        return reportsRepository.findByAnimalOwnerId(userId);
     }
 
     /**

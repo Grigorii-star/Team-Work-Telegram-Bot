@@ -1,10 +1,14 @@
 package skypro.TeamWorkTelegramBot.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.service.rest.ShelterService;
 
@@ -27,12 +31,48 @@ public class ShelterController {
      * @param shelter объект Shelter, который будет добавлен.
      * @return ResponseEntity с добавленным объектом Shelter.
      */
-    @ApiOperation(value = "Добавить новый приют.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Приют успешно добавлен."),
-            @ApiResponse(code = 400, message = "Предоставлены некорректные данные."),
-            @ApiResponse(code = 500, message = "Ошибка при добавлении приюта.")
-    })
+    @Operation(
+            summary = "ДОБАВИТЬ НОВЫЙ ПРИЮТ ДЛЯ ЖИВОТНЫХ",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Внести новый приют для животных",
+                    content = @Content(
+                            schema = @Schema(implementation = Shelter.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = {
+                                    @ExampleObject(
+                                            name = "id: Вносить не требуется. Назначается автоматически"
+                                    ),
+                                    @ExampleObject(
+                                            name = "name: Домик"
+                                    )
+                            }
+                    )
+            ),
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Приют успешно добавлен",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Предоставлены некорректные данные",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при добавлении приюта",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Shelter controller"
+    )
     @PostMapping
     public ResponseEntity<Shelter> add(@RequestBody Shelter shelter) {
         return ResponseEntity.ok(shelterService.addShelter(shelter));
@@ -44,14 +84,37 @@ public class ShelterController {
      * @param id идентификатор приюта.
      * @return ResponseEntity с найденным объектом приюта.
      */
-    @ApiOperation(value = "Найти приют по id.")   // todo переделать на поиск по названию
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Приют успешно найден."),
-            @ApiResponse(code = 404, message = "Приют не найден."),
-            @ApiResponse(code = 500, message = "Ошибка при поиске приюта.")
-    })
+    @Operation(
+            summary = "НАЙТИ ПРИЮТ ДЛЯ ЖИВОТНЫХ ПО id ПРИЮТА",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Приют успешно найден",
+                            content = @Content(
+                                    schema = @Schema(implementation = Shelter.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Приют не найден",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при поиске приюта",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Shelter controller"
+    )
     @GetMapping("{id}")
-    public ResponseEntity<Shelter> find(@PathVariable Integer id) {
+    public ResponseEntity<Shelter> find(@Parameter(description = "Номер id приюта")
+                                        @PathVariable Integer id) {
         return ResponseEntity.ok(shelterService.findShelter(id));
     }
 
@@ -61,12 +124,48 @@ public class ShelterController {
      * @param shelter объект Shelter, содержащий измененную информацию о приюте.
      * @return ResponseEntity с объектом Shelter после редактирования.
      */
-    @ApiOperation(value = "Редактировать приют.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Информация о приюте успешно отредактирована."),
-            @ApiResponse(code = 400, message = "Предоставлены некорректные данные для редактирования."),
-            @ApiResponse(code = 500, message = "Ошибка при редактировании информации о приюте.")
-    })
+    @Operation(
+            summary = "РЕДАКТИРОВАТЬ ПРИЮТ ДЛЯ ЖИВОТНЫХ",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Отредактируй приют для животных",
+                    content = @Content(
+                            schema = @Schema(implementation = Shelter.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = {
+                                    @ExampleObject(
+                                            name = "id: Внести id приюта, для его редактирования"
+                                    ),
+                                    @ExampleObject(
+                                            name = "name: Домик"
+                                    )
+                            }
+                    )
+            ),
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Информация о приюте успешно отредактирована",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Предоставлены некорректные данные для редактирования",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при редактировании информации о приюте",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Shelter controller"
+    )
     @PutMapping
     public ResponseEntity<Shelter> edit(@RequestBody Shelter shelter) {
         return ResponseEntity.ok(shelterService.editShelter(shelter));
@@ -78,14 +177,37 @@ public class ShelterController {
      * @param id идентификатор приюта, который будет удален.
      * @return ResponseEntity без тела, указывающий на успешное удаление приюта.
      */
-    @ApiOperation(value = "Удалить приют по ID.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Приют успешно удален."),
-            @ApiResponse(code = 404, message = "Приют не найден."),
-            @ApiResponse(code = 500, message = "Ошибка при удалении приюта.")
-    })
+    @Operation(
+            summary = "УДАЛИТЬ ПРИЮТ ДЛЯ ЖИВОТНЫХ ПО id ПРИЮТА",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Приют успешно удален",
+                            content = @Content(
+                                    schema = @Schema(implementation = Shelter.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Приют не найден",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при удалении приюта",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Shelter controller"
+    )
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> remove(@PathVariable Integer id) {
+    public ResponseEntity<Void> remove(@Parameter(description = "Номер id приюта")
+                                       @PathVariable Integer id) {
         shelterService.removeShelter(id);
         return ResponseEntity.ok().build();
     }
@@ -94,13 +216,74 @@ public class ShelterController {
      * Метод, который получает список всех приютов.
      * @return ResponseEntity с коллекцией объектов Shelter.
      */
-    @ApiOperation(value = "Получить список всех приютов.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список приютов успешно получен."),
-            @ApiResponse(code = 500, message = "Ошибка при получении списка приютов.")
-    })
+    @Operation(
+            summary = "ПОЛУЧИТЬ СПИСОК ВСЕХ ПРИЮТОВ ДЛЯ ЖИВОТНЫХ",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Список приютов успешно получен",
+                            content = @Content(
+                                    schema = @Schema(implementation = Shelter.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Приюты не найдены",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при получении списка приютов",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Shelter controller"
+    )
     @GetMapping
     public ResponseEntity<Collection<Shelter>> getAll() {
         return ResponseEntity.ok(shelterService.getAllShelters());
+    }
+
+    /**
+     * Метод, который получает список всех владельцев питомцев приюта.
+     * @return ResponseEntity с коллекцией объектов AnimalOwner.
+     */
+    @Operation(
+            summary = "ПОЛУЧИТЬ СПИСОК ВСЕХ ВЛАДЕЛЬЦЕВ ПИТОМЦЕВ, ПО id ПРИЮТА ДЛЯ ЖИВОТНЫХ",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Список владельцев питомцев успешно получен",
+                            content = @Content(
+                                    schema = @Schema(implementation = AnimalOwner.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Владельцы питомцев не найдены",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при получении списка владельцев питомцев",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Shelter controller"
+    )
+    @GetMapping("/animal-owners-by-id/{id}")
+    public ResponseEntity<Collection<AnimalOwner>> getShelterAnimalOwners(@Parameter(description = "Номер id приюта")
+                                                                          @PathVariable Integer id) {
+        return ResponseEntity.ok(shelterService.getShelterAnimalOwners(id));
     }
 }

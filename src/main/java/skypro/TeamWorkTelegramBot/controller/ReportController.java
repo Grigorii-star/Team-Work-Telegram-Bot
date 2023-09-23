@@ -1,15 +1,15 @@
 package skypro.TeamWorkTelegramBot.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skypro.TeamWorkTelegramBot.entity.Report;
-import skypro.TeamWorkTelegramBot.entity.dto.ReportDTO;
-import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.entity.Shelter;
 import skypro.TeamWorkTelegramBot.service.rest.ReportService;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ReportController {
     private final ReportService reportService;
 
-    public ReportController(ReportService reportService, AnimalOwnerRepository animalOwnerRepository) {
+    public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
 
@@ -33,16 +33,29 @@ public class ReportController {
      * @param reportId идентификатор id отчета.
      * @return ResponseEntity с найденным фото отчета.
      */
-    @ApiOperation(value = "Найти фото питомца по id отчета.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Фото питомца успешно найдено."),
-            @ApiResponse(code = 404, message = "Фото питомца не найдено."),
-            @ApiResponse(code = 500, message = "Ошибка при поиске фото питомца.")
-    })
+    @Operation(
+            summary = "ВЫГРУЗИТЬ ФОТО ПИТОМЦА ПО id ОТЧЕТА",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Фото питомца успешно найдено"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Фото питомца не найдено"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при поиске фото питомца"
+                    )
+            },
+            tags = "Report about pet controller"
+    )
     @RequestMapping(method = RequestMethod.GET, value = "/get-report-photo")
-    public ResponseEntity<?> find(@RequestParam("reportId") Integer reportId) { // todo переработать на id владельца животного
+    public ResponseEntity<?> getReportPhoto(@Parameter(description = "Номер id отчета о питомце")
+                                            @RequestParam("reportId") Integer reportId) {
 
-        var photo = reportService.findReport(reportId);
+        var photo = reportService.getPhoto(reportId);
         if (photo == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -58,42 +71,46 @@ public class ReportController {
                 .body(fileSystemResource);
     }
 
-//    @GetMapping(value = "/{id}/report-from-db")
-//    public ResponseEntity<byte[]> downloadReport(@PathVariable Integer id) {
-//        Report report = reportService.findReport2(id);
-//
-//        var binaryContent = report.getBinaryContent();
-//        var fileSystemResource = reportService.getFileSystemResource(binaryContent);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.IMAGE_JPEG);
-//        headers.setContentLength(report.getBinaryContent().);
-//
-//        return ResponseEntity.status(HttpStatus.OK).
-//                headers(headers).
-//                body(binaryContent);
-//    }
-
     /**
      * Метод, который получает список всех отчетов о животных постранично.
      *
      * @param pageNumber количество страниц.
-     * @param pageSize размер страницы.
+     * @param pageSize   размер страницы.
      * @return ResponseEntity с коллекцией объектов Report.
      */
-    @ApiOperation(value = "Получить список всех отчетов о питомцах.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Список отчетов о питомцах успешно получен."),
-            @ApiResponse(code = 500, message = "Ошибка при получении списка отчетов о питомцах.")
-    })
+    @Operation(
+            summary = "ПОЛУЧИТЬ ВСЕ ОТЧЕТЫ О ПИТОМЦАХ ПОСТРАНИЧНО",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Список отчетов о питомцах успешно получен",
+                            content = @Content(
+                                    schema = @Schema(implementation = Report.class),
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404",
+                            description = "Отчеты о питомцах не найдены",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Ошибка при получении списка отчетов о питомцах",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
+                            )
+                    )
+            },
+            tags = "Report about pet controller"
+    )
     @GetMapping("/all-reports-by-pages")
-    public ResponseEntity<List<Report>> getReportsByPages(@RequestParam("page") Integer pageNumber,
-                                                         @RequestParam("size") Integer pageSize) {
+    public ResponseEntity<List<Report>> getReportsByPages(@Parameter(description = "Количество страниц")
+                                                          @RequestParam("page") Integer pageNumber,
+                                                          @Parameter(description = "Количество отчетов на странице")
+                                                          @RequestParam("size") Integer pageSize) {
         return ResponseEntity.ok(reportService.getAllReportsByPages(pageNumber, pageSize));
-    }
-
-    @GetMapping("/all-reports-by-userId") // todo требует доработки
-    public ResponseEntity<List<ReportDTO>> getAllByUserId(@RequestParam("userId") Integer userId) {
-        return ResponseEntity.ok(reportService.getAllReportsByUserId(userId));
     }
 }

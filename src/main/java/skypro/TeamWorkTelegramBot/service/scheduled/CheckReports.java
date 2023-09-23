@@ -10,13 +10,15 @@ import skypro.TeamWorkTelegramBot.repository.VolunteersRepository;
 import skypro.TeamWorkTelegramBot.service.message.SendMessageService;
 import skypro.TeamWorkTelegramBot.service.telegram.TelegramBotService;
 
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static skypro.TeamWorkTelegramBot.buttons.constants.ConstantsText.*;
 
+/**
+ * Класс для проверки даты отчетов пользователя о питомсе.
+ */
 @Slf4j
 @Component
 public class CheckReports {
@@ -35,6 +37,10 @@ public class CheckReports {
         this.dateAndTimeReportRepository = dateAndTimeReportRepository;
     }
 
+    /**
+     * Метод проверяет базу данных раз в сутки и отправляет сообщения
+     * пользователю и волонтеру.
+     */
     // @Scheduled(cron = "0 0 21 * * *")
     @Scheduled(cron = "0 * * * * *")
     public void checkReportsPet() {
