@@ -49,7 +49,7 @@ public class SavePhoto extends CommandAbstractClass {
     public void messagesExtractor(Message message, TelegramBotService telegramBotService) {
         try {
             uploadReport(message, telegramBotService);
-        } catch (IOException | NullPointerException e) { // todo протестировать NullPointerException
+        } catch (IOException | NullPointerException e) {
             log.error("Exception in method execute SaveReportAboutPet class");
         }
     }

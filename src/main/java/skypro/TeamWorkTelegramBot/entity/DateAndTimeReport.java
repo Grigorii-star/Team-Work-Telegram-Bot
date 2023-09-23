@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+/**
+ * Сущнасть для фиксации даты и времени первого и последнего отчетов.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

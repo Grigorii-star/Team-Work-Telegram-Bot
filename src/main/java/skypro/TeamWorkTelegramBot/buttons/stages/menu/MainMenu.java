@@ -155,8 +155,8 @@ public class MainMenu extends CommandAbstractClass {
         AnimalOwner animalOwnerInterrupt = volunteer.getAnimalOwner();
 
         if (!animalOwner.getIsVolunteer()) {
-            animalOwner.setHelpVolunteer(false); //устанавливаем что владельцу сейчас помогает волонтер
-            animalOwner.setVolunteer(null); // устанавливаем его волонтера
+            animalOwner.setHelpVolunteer(false);
+            animalOwner.setVolunteer(null);
             animalOwner.setInChat(false);
             animalOwnerRepository.save(animalOwner);
         } else {
@@ -168,8 +168,8 @@ public class MainMenu extends CommandAbstractClass {
 
         volunteerOwner.setInChat(false);
 
-        volunteer.setIsBusy(false); // волонтеру ставим, что занят
-        volunteer.setAnimalOwner(null); // волонтеру ставим его владельца
+        volunteer.setIsBusy(false);
+        volunteer.setAnimalOwner(null);
 
         animalOwnerRepository.save(volunteerOwner);
         volunteersRepository.save(volunteer);
