@@ -27,6 +27,9 @@ class TelegramBotServiceTest {
     AnimalOwnerRepository animalOwnerRepository;
 
     @Mock
+    TelegramBotService botService;
+
+    @Mock
     Update update;
 
     @Mock
@@ -52,7 +55,7 @@ class TelegramBotServiceTest {
         when(update.getMessage().getText()).thenReturn("test");
         when(animalOwnerRepository.findByIdChat(anyLong())).thenReturn(null);
 
-        telegramBotService.onUpdateReceived(update);
+        botService.onUpdateReceived(update);
         verify(animalOwnerRepository, times(2));
     }
 

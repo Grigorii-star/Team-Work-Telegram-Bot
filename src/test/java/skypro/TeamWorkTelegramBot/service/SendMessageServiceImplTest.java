@@ -48,9 +48,5 @@ class SendMessageServiceImplTest {
 //
 //        sendMessageService.SendMessageToUser("1","text",telegramBotService);
 //        Assertions.assertDoesNotThrow(()->sendMessageService);
-
-
-
     }
-
 }
