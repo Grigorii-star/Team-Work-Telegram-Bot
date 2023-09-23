@@ -20,7 +20,7 @@ public class ConstantsButtons {
     //Константы для вывода текста на кнопках из Главного меню
 
     public static final String GET_INFO_SHELTER_BUTTON = "Узнать информацию о приюте";
-    public static final String GET_PET_BUTTON = "Взять животное из приюта";
+    public static final String GET_PET_BUTTON = "Как взять животное из приюта";
     public static final String REPORT_BUTTON = "Прислать отчет о питомце";
 
     //Константы для вывода текста на кнопках из этапа Информация

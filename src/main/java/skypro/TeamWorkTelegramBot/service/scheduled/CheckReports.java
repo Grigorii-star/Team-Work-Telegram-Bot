@@ -49,7 +49,7 @@ public class CheckReports {
     String[] buttonsCallData1 = {"Поздравить",
             "Отказать"};
 
-    //@Scheduled(cron = "0 * * * * *")   // @Scheduled(cron = "0 0 21 * * *")
+    @Scheduled(cron = "0 * * * * *")   // @Scheduled(cron = "0 0 21 * * *")
     public void checkReportsPet() {
         List<DateAndTimeReport> reportList = dateAndTimeReportRepository.findAll();
 
@@ -80,7 +80,7 @@ public class CheckReports {
                 sendMessageService.SendMessageToUser(
                         String.valueOf(chatIdVolunteer1),
                         "Владелец животного не присылает отчёт два дня! Для связи с владельцем" +
-                                " напиши его chatId в формате: --" + chatIdOwner,
+                                " напиши его chatId в формате: -" + chatIdOwner,
                         telegramBotService
                 );
 
@@ -95,7 +95,7 @@ public class CheckReports {
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(chatIdVolunteer1),
                         "Владелец животного 30 дней присылает отчёт! Для связи с владельцем" +
-                                " напиши его chatId в формате: --" + chatIdOwner
+                                " напиши его chatId в формате: -" + chatIdOwner
                                 + " Или выбери что сделать далее:",
                         buttonsText,
                         buttonsCallData,
@@ -106,7 +106,7 @@ public class CheckReports {
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(chatIdVolunteer1),
                         "У владелеца животного прошло 14 дней испытательного срока! Для связи с владельцем" +
-                                " напиши его chatId в формате: --" + chatIdOwner
+                                " напиши его chatId в формате: -" + chatIdOwner
                                 + " Или выбери что сделать далее:",
                         buttonsText1,
                         buttonsCallData1,
@@ -117,7 +117,7 @@ public class CheckReports {
                 sendMessageService.SendMessageToUserWithButtons(
                         String.valueOf(chatIdVolunteer1),
                         "У владелеца животного прошло 30 дней испытательного срока! Для связи с владельцем" +
-                                " напиши его chatId в формате: --" + chatIdOwner
+                                " напиши его chatId в формате: -" + chatIdOwner
                                 + " Или выбери что сделать далее:",
                         buttonsText1,
                         buttonsCallData1,
