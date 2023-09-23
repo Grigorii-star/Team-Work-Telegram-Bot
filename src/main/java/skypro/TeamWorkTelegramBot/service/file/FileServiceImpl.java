@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
+import skypro.TeamWorkTelegramBot.entity.DateAndTimeReport;
 import skypro.TeamWorkTelegramBot.entity.Report;
 import skypro.TeamWorkTelegramBot.entity.AnimalOwner;
 import skypro.TeamWorkTelegramBot.entity.BinaryContent;
 import skypro.TeamWorkTelegramBot.exception.UploadFileException;
 import skypro.TeamWorkTelegramBot.repository.AnimalOwnerRepository;
+import skypro.TeamWorkTelegramBot.repository.DateAndTimeReportRepository;
 import skypro.TeamWorkTelegramBot.repository.ReportsRepository;
 import skypro.TeamWorkTelegramBot.repository.BinaryContentRepository;
 
@@ -20,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Класс осуществляет сохранение отчетов о животном в БД.
@@ -47,13 +49,16 @@ public class FileServiceImpl implements FileService{
     private final ReportsRepository reportsRepository;
     private final BinaryContentRepository binaryContentRepository;
     private final AnimalOwnerRepository animalOwnerRepository;
+    private final DateAndTimeReportRepository dateAndTimeReportRepository;
 
     public FileServiceImpl(ReportsRepository reportsRepository,
                            BinaryContentRepository binaryContentRepository,
-                           AnimalOwnerRepository animalOwnerRepository) {
+                           AnimalOwnerRepository animalOwnerRepository,
+                           DateAndTimeReportRepository dateAndTimeReportRepository) {
         this.reportsRepository = reportsRepository;
         this.binaryContentRepository = binaryContentRepository;
         this.animalOwnerRepository = animalOwnerRepository;
+        this.dateAndTimeReportRepository = dateAndTimeReportRepository;
     }
 
     /**
@@ -70,16 +75,18 @@ public class FileServiceImpl implements FileService{
         String fileId = telegramPhoto.getFileId();
         Long chatId = telegramMessage.getChatId();
         String report = telegramMessage.getCaption();
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         AnimalOwner animalOwner = animalOwnerRepository.findByIdChat(chatId);
+        getDateAndTimeReport(date, chatId);
 
         ResponseEntity<String> response = getFilePath(fileId);
         if (response.getStatusCode() == HttpStatus.OK) {
             BinaryContent persistentBinaryContent = getBinaryContent(response);
-            Report transientReport = buildTransientAnimal(telegramPhoto,
-                                                        persistentBinaryContent,
-                                                        animalOwner,
-                                                        report, date);
+            Report transientReport = buildTransientReport(telegramPhoto,
+                    persistentBinaryContent,
+                    animalOwner,
+                    report,
+                    date);
             return reportsRepository.save(transientReport);
         } else {
             throw new UploadFileException("Bad response from telegram service: " + response);
@@ -100,7 +107,7 @@ public class FileServiceImpl implements FileService{
                                         BinaryContent binaryContent,
                                         AnimalOwner animalOwner,
                                         String report,
-                                        LocalDate date) {
+                                        LocalDateTime date) {
         return Report.builder()
                 .telegramFieldId(telegramPhoto.getFileId())
                 .binaryContent(binaryContent)
@@ -145,6 +152,27 @@ public class FileServiceImpl implements FileService{
                 .data(fileInByte)
                 .build();
         return binaryContentRepository.save(transientBinaryContent);
+    }
+
+    private void getDateAndTimeReport(LocalDateTime date, Long chatId) {
+        DateAndTimeReport reportFirst = DateAndTimeReport.builder()
+                .dateActual(date)
+                .dateFirst(date)
+                .idChatAnimalOwner(chatId)
+                .build();
+
+
+        DateAndTimeReport dateReportCheck = dateAndTimeReportRepository.findByIdChatAnimalOwner(chatId);
+        System.out.println(dateReportCheck);
+        if (dateReportCheck != null) {
+
+            dateReportCheck.setDateActual(date);
+
+            dateAndTimeReportRepository.save(dateReportCheck);
+        }
+        else {
+            dateAndTimeReportRepository.save(reportFirst);
+        }
     }
 
     /**

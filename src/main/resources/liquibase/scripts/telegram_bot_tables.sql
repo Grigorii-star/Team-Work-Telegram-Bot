@@ -35,14 +35,14 @@ CREATE TABLE volunteer (
 
 -- changeset grigorii:create-report-table
 CREATE TABLE report (
-    id                  serial PRIMARY KEY,
-    date                date,
-    report              text,
-    telegram_field_id   text,
-    file_size           integer,
-    binary_content_id   int4,
-    shelter_id          int4,
-    animal_owner_id     int4
+    id                      serial PRIMARY KEY,
+    date                    timestamp,
+    report                  text,
+    telegram_field_id       text,
+    file_size               integer,
+    binary_content_id       int4,
+    shelter_id              int4,
+    animal_owner_id         int4
 );
 
 -- changeset grigorii:create-binary-content-table
@@ -57,4 +57,12 @@ CREATE TABLE animal (
     name                text,
     shelter_id          int4,
     animal_owner_id     int4
+);
+
+-- changeset alexandr:create-date_and_time_report-table
+CREATE TABLE date_and_time_report (
+    id                   serial PRIMARY KEY,
+    date_actual          timestamp,
+    date_first           timestamp,
+    id_chat_animal_owner bigint
 );

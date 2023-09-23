@@ -43,8 +43,6 @@ public class CallVolunteer extends CommandAbstractClass {
         this.volunteersRepository = volunteersRepository;
     }
 
-
-
     /**
      * Метод находит в БД свободного волонтера и соединяет с ним пользователя.
      * Метод назначает пользователю AnimalOwner, boolean значение HelpVolunteer(true).
@@ -103,11 +101,20 @@ public class CallVolunteer extends CommandAbstractClass {
     private void setVolunteerToUser(CallbackQuery callbackQuery, TelegramBotService telegramBotService, AnimalOwner animalOwner) {
         Volunteer volunteer = notBusyVolunteers.get(0);
         notBusyVolunteers.remove(0);
+
+        AnimalOwner volunteerOwner = animalOwnerRepository.findByIdChat(volunteer.getIdChat()); // добавили
+
         animalOwner.setHelpVolunteer(true);
         animalOwner.setInChat(true);
         animalOwner.setVolunteer(volunteer); // устанавливаем его волонтера
+
+        volunteerOwner.setInChat(true); // добавили
+
         volunteer.setIsBusy(true); // волонтеру ставим, что занят
         volunteer.setAnimalOwner(animalOwner); // волонтеру ставим его владельца
+
+        animalOwnerRepository.save(volunteerOwner); // добавили
+
         animalOwnerRepository.save(animalOwner);
         volunteersRepository.save(volunteer);
 

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Класс для передечи из application.properties токена и имени Telegram бота.
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 @Data
 @PropertySource("application.properties")
 @Configuration
+@EnableScheduling
 public class TelegramBotConfiguration{
 
     @Value("${telegram.bot.token}")
