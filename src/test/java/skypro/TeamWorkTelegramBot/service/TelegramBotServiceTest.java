@@ -63,7 +63,7 @@ class TelegramBotServiceTest {
     public void startTest() {
         AnimalOwner animalOwner = new AnimalOwner(1, 1L, "contact", true,
                 false, false, false, false, false,
-                false);
+                false,false);
 
         when(animalOwnerRepository.findByIdChat(1L)).thenReturn(animalOwner);
         when(animalOwnerRepository.save(animalOwner)).thenReturn(animalOwner);

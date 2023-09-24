@@ -67,7 +67,8 @@ public class AnimalOwner {
                        Boolean canSaveContact,
                        Boolean isVolunteer,
                        Boolean helpVolunteer,
-                       Boolean canSendReport) {
+                       Boolean canSendReport,
+                       Boolean inChat) {
         this.id = id;
         this.idChat = idChat;
         this.contactInformation = contactInformation;
@@ -78,5 +79,6 @@ public class AnimalOwner {
         this.isVolunteer = isVolunteer;
         this.helpVolunteer = helpVolunteer;
         this.canSendReport = canSendReport;
+        this.inChat = inChat;
     }
 }
