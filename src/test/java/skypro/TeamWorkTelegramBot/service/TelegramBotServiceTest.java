@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.telegram;
+package skypro.TeamWorkTelegramBot.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -46,17 +46,12 @@ class TelegramBotServiceTest {
 
     @Test
     void onUpdateReceived() {
-
-
         when(update.getMessage()).thenReturn(message);
         when(update.hasMessage()).thenReturn(true);
         when(update.getMessage().hasText()).thenReturn(true);
         when(update.getMessage().getChatId()).thenReturn(1L);
         when(update.getMessage().getText()).thenReturn("test");
         when(animalOwnerRepository.findByIdChat(anyLong())).thenReturn(null);
-
-//        botService.onUpdateReceived(update);
-//        verify(animalOwnerRepository, times(2));
     }
 
     @Test

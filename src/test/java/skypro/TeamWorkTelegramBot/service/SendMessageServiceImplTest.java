@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service.message;
+package skypro.TeamWorkTelegramBot.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -43,10 +43,5 @@ class SendMessageServiceImplTest {
         sendMessageService.SendMessageToUser("1","text",telegramBotService);
         sendMessageService.SendMessageToUserWithButtons("1","text",buttonText, buttonCallData,telegramBotService);
         verify(telegramBotService, times(2));
-
-//        when(telegramBotService.execute(any(SendMessage.class))).thenThrow(new TelegramApiException());
-//
-//        sendMessageService.SendMessageToUser("1","text",telegramBotService);
-//        Assertions.assertDoesNotThrow(()->sendMessageService);
     }
 }
