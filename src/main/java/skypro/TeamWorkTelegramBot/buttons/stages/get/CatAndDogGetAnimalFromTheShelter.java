@@ -104,14 +104,14 @@ public class CatAndDogGetAnimalFromTheShelter extends CommandAbstractClass {
             case DOG_HANDLER_ADVICE:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "src/main/resources/bot-files/stage2/first_time_with_dog.txt",
+                        getInfo("src/main/resources/bot-files/stage2/first_time_with_dog.txt"),
                         telegramBotService
                 );
                 break;
             case DOG_HANDLER_CONTACTS:
                 sendMessageService.SendMessageToUser(
                         String.valueOf(callbackQuery.getFrom().getId()),
-                        "src/main/resources/bot-files/stage2/dog_handlers_contact.txt",
+                        getInfo("src/main/resources/bot-files/stage2/dog_handlers_contact.txt"),
                         telegramBotService
                 );
                 break;
