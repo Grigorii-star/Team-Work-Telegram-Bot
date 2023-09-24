@@ -1,14 +1,18 @@
 package skypro.TeamWorkTelegramBot.entity;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
+/**
+ * Сущность пользователя Telegram бота.
+ */
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class AnimalOwner {
     @Id
@@ -16,92 +20,65 @@ public class AnimalOwner {
     private Integer id;
     private Long idChat;
     private String contactInformation;
-    private Integer stage;
+    /**
+     * Позволяет определить, что пользователь зарегистрирован в базе.
+     */
+    private Boolean registered;
+    /**
+     * Позволяет определить какой приют интересует пользователя.
+     */
     private Boolean dogLover;
+    /**
+     * Позволяет определить, что пользователь уже взял животное.
+     */
     private Boolean tookTheAnimal;
+    /**
+     * Проверка для возможности сохранить контакт.
+     */
+    private Boolean canSaveContact;
+    /**
+     * Позволяет определить, является ли пользователь волонтером.
+     */
+    private Boolean isVolunteer;
+    /**
+     * Проверка для возможности связаться с волонтером.
+     */
+    private Boolean helpVolunteer;
+    /**
+     * Проверка для возможности отправить отчет о животном.
+     */
+    private Boolean canSendReport;
+    /**
+     * Проверка для возможности определить в чате ли пользователь.
+     */
+    private Boolean inChat;
+    @OneToOne
+    private Volunteer volunteer;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getIdChat() {
-        return idChat;
-    }
-
-    public void setIdChat(Long idChat) {
-        this.idChat = idChat;
-    }
-
-    public String getContactInformation() {
-        return contactInformation;
-    }
-
-    public void setContactInformation(String contactInformation) {
-        this.contactInformation = contactInformation;
-    }
-
-    public Integer getStage() {
-        return stage;
-    }
-
-    public void setStage(Integer stage) {
-        this.stage = stage;
-    }
-
-    public Boolean getDogLover() {
-        return dogLover;
-    }
-
-    public void setDogLover(Boolean dogLover) {
-        this.dogLover = dogLover;
-    }
-
-    public Boolean getTookTheAnimal() {
-        return tookTheAnimal;
-    }
-
-    public void setTookTheAnimal(Boolean tookTheAnimal) {
-        this.tookTheAnimal = tookTheAnimal;
-    }
-
-    public AnimalOwner(Integer id, Long idChat, String contactInformation, Integer stage, Boolean dogLover, Boolean tookTheAnimal) {
+    public AnimalOwner(Integer id,
+                       Long idChat,
+                       String contactInformation,
+                       Boolean registered,
+                       Boolean dogLover,
+                       Boolean tookTheAnimal,
+                       Boolean canSaveContact,
+                       Boolean isVolunteer,
+                       Boolean helpVolunteer,
+                       Boolean canSendReport,
+                       Boolean inChat) {
         this.id = id;
         this.idChat = idChat;
         this.contactInformation = contactInformation;
-        this.stage = stage;
+        this.registered = registered;
         this.dogLover = dogLover;
         this.tookTheAnimal = tookTheAnimal;
-    }
-
-    public AnimalOwner() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AnimalOwner that = (AnimalOwner) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "AnimalOwner{" +
-                "id=" + id +
-                ", idChat=" + idChat +
-                ", contactInformation='" + contactInformation + '\'' +
-                ", stage=" + stage +
-                ", dogLover=" + dogLover +
-                ", tookTheAnimal=" + tookTheAnimal +
-                '}';
+        this.canSaveContact = canSaveContact;
+        this.isVolunteer = isVolunteer;
+        this.helpVolunteer = helpVolunteer;
+        this.canSendReport = canSendReport;
+        this.inChat = inChat;
     }
 }
