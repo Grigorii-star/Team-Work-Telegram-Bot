@@ -1,4 +1,4 @@
-package skypro.TeamWorkTelegramBot.service;
+package skypro.TeamWorkTelegramBot.service.telegram;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

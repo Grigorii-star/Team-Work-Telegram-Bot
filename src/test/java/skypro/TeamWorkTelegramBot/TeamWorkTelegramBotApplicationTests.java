@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -144,7 +143,7 @@ class TeamWorkTelegramBotApplicationTests {
 		when(reportService.getAllReportsByPages(0,2)).thenReturn(reportList);
 
 		mockMvc.perform(MockMvcRequestBuilders
-						.get("/animal-report/all-reports-by-pages")
+						.get("/animal-report/all-reports-by-pages?page=1&size=1")
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
@@ -309,10 +308,9 @@ class TeamWorkTelegramBotApplicationTests {
 	@SneakyThrows
 	@Test
 	void findVolunteer() {
-		Volunteer volunteer = new Volunteer(1,1L,"testName",false);
+		Volunteer foundedVolunteer = new Volunteer(1,1L,"testName",false);
 
-		when(volunteerService.findVolunteer(1)).thenReturn(volunteer);
-
+		when(volunteerService.findVolunteer(1)).thenReturn(foundedVolunteer);
 
 		mockMvc.perform(MockMvcRequestBuilders
 						.get("/volunteer/1")
