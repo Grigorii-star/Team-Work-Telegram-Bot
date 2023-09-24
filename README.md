@@ -48,5 +48,5 @@ ___
 Чтобы использовать REST API, в браузере введите http://localhost:8080/swagger-ui/index.html
 ___
 ## Демонстрация работы бота:
-[Ссылка на обзор бота на Driver Google]()
+[Ссылка на обзор бота на Driver Google](https://drive.google.com/drive/folders/1mGNQMPvgao3iGazgXDLy6vTwSfJu8ArT?usp=sharing)
 
