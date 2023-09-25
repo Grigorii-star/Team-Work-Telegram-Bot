@@ -1,6 +1,7 @@
 package skypro.TeamWorkTelegramBot;
 
 import lombok.SneakyThrows;
+import org.assertj.core.api.Assertions;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -66,6 +67,15 @@ class TeamWorkTelegramBotApplicationTests {
 	@InjectMocks
 	private VolunteerController volunteerController;
 
+	@Autowired
+	private TeamWorkTelegramBotApplication teamWorkTelegramBotApplication;
+
+
+	@Test
+	@SneakyThrows
+	void contextLoads() {
+		Assertions.assertThat(teamWorkTelegramBotApplication).isNotNull();
+	}
 	@SneakyThrows
 	@Test
 	void getAllVolunteersFromAnimalOwner() {
