@@ -277,6 +277,7 @@ class TeamWorkTelegramBotApplicationTests {
 
 		when(volunteerService.findVolunteer(1)).thenReturn(volunteer);
 		when(volunteerService.addVolunteer(volunteer)).thenReturn(volunteer);
+		when(volunteersRepository.save(volunteer)).thenReturn(volunteer);
 
 		mockMvc.perform(MockMvcRequestBuilders
 						.post("/volunteer")
@@ -292,12 +293,24 @@ class TeamWorkTelegramBotApplicationTests {
 		Volunteer volunteer = new Volunteer(1,1L,"testName",false);
 		Volunteer volunteer2 = new Volunteer(2,2L,"testName2",false);
 
+		AnimalOwner animalOwner = new AnimalOwner(1, 123L, "+7", true,
+				true, false, false, true, false,
+				false, false, volunteer,
+				Shelter.builder()
+						.id(1)
+						.name("Alex")
+						.build());
+
 
 		List<Volunteer> volunteerList = new ArrayList<>();
 		volunteerList.add(volunteer);
 		volunteerList.add(volunteer2);
 
+		List<AnimalOwner> animalOwners = new ArrayList<>();
+		animalOwners.add(animalOwner);
+
 		when(volunteerService.getAllVolunteers()).thenReturn(volunteerList);
+		when(animalOwnerRepository.findByIsVolunteer()).thenReturn(animalOwners);
 
 		mockMvc.perform(MockMvcRequestBuilders
 						.get("/volunteer")
@@ -339,6 +352,7 @@ class TeamWorkTelegramBotApplicationTests {
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
+
 	@SneakyThrows
 	@Test
 	void removeVolunteer() {
@@ -349,7 +363,6 @@ class TeamWorkTelegramBotApplicationTests {
 		volunteerObject.put("idChat", "1");
 		volunteerObject.put("name","TestName");
 		volunteerObject.put("isBusy","false");
-
 
 
 		mockMvc.perform(MockMvcRequestBuilders
